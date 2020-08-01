@@ -17,26 +17,26 @@ c = gets.chomp.to_f
 
 if a > b && a > c
   hypotenuse = a
-  firstSide = b
-  secondSide = c
+  first_side = b
+  second_side = c
 elsif b > a && b > c
   hypotenuse = b
-  firstSide = a
-  secondSide = c
+  first_side = a
+  second_side = c
 else
   hypotenuse = c
-  firstSide = a
-  secondSide = b
+  first_side = a
+  second_side = b
 end
 
 if a == 0 || b == 0 || c == 0
   puts 'Введите корректные данные...'
 elsif a == b && a == c
   puts 'Треугольник равносторонний, но не прямоугольный'
-elsif hypotenuse**2 == firstSide**2 + secondSide**2
+elsif hypotenuse**2 == first_side**2 + second_side**2
   print ('Треугольник прямоугольный!')
-  puts ' К тому же равнобедренный.' if firstSide == secondSide
-elsif firstSide == secondSide
+  puts ' К тому же равнобедренный.' if first_side == second_side
+elsif first_side == second_side
   puts 'Треугольник равнобедренный, но не прямоугольный.'
 else
   print ('Обычный, ничем не примечательный треугольник.')

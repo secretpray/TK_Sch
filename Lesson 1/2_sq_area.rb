@@ -5,17 +5,17 @@
 puts 'Для расчета площади треугольника укажите его основание и высоту.'
 
 puts 'Введите основание треугольника (см): '
-baseTriangle = gets.chomp.to_f
+base_triangle = gets.chomp.to_f
 
 puts 'Введите высоту треугольника (см):'
-heightTriangle = gets.chomp.to_f
+height_triangle = gets.chomp.to_f
 
-triangleArea = 0.5 * baseTriangle * heightTriangle  # есть ли смысл помещать в скобки? Вычисления справа налево, но я бы поставил)))
+triangle_area = 0.5 * base_triangle * height_triangle  # есть ли смысл помещать в скобки? Вычисления справа налево, но я бы поставил)))
 
-if triangleArea <= 0
+if triangle_area <= 0
   puts 'Введите корректные данные, пожалуйста!'
 else
-  puts "Площадь треугольника с основанием #{baseTriangle} см и высотой #{heightTriangle} см равна: #{triangleArea} кв. см"
+  puts "Площадь треугольника с основанием #{base_triangle} см и высотой #{height_triangle} см равна: #{triangle_area} кв. см"
 end
 # STDIN.getc # чтобы избежать проблем при запуске программы c переданным аргументом
 # (http://ruby.qkspace.com/ruby-chem-gets-otlichaetsya-ot-stdin-gets)

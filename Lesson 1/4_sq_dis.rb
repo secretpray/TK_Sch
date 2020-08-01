@@ -24,19 +24,19 @@ b = gets.chomp.to_i
 print ("Введите коэффициент c: ") # если puts надоел)
 c = gets.chomp.to_i
 
-disSquare =  b**2 - 4 * a * c # находим дискриминант
+dis_square =  b**2 - 4 * a * c # находим дискриминант
 
-if disSquare < 0
-  puts "Дискриминант уравнение с коефициентами a = #{a}, b = #{b}, c = #{c} равен #{disSquare}\n. Корней нет (мнимые числа)."
-elsif disSquare == 0
-  d  = Math.sqrt(disSquare)
+if dis_square < 0
+  puts "Дискриминант уравнение с коефициентами a = #{a}, b = #{b}, c = #{c} равен #{dis_square}\n. Корней нет (мнимые числа)."
+elsif dis_square == 0
+  d  = Math.sqrt(dis_square)
   x = (- b + d) / (2 * a)
-  puts "Дискриминант уравнение с коефициентами a: #{a}, b: #{b}, c: #{c} равен #{disSquare}\n. Корень уравнения один (x1 = x2) и равен #{x}."
-elsif disSquare > 0 # можно сразу else, но так надежнее)
-  d  = Math.sqrt(disSquare)  # можно и без Math.sqrt, заменив на d = d**0.5
+  puts "Дискриминант уравнение с коефициентами a: #{a}, b: #{b}, c: #{c} равен #{dis_square}\n. Корень уравнения один (x1 = x2) и равен #{x}."
+elsif dis_square > 0 # можно сразу else, но так надежнее)
+  d  = Math.sqrt(dis_square)  # можно и без Math.sqrt, заменив на d = d**0.5
   x1 = (- b + d) / (2 * a)
   x2 = (- b - d) / (2 * a)
-  puts "Дискриминант уравнение с коефициентами a: #{a}, b: #{b}, c: #{c} равен #{disSquare}.\nКорни уравнения x1 = #{x1}; x2 = #{x2}."
+  puts "Дискриминант уравнение с коефициентами a: #{a}, b: #{b}, c: #{c} равен #{dis_square}.\nКорни уравнения x1 = #{x1}; x2 = #{x2}."
 else
   puts 'Unknown error'
 end
