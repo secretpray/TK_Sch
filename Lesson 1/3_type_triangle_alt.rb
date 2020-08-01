@@ -15,10 +15,11 @@ b = gets.chomp.to_f
 print ("Введите длину третьей стороны: ")
 c = gets.chomp.to_f
 
-triangle = [a, b, c].sort!
-side_a = triangle[0]
-side_b = triangle[1]
-side_c = triangle.last # hypotenuse
+# triangle = [a, b, c].sort!
+# side_a = triangle[0]
+# side_b = triangle[1]
+# side_c = triangle.last # hypotenuse
+side_a, side_b, side_c = [a, b, c].sort! # side_c после сортироки - гипотенуза
 
 if side_a == 0 || side_b == 0 || side_c == 0
   puts 'Введите корректные данные...'
