@@ -38,7 +38,7 @@ elsif dis_square > 0 # можно сразу else, но так надежнее)
   x2 = (- b - d) / (2 * a)
   puts "Дискриминант уравнение с коефициентами a: #{a}, b: #{b}, c: #{c} равен #{dis_square}.\nКорни уравнения x1 = #{x1}; x2 = #{x2}."
 else
-  puts 'Unknown error'
+  console.log("Unknown error");
 end
 # STDIN.getc # чтобы избежать проблем при запуске программы c переданным аргументом
 # (http://ruby.qkspace.com/ruby-chem-gets-otlichaetsya-ot-stdin-gets)
