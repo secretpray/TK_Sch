@@ -2,8 +2,8 @@
 
 # Вариант 1.1
 
-alphabet= ('a'..'z').to_a
-arr_vowels = ['a','e','i','o','u']
+alphabet = ('a'..'z').to_a
+c = ['a','e','i','o','u']  # или %w(a e i o u)
 alphabet_vowels = {}
 
 arr_vowels.each { |letter| alphabet_vowels[letter] = alphabet.index(letter) + 1 }

@@ -27,11 +27,22 @@ puts (1..10).inject([0, 1]) { |fibonacci| fibonacci << fibonacci.last(2).inject(
 
 # 4 вариант (с использованием until)
 # fibonacci_arr = [0, 1]
-# fibonacci_ = 1
+# fibonacci_number = 1
 
 # until fibonacci_number > 100 do
 #   fibonacci_arr << fibonacci_number
 #   fibonacci_number = fibonacci_arr.last(2).reduce(:+)
+# end
+
+# 5 вариант (с использованием loop)
+# fibonacci_arr = [0, 1]
+# i = 2
+
+# loop do
+#  array = fibonacci_arr[i-1] + fibonacci_arr[i - 2]
+#  break if array >= 100
+#  fibonacci_arr << array
+#  i += 1
 # end
 
 # puts fibonacci_arr
