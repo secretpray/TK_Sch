@@ -1,4 +1,4 @@
-# 1. Сделать хеш, содержащий месяцы и количество дней в месяце.
+# 1) Сделать хеш, содержащий месяцы и количество дней в месяце.
 # В цикле выводить те месяцы, у которых количество дней ровно 30
 
 month_day = {
@@ -15,8 +15,18 @@ month_day = {
     "ноябрь" => 30,
     "декабрь" => 31
 }
-# months.each { |month, days| puts month if days == 30 } # минимальный алгоритм
+
 puts "Месяцы, у которых количество дней ровно 30:"
-month_day.each do |month, days|
-  puts "- #{month}" if days == 30
-end
+
+# Вариант 1.1
+month_day.each { |month, days| puts "- #{month}" if days == 30 } # можно month_day.each_pair
+
+# Вариант 2
+# month_day.each_key {|month| puts "- #{month}" if month_day[month] == 30 }
+
+
+
+
+
+
+
