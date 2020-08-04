@@ -24,6 +24,11 @@ month_day.each { |month, days| puts "- #{month}" if days == 30 } # можно mo
 # Вариант 2
 # month_day.each_key {|month| puts "- #{month}" if month_day[month] == 30 }
 
+#  months = { 31 => ["January", " March", "May", "July", "August", "October", "December"],
+#            30 => ["April", "June", "September", " November"],
+#            28 => ["February"] }
+#
+# months[30].each { |e| print e + " " }
 
 
 

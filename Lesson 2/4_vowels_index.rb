@@ -3,7 +3,7 @@
 # Вариант 1.1
 
 alphabet = ('a'..'z').to_a
-c = ['a','e','i','o','u']  # или %w(a e i o u)
+arr_vowels = ['a','e','i','o','u']            # или %w(a e i o u)
 alphabet_vowels = {}
 
 arr_vowels.each { |letter| alphabet_vowels[letter] = alphabet.index(letter) + 1 }
@@ -29,6 +29,14 @@ arr_vowels.each { |letter| alphabet_vowels[letter] = alphabet.index(letter) + 1 
 #  vowels_index[letter] = i if vowels.include?(letter)
 # end
 
-print alphabet_vowels
+# Вариант 3
+# vowels = 'aeiouy'.split("")
+# alphabet = 'a'..'z'                     #  можно и без ( ).to_a
+# alphabet_vowels = {}
+
+# vowels.each { |i| alphabet_vowels[i] = alphabet.find_index(i).next }
+
+puts "Гласные и их порядковый номер в английском алфавите: #{alphabet_vowels}"
+# print alphabet_vowels
 
 
