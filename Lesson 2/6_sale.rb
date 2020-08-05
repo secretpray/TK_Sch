@@ -10,6 +10,12 @@
 
 shop_cart = {}
 total_price = 0
+delimiter = "-*-" * 20 # для красоты
+
+# Получаем данные от пользователя
+
+puts delimiter
+
 loop do
   puts "Введите название товара или stop для выхода."
   item_name = gets.force_encoding(Encoding::UTF_8).chomp
@@ -19,16 +25,28 @@ loop do
   puts "Введите количество товара (шт или грамм):"
   item_quantity = gets.to_f
   shop_cart[item_name] = { item_price: item_price, item_quantity: item_quantity, item_amount: item_price * item_quantity }
+  puts "Добавлен продукт: #{item_name.downcase} ценой #{item_price} в количестве #{item_quantity.to_i} "
 end
 
-total_price = shop_cart.sum{ |item_price:, item_quantity:, item_amount:| item_amount }
+# total_price = shop_cart.sum {|item_price:, item_quantity:, item_amount:| item_amount } # deprecated in Ruby 2.7
 
-=begin
-shop_cart.each do |item_name, item_sub|
-  sum = item_sub[:item_price] * item_sub[:item_quantity]
-  puts "товар: #{item_name}, куплен по цене - #{sum} грн."
-  total_price += sum
+# покажем весь хеш
+p shop_cart
+
+p delimiter
+
+# Покажем корзину с расшифровкой
+shop_cart.each do |item_name, data|
+  puts "- #{item_name}: #{data[:item_price].to_s} x #{data[:item_quantity]} = #{data[:item_amount]} грн."
+  total_price += data[:item_amount]
 end
-=end
 
+puts delimiter
+
+# Покажем общую сумму
 puts "Общая сумма покупок: #{total_price}"
+
+# To Do
+# 1) Добавить красивое псевдо-меню для выбора опций
+# 2) Проверить на корретность вводимых данных
+# 3) Предусмотреть возможность обновления (добавления) товара с идентичным именем.
