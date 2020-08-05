@@ -22,10 +22,10 @@ month_day = {
 puts "Месяцы, у которых количество дней ровно 30:"
 
 # Вариант 1.1
-month_day.each { |month, days| p "- #{month}" if days == 30 } # или month_day.each_pair
+month_day.each { |month, days| p "- #{month}" if days == 30 }
 
 # Вариант 1.2
-# month_day.each { |month, days| p "- #{month}" if days == 30 } # или month_day.each_pair
+# month_day.each_pair { |month, days| p "- #{month}" if days == 30 }
 
 # Вариант 2
 # month_day.each_key {|month| puts "- #{month}" if month_day[month] == 30 }
