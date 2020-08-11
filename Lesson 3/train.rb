@@ -18,38 +18,42 @@ class Train
   attr_accessor :route, :speed, :carriage, :current_station
 
   def initialize(number, type, carriage)
-    @number = number
-    @type = type
+    @number =   number
+    @type =     type
     @carriage = carriage
-    @speed = 0
+    @speed =    0
   end
 
   def accelerate(value = 10)
+    @speed += value
     puts "Скорость увеличена на #{value}, текущая скорость #{@speed} km/h"
-    speed += value
   end
 
   def decrease_speed(value = 10)
+    @speed -= value unless speed.zero?
     puts "Скорость снижена на #{value}, текущая скорость #{@speed} km/h"
-    speed -= value unless @speed.zero?
+  end
+
+  def stop
+    @speed = 0
+    puts "Поезд остановился, текущая скорость: #{speed} km/h"
   end
 
   # Прицепляем вагон, если стоим на месте
   def attache_carriage
-    @carriage += 1 if @speed.zero?
+    @carriage += 1 if speed.zero?
+    puts "Вагон прицеплен. В составе сейчас #{carriage} вагонов."
   end
 
   # Отцепляем вагон, если стоим на месте
   def remove_carriage
-    puts 'Вагон отцеплен. В составе осталось #{@railway_carriage} вагонов'
-    carriage -= 1 if @speed.zero? && @railway_carriage != 0
+    @carriage -= 1 if speed.zero? && carriage != 0
+    puts "Вагон отцеплен. В составе осталось #{carriage} вагонов."
   end
 
   def add_a_route(route)
-    route = route
-    index = 0
-    #@station = @route.stations[0]
-    #@station.add_train(self)
+    @route = route
+    @index = 0
     current_location.take(self)
   end
 
@@ -68,12 +72,12 @@ class Train
   def go_forward
     current_location.send_a_train(self)
     next_location.take_the_train(self)
-    index += 1
+    @index += 1
   end
 
   def go_backward
     current_location.send_a_train(self)
     previous_location.take_the_train(self)
-    index -= 1
+    @index -= 1
   end
 end

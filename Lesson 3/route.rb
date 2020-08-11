@@ -9,15 +9,15 @@
 class Route
   attr_reader :stations
 
-  def initialize(from, to)
-    @stations = [from, to]
+  def initialize(from_station, to_station)
+    @stations = [from_station, to_station]
   end
 
-  def from
+  def from_station
     stations.first
   end
 
-  def to
+  def to_station
     stations.last
   end
 
@@ -26,6 +26,12 @@ class Route
   end
 
   def delete(station)
-    stations.delete(station) if station != from && station != to
+    stations.delete(station) if [@stations.first, @stations.last].none?(station)
+    # stations.delete(station) if station != from_station && station != to_station
+  end
+
+  def list_stations
+    puts "На заданном маршруте имеются станции:"
+    stations.each { |station| puts " - #{station}" }
   end
 end

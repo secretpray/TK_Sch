@@ -38,26 +38,3 @@ class Station
     list_trains.each { |train| puts train[0] if train[1] == type.to_sym} # проверить нужно ли конвертировать в символ
   end
 end
-
-
-station1 = Station.new"Pulkovo"
-train1 = [12, :pass, 8]
-train2 = [13, :gruz, 9]
-train3 = [14, :gruz, 2]
-train4 = [15, :pass, 7]
-train5 = [12, :pass, 5]
-puts "Добавление 5 поездов"
-station1.add_train_to_list train1
-station1.add_train_to_list train2
-station1.add_train_to_list train3
-station1.add_train_to_list train4
-station1.add_train_to_list train5
-puts "1) Список всех поездов на станций: #{station1.name_station}"
-puts "1.1 Геттер: #{station1.list_trains}"
-# station1.list_all_trains
-puts "1.2 Функция: #{station1.list_all_trains}"
-puts "2) Вывод поездов на станции по типу pass"
-station1.list_trains_by_type("pass")
-puts "3) Удаление поезда с номером 12 pass"
-station1.remove_train_from_list(train5)
-station1.list_all_trains
