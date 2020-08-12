@@ -128,23 +128,29 @@ puts "На машруте 1 - #{route1.stations.size} станции(й)."
 route1.list_stations
 
 
-=begin
-train7 = Train.new(91, 'passenger',  '15')
-train8 = Train.new(24,'passenger',  '38')
-train9 = Train.new(16,  'cargo',  '21')
+puts '= = = ' * 15 
+train7 = Train.new(	91,	'passenger',	'15')
+train8 = Train.new( 24,	'passenger',	'38')
+train9 = Train.new( 16,	'cargo',		'21')
 route4 = Route.new(Station.new('Moscow'), Station.new('Dnepr'))
-route1.list_stations
-route4.add_station(Station.new('Tula'))
-route4.add_station(Station.new('Belgorod'))
-route4.add_station(Station.new('Harkov'))
-train7.route_train(route1)
-train7.current_station
-train7.move_next
-train8.route_train(route1)
-train8.move_next
-route1.stations[1].trains.size
-train7.move_next
-route1.stations[2].trains.size
-train7.move_previous
-route1.stations[1].trains.size
-=end
+puts 'Создан новый маршрут (обьект):'
+route4.stations.each { |station| p station.name_station }
+#route4.list_stations # здесь не применимо, так как здесь маршрут обьект, а не array
+puts '+ + ' * 15
+station10 = Station.new('Tula')
+puts "Создана новая станция #{station10.name_station}"
+puts '= = = ' * 15
+
+train8.take_route(route4)
+#train8.current_location
+puts "В настоящий момент поезд находится #{train8.current_location.name_station}"
+train8.go_forward
+puts '= = = ' * 15
+puts "В настоящий момент поезд находится #{train8.current_location.name_station}"
+puts '= = = ' * 15
+# train8.go_forward
+# puts "#{route4.stations[1].list_trains.size} поезда(ов)."
+# puts "В настоящий момент поезд находится #{train8.current_location.name_station}" unless train8.current_location.nil?
+# puts '= = = ' * 15
+train8.go_backward
+puts "В настоящий момент поезд находится #{train8.current_location.name_station}" unless train8.current_location.nil?

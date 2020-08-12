@@ -11,8 +11,8 @@ class Route
 
   def initialize(from_station, to_station)
     @stations = [from_station, to_station]
-    #@stations << @from_station << @to_station
-    puts "Создан маршрут из #{stations.first} в #{stations.last}"
+    # @stations << @from_station << @to_station
+    # puts "Создан маршрут из #{stations[0]} в #{stations[-1]}"
   end
 
   def from_station
@@ -27,7 +27,7 @@ class Route
     # if stations.include?(new_station)
     # puts "Станция #{new_station.capitalize} уже присутствует в списке."
     stations.insert(-2, new_station)
-    puts "Станция «#{new_station}» добавлена в текущий маршрут" # желательно присвоить имя маршруту или номер #{self.name} || #{self.name}
+    puts "Станция «#{stations[-2]}» добавлена в текущий маршрут" # желательно присвоить имя маршруту или номер #{self.name} || #{self.name}
   end
 
   def delete(station)

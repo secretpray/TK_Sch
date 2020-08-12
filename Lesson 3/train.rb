@@ -75,40 +75,46 @@ class Train
     valid_route(route)
     @route = route
     @index = 0
-    current_location.take(self)
-    #self.current_location = self.route.first
-    puts "Поезд находится на станции #{current_location} и проследует по марщруту #{self.route.first} - #{self.route.last}"
+    # current_location.take(self)
+    # self.current_location = self.route.first
+    # p self.current_location -> Station:0x00007f96c2930750 @name_station="Moscow", @list_trains=[]>
+    # p self.route -> <Route:0x00007f96c29305e8 @stations=[#<Station:0x00007f96c2930750 @name_station="Moscow", @list_trains=[]>, #<Station:0x00007f96c2930638 @name_station="Dnepr", @list_trains=[]>]> 
+    puts "Поезд находится на станции #{current_location.name_station} и проследует по марщруту: #{route.stations.first.name_station} - #{route.stations.last.name_station}" # " #{self.route.first} - #{self.route.last}"
   end
 
   def current_location
     return if @route.nil?
-    route.stations[@index]
+    route.stations[index]
   end
 
   def next_location
     # return if route.stations.last
-    return if @route.nil?
+    # return if @route.nil?
     route.stations[index + 1] unless route.stations.last
-    puts "Поезд приехал на станцию #{self.current_location}"
   end
 
   def previous_location
     # return if route.stations.first
-    return if @route.nil?
+    # return if @route.nil?
     route.stations[index - 1] unless route.stations.first
-    puts "Поезд приехал на станцию #{self.current_location}"
   end
 
   def go_forward
-    current_location.add_train_to_list(self)
-    next_location.remove_train_from_list(self)
+    p self
+    # current_location.remove_train_from_list(self)
+    # next_location.add_train_to_list(self)
     @index += 1
+    p self
+    puts "Поезд приехал на станцию #{current_location.name_station}"  # self.current_location
   end
 
   def go_backward
-    current_location.add_train_to_list(self)
-    previous_location.remove_train_from_list(self)
+    p self
+    # current_location.add_train_to_list(self)
+    # previous_location.remove_train_from_list(self)
     @index -= 1
+    p self
+    puts "Поезд приехал на станцию #{current_location.name_station}"  #self.current_location
   end
 
   protected
