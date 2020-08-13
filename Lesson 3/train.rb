@@ -21,14 +21,15 @@ class Train
   attr_accessor :route, 
                 :speed, 
                 :carriage, 
-                :current_station
+                :current_location
 
   def initialize(number, type, carriage)  #type ('passenger', 'cargo')
-    @number =    number
-    @type =      type.downcase.to_sym
+    @number   =  number
+    @type     =  type.downcase.to_sym
     #validate!
     @carriage =  carriage.to_i
-    @speed =     0
+    @speed    =  0
+    @route    =  nil
   end
 
   def accelerate(value = 10)
@@ -75,45 +76,42 @@ class Train
     valid_route(route)
     @route = route
     @index = 0
-    # current_location.take(self)
+    current_location.add_train_to_list(self)
+    puts current_location.list_trains 
     # self.current_location = self.route.first
-    # p self.current_location -> Station:0x00007f96c2930750 @name_station="Moscow", @list_trains=[]>
     # p self.route -> <Route:0x00007f96c29305e8 @stations=[#<Station:0x00007f96c2930750 @name_station="Moscow", @list_trains=[]>, #<Station:0x00007f96c2930638 @name_station="Dnepr", @list_trains=[]>]> 
     puts "Поезд находится на станции #{current_location.name_station} и проследует по марщруту: #{route.stations.first.name_station} - #{route.stations.last.name_station}" # " #{self.route.first} - #{self.route.last}"
   end
 
   def current_location
-    return if @route.nil?
+    return if route.nil?
     route.stations[index]
   end
 
   def next_location
     # return if route.stations.last
-    # return if @route.nil?
+    return if route.nil?
     route.stations[index + 1] unless route.stations.last
   end
 
   def previous_location
     # return if route.stations.first
-    # return if @route.nil?
+    return if route.nil?
     route.stations[index - 1] unless route.stations.first
   end
 
   def go_forward
-    p self
-    # current_location.remove_train_from_list(self)
-    # next_location.add_train_to_list(self)
+    current_location.remove_train_from_list(self)
     @index += 1
-    p self
+    next_location.add_train_to_list(self)
     puts "Поезд приехал на станцию #{current_location.name_station}"  # self.current_location
   end
 
   def go_backward
-    p self
-    # current_location.add_train_to_list(self)
-    # previous_location.remove_train_from_list(self)
+    return if @index < 1
+    current_location.add_train_to_list(self)
     @index -= 1
-    p self
+    previous_location.remove_train_from_list(self)
     puts "Поезд приехал на станцию #{current_location.name_station}"  #self.current_location
   end
 

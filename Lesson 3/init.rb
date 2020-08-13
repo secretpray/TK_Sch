@@ -143,14 +143,18 @@ puts '= = = ' * 15
 
 train8.take_route(route4)
 #train8.current_location
-puts "В настоящий момент поезд находится #{train8.current_location.name_station}"
-train8.go_forward
-puts '= = = ' * 15
-puts "В настоящий момент поезд находится #{train8.current_location.name_station}"
-puts '= = = ' * 15
+puts "В настоящий момент поезд находится в #{train8.current_location.name_station}"
+p train8.current_location.name_station
+train8.next_location
+p train8.current_location.name_station
+train8.previous_location
+p train8.current_location.name_station
+# puts '= = = ' * 15
 # train8.go_forward
+puts "В настоящий момент поезд находится #{train8.current_location.name_station}"
+# puts '= = = ' * 15
 # puts "#{route4.stations[1].list_trains.size} поезда(ов)."
 # puts "В настоящий момент поезд находится #{train8.current_location.name_station}" unless train8.current_location.nil?
 # puts '= = = ' * 15
-train8.go_backward
-puts "В настоящий момент поезд находится #{train8.current_location.name_station}" unless train8.current_location.nil?
+# train8.go_backward
+# puts "В настоящий момент поезд находится #{train8.current_location.name_station}" unless train8.current_location.nil?
