@@ -35,6 +35,7 @@ class Station
 
   # выводим список всех поездов на станции
   def list_all_trains
+    puts "#{list_trains.length} поезда(ов) на станции."
     list_trains.each { |train| puts "Поезд номер: #{train[0]}, тип: #{train[1]}, вагонов: #{train[2]}"  }
   end
 

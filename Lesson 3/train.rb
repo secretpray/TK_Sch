@@ -90,20 +90,21 @@ class Train
 
   def next_location
     # return if route.stations.last
-    return if route.nil?
+    # return if route.nil?
     route.stations[index + 1] unless route.stations.last
   end
 
   def previous_location
     # return if route.stations.first
-    return if route.nil?
+    # return if route.nil?
     route.stations[index - 1] unless route.stations.first
   end
 
   def go_forward
     current_location.remove_train_from_list(self)
     @index += 1
-    next_location.add_train_to_list(self)
+    p route
+    # next_location.add_train_to_list(self)
     puts "Поезд приехал на станцию #{current_location.name_station}"  # self.current_location
   end
 
@@ -111,7 +112,7 @@ class Train
     return if @index < 1
     current_location.add_train_to_list(self)
     @index -= 1
-    previous_location.remove_train_from_list(self)
+    # previous_location.remove_train_from_list(self)
     puts "Поезд приехал на станцию #{current_location.name_station}"  #self.current_location
   end
 
@@ -134,5 +135,18 @@ end
 #      puts "Поезду номер #{train.number} передан маршрут."
 #    else
 #      puts 'Маршрут должен содержать 2 станции назначения'
+#    end
+#  end
+#
+
+#  def go(direction)
+#    if direction != 'forward' && direction != 'back'
+#      puts 'Please enter forward or back'
+#    else
+#      case direction
+#      when 'forward'then index = current_location + 1
+#      when 'back' then index = current_location - 1
+#      end
+#      move_train index
 #    end
 #  end

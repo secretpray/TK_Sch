@@ -8,10 +8,8 @@
 
 class Route
   attr_reader   :stations
-                :name
 
   def initialize(from_station, to_station)
-    @name = "#{from_station} - #{to_station}"
     @stations = [from_station, to_station]
     # @stations << @from_station << @to_station
     # puts "Создан маршрут из #{stations[0]} в #{stations[-1]}"
@@ -26,8 +24,9 @@ class Route
   end
 
   def add(new_station)
+    # stations.include?(new_station) ? (puts 'already in route list') : stations.insert(-2, new_station)
     # if stations.include?(new_station)
-    # puts "Станция #{new_station.capitalize} уже присутствует в списке."
+    #   puts "Станция #{new_station.capitalize} уже присутствует в списке."
     # self.points.push(new_station) # надо вводить для новой станции геттер: attr_reader :points
     stations.insert(-2, new_station)
     puts "Станция «#{stations[-2]}» добавлена в текущий маршрут" # желательно присвоить имя маршруту или номер #{self.name} || #{self.name}
@@ -49,8 +48,6 @@ class Route
     # [@start, @points, @finish].flatten.compact # надо вводить для новой станции геттер: attr_reader :points
   end
   
-
-
 =begin
   def next(current)
     if current != self.stations.last
