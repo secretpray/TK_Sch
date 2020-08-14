@@ -24,12 +24,12 @@ class Train
   end
 
   def decrease_speed(value = 10)
-    self.speed -= value unless speed.zero?
+    return if self.speed - value < 0  
+    self.speed -= value # unless stop?
     puts "Скорость снижена на #{value} км/ч"
   end
 
   def stop
-    # self.speed = 0
     self.speed = 0
     puts "Скорость позда снижена до #{speed} км/ч. Поезд остановился"
   end

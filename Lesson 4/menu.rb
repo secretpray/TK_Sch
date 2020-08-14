@@ -22,6 +22,16 @@ train1.accelerate(20)
 puts "Текущая скорость поезда номер #{train1.number} (#{train1.type.to_s.capitalize}): #{train1.speed} км/ч"
 puts '-*-' * 15
 
+puts "Поезд замедляется на 10 км/ч..."
+train1.decrease_speed(10)
+puts "Текущая скорость поезда номер #{train1.number} (#{train1.type.to_s.capitalize}): #{train1.speed} км/ч"
+puts '-*-' * 15
+
+puts "Поезд замедляется на 30 км/ч..."
+train1.decrease_speed(30)
+puts "Текущая скорость поезда номер #{train1.number} (#{train1.type.to_s.capitalize}): #{train1.speed} км/ч"
+puts '-*-' * 15
+
 puts "Поезд останавливается..."
 train1.stop
 puts "Текущая скорость поезда номер номер #{train1.number} (#{train1.type.to_s.capitalize}) = #{train1.speed} км/ч"
@@ -36,6 +46,11 @@ puts "Текущая скорость поезда номер #{train2.number} (
 puts '-*-' * 15
 
 train2.accelerate(20)
+puts "Текущая скорость поезда номер #{train2.number} (#{train2.type.to_s.capitalize}): #{train2.speed} км/ч"
+puts '-*-' * 15
+
+puts "Поезд замедляется на 10 км/ч..."
+train2.decrease_speed(value = 10)
 puts "Текущая скорость поезда номер #{train2.number} (#{train2.type.to_s.capitalize}): #{train2.speed} км/ч"
 puts '-*-' * 15
 
