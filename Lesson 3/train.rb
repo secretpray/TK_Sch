@@ -29,7 +29,6 @@ class Train
     #validate!
     @carriage =  carriage.to_i
     @speed    =  0
-    @route    =  nil
   end
 
   def accelerate(value = 10)
@@ -84,7 +83,8 @@ class Train
   end
 
   def current_location
-    return if route.nil?
+    return unless route
+    # return list_trains unless type
     route.stations[index]
   end
 

@@ -41,7 +41,8 @@ class Station
 
   # выводим список поездов на станции по типу (грузовые или пассажирские)
   def list_trains_by_type(type = nil)
-    return list_trains if type.nil?
+    return list_trains unless type
+    # return list_trains if type.nil?
     # list_trains.find_all { |train| train.type == type }
     # list_trains.group_by(&:type).each { |key, value| print "#{key}: #{value.count}" if key == type }
     # print list_trains.select { |train| train[1] == type.to_sym }
