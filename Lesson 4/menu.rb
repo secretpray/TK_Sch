@@ -65,7 +65,7 @@ class Menu
       when 3 
       	info_object
       else
-        puts 'Неизвестная команда'
+        puts 'Неизвестная команда!'
       end
     end
   end
@@ -80,8 +80,8 @@ class Menu
 
   def create_object
   	system 'clear'
-	puts 'Создаем обьекты'
-	loop do
+	  puts 'Создаем обьекты'
+	  loop do
       
       help_create
 
@@ -97,10 +97,7 @@ class Menu
         type = gets.chomp.to_i
         puts "Введите количество вагонов"
         carriage = gets.chomp.to_i
-        if type == 1
-          @trains << CargoTrain.new(number, carriage)
-        elsif type == 2
-          @trains << PassengerTrain.new(number, carriage)
+        if type == 1 ? @trains << CargoTrain.new(number, carriage) : @trains << PassengerTrain.new(number, carriage)
         else
           puts "Неверный тип поезда"
         end
@@ -122,15 +119,10 @@ class Menu
       	print "Введите имя конечнй станции: "
       	to_station = gets.chomp.to_s
 
-      	#@stations.each do |station|
-        #	@start = station if station.name == from_station
-        #	@finish = station if station.name == to_station
-      	#end
 		@routes << Route.new(from_station, to_station)
-		#@routes.each { |route| puts "Создан новый маршрут: #{route.list_stations}" }
 		puts "\n\n"
       else
-        puts 'Неизвестная команда'
+        puts 'Неизвестная команда!'
       end
     end
   end
@@ -144,11 +136,39 @@ class Menu
 
 
   def change_object
-	puts 'Изменяем обьекты'
+    system 'clear'
+    puts 'Создаем обьекты'
+    loop do
+      
+      help_edit
+      puts 'Изменяем обьекты'
+      case gets.chomp.to_i
+      when 0
+        break
+      when 1  
+        puts 'Управления станциями...'
+      when 2  
+        puts 'Управления составом...'
+      when 3  
+        puts 'Назначения маршрута поезду...'
+      when 4  
+        puts 'Перемещение поезда по маршруту...'
+      else
+        puts 'Неизвестная команда!'
+      end
+    end
+  end
+
+  def help_edit
+    puts 'Введите 1 => для управления станциями;'
+    puts 'Введите 2 => для управления составом;'
+    puts 'Введите 3 => для назначения маршрута поезду;'
+    puts 'Введите 4 => для перемещения поезда по маршруту'
+    puts 'Введите 0 => для выхода их меню'
   end
 
   def info_object
-	puts 'Информация об обьектах'
+	  puts 'Информация об обьектах'
   end
 end
 
