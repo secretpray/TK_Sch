@@ -3,16 +3,32 @@ require_relative "route"
 require_relative "train"
 require_relative "train_cargo"
 require_relative "train_passenger"
+require_relative "wagon_cargo"
+require_relative "wagon_passenger"
 
 
 
+# Необходимо создание меню с возможностью выюора:
+# 1 -> Создание станции, поезда, вагона, маршрута;
+# 2 -> Изменение маршрута, состава поездов, перемещение поезда;
+# 3 -> Вывести текущие данные о машруте, поезде, станции и количестве обьектов.
+# 4 -> Выход   
+
+
+
+
+
+
+=begin
+		
+end
 def data_test
 	# train1 = PassengerTrain.new(12, 6)
 end
 
 #data_test
 
-train1 = PassengerTrain.new(12, 6)
+train1 = PassengerTrain.new(12001, 16)
 puts "Поезд номер #{train1.number} (#{train1.type.to_s.capitalize}) увеличивает скорость на +10 км/ч "
 train1.accelerate
 puts "Текущая скорость поезда номер #{train1.number} (#{train1.type.to_s.capitalize}): #{train1.speed} км/ч"
@@ -39,7 +55,7 @@ puts '-*-' * 15
 
 
 
-train2 = CargoTrain.new(13, 11)
+train2 = CargoTrain.new(13119, 31)
 puts "Поезд номер #{train2.number} (#{train2.type.to_s.capitalize}) увеличивает скорость на +10 км/ч "
 train2.accelerate
 puts "Текущая скорость поезда номер #{train2.number} (#{train2.type.to_s.capitalize}): #{train2.speed} км/ч"
@@ -80,39 +96,12 @@ puts "В составе поезда номер #{train1.number} сцеплен�
 puts '-*-' * 15
 
 
-=begin
-# Test Train class
-puts "Тестируем класс Train (поезд)..."
+train3 = CargoTrain.new(14001, 22)
+train4 = PassengerTrain.new(15909, 9)
+train5 = PassengerTrain.new(16121, 11)
 
+station1 = Station.new "Pulkovo"
 
-
-puts "Поезд останавливается..."
-train6.stop
-puts "Текущая скорость поезда номер #{train6.number}: #{train6.speed}"
-puts '-*-' * 15
-
-puts "В составе поезда #{train6.carriage} вагонов"
-puts '-*-' * 15
-
-puts "Добавляем вагоны в состав поезда..."
-train6.attache_carriage
-puts "В составе поезда номер #{train6.number} сцеплено #{train6.carriage} вагонов."
-puts '-*-' * 15
-
-puts "Отцепляем вагоны из состава поезда..."
-train6.remove_carriage
-puts "В составе поезда номер #{train6.number} сцеплено #{train6.carriage} вагонов."
-puts '-*-' * 15
-
-# Test Station class
-puts "Тестируем класс Station (станции)..."
-
-station1 = Station.new"Pulkovo"
-train1 = [12, :passenger, 8]
-train2 = [13, :cargo, 9]
-train3 = [14, :cargo, 2]
-train4 = [15, :cargo, 7]
-train5 = [12, :passenger, 5]
 puts "Добавление 5 поездов"
 station1.add_train_to_list train1
 station1.add_train_to_list train2
@@ -120,19 +109,37 @@ station1.add_train_to_list train3
 station1.add_train_to_list train4
 station1.add_train_to_list train5
 puts '-*-' * 15
+
 puts "1) Список всех поездов на станций: #{station1.name_station}"
 puts '-*-' * 15
 puts "1.1 Геттер: #{station1.list_trains}"
-# station1.list_all_trains
+puts '- -' * 15
 puts "1.2 Функция: #{station1.list_all_trains}"
 puts '-*-' * 15
+
 puts "2) Вывод поездов на станции по типу - пассажирские ('passenger')"
 station1.list_trains_by_type("passenger")
 puts '-*-' * 15
-puts "3) Удаление поезда с номером 12, тип: пассажирский ('passenger')"
+
+puts "3) Удаление поезда с номером 12"
 station1.remove_train_from_list(train5)
 station1.list_all_trains
 puts '-*-' * 15
+
+
+# Test Train class
+puts "Тестируем класс Train (поезд)..."
+
+
+# Test Station class
+puts "Тестируем класс Station (станции)..."
+
+
+
+
+
+
+
 
 
 # Test route
