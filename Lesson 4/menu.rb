@@ -3,6 +3,7 @@ require_relative "route"
 require_relative "train"
 require_relative "train_cargo"
 require_relative "train_passenger"
+require_relative "wagon"
 require_relative "wagon_cargo"
 require_relative "wagon_passenger"
 
@@ -38,18 +39,122 @@ require_relative "wagon_passenger"
 
 puts 'Выберите желаемое действие...'
 
-loop do
-	case 
-	when condition
-		
-	end
-	break if input == 4|
-	
+
+class Menu
+  attr_reader :stations, :trains
+
+  def initialize
+  	@routes = []
+    @stations = []
+    @trains = []
+  end
+
+  def start
+    system 'clear'
+    loop do
+      
+      help_main
+
+      case gets.chomp.to_i
+      when 0
+        break
+      when 1 
+      	create_object
+      when 2 
+      	change_object
+      when 3 
+      	info_object
+      else
+        puts 'Неизвестная команда'
+      end
+    end
+  end
+
+  def help_main
+    puts 'Введите 1 => для создания поезда, станции, маршрута;'
+    puts 'Введите 2 => для изменение маршрута, состава поездов и их перемещения;'
+    puts 'Введите 3 => для получения информации о поездах, маршрутах и станциях;'
+    puts 'Введите 0 => для выхода из программы'
+  end
+
+
+  def create_object
+  	system 'clear'
+	puts 'Создаем обьекты'
+	loop do
+      
+      help_create
+
+      case gets.chomp.to_i
+      when 0
+        break
+      when 1 
+      	system 'clear'
+      	puts 'Создаем поезд...'
+      	print "Введите номер поезда: "
+        number = gets.chomp.to_i
+        puts "Введите тип поезда (1 - грузовой, 2 - пассажирский)"
+        type = gets.chomp.to_i
+        puts "Введите количество вагонов"
+        carriage = gets.chomp.to_i
+        if type == 1
+          @trains << CargoTrain.new(number, carriage)
+        elsif type == 2
+          @trains << PassengerTrain.new(number, carriage)
+        else
+          puts "Неверный тип поезда"
+        end
+        @trains.each { |train| puts "Создан поезд #{train.number}, тип #{train.type}, в составе которого #{train.carriage} вагонов(а)" }
+        puts "\n\n"
+      when 2 
+      	system 'clear'
+      	puts 'Создаем станцию...'
+   		print "Введите название станции: "
+    	name = gets.chomp.to_s
+    	@stations << Station.new(name)
+    	@stations.each { |station| puts "Создана(ы) станция #{station.name_station}" }
+    	puts "\n\n"
+      when 3 
+      	system 'clear'
+      	puts 'Создаем маршрут...'
+      	print "Введите имя начальной станции: "
+      	from_station = gets.chomp.to_s
+      	print "Введите имя конечнй станции: "
+      	to_station = gets.chomp.to_s
+
+      	#@stations.each do |station|
+        #	@start = station if station.name == from_station
+        #	@finish = station if station.name == to_station
+      	#end
+		@routes << Route.new(from_station, to_station)
+		#@routes.each { |route| puts "Создан новый маршрут: #{route.list_stations}" }
+		puts "\n\n"
+      else
+        puts 'Неизвестная команда'
+      end
+    end
+  end
+
+  def help_create
+    puts 'Введите 1 => для создания поезда;'
+    puts 'Введите 2 => для создания станции;'
+    puts 'Введите 3 => для создания маршрута;;'
+    puts 'Введите 0 => для выхода из программы'
+  end
+
+
+  def change_object
+	puts 'Изменяем обьекты'
+  end
+
+  def info_object
+	puts 'Информация об обьектах'
+  end
 end
 
+menu = Menu.new
 
-
-
+menu.start
 
 =begin
 		
