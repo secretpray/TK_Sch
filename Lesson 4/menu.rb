@@ -14,6 +14,10 @@ require_relative "wagon_passenger"
 #   -  train.name.to_i 		(attr_reader) 			- имя поезда   
 #	-  train.type.to_sym 	(attr_reader)   		- тип поезда, учитывается при создании вагонов и их типа, при формировании состава
 #   -  class wagon, с двумя пока пустыми типами (type): ('грузовой' :cargo  и 'пассажирский' :passenger) - []
+#   -  количество вагонов (wagon || carriage)
+# train = CargoTrain.new((name => 1212, type => :cargo, wagons => [WagonCargo.new, WagonCargo.new, WagonCargo.new, WagonCargo.new], carriage => wagons.size, speed =>)
+# 2) Станция пока без изменений
+# 3) Маршрут пока без изменений 
 
 # Необходимо создание меню с возможностью выюора:
 # 1 -> Создание станции, поезда, вагона, маршрута;
