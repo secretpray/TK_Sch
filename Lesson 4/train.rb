@@ -8,9 +8,6 @@ class Train
                 :wagons,  
                 :current_station
 
-  
-# создаем поезд, который должен иметь свойста: номер, тип обьект вагоны (массив), скорость, количество вагонов, маршрут, нынешнюю станцию, индекс,
-# а также методы ускорения, замедления, остановки, прицепки и отцепки вагонов, получения маршрута и следования по маршруту.  
 
   def initialize(number, wagons) 
     @number   =  number
@@ -36,13 +33,19 @@ class Train
 
   def attache_wagon(type_wagon)
     return unless valid_wagon!(type_wagon)
-    @wagons += 1 if stop?
+    if type_wagon == :cargo 
+      @wagons << CargoWagon.new 
+    else 
+      wagons << PassengerWagon.new
+    end
+    # @wagons += 1 if stop? # for integer count
     puts "Прицеплен #{type_wagon} вагон. В составе сейчас #{@wagons.size} вагонов."
   end
 
-  def remove_carriage
-    @wagons -= 1 if stop? && @wagons != 0
-    puts "Отцеплен #{type_wagon} вагон. В составе осталось #{@wagons.size} вагонов."
+  def remove_wagon
+    @wagons.pop if stop? && @wagons.size != 0
+    # @wagons -= 1 if stop? && @wagons != 0  # for integer count
+    puts "Отцеплен вагон. В составе осталось #{@wagons.size} вагонов."
   end
 
   def take_route(route)
