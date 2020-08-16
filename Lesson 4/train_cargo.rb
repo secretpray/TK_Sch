@@ -1,8 +1,8 @@
 class CargoTrain < Train
   
-   attr_reader :type
+  attr_reader :type, :wagons
 
-  def initialize(number, carriage)
+  def initialize(number, wagons)
     @type = :cargo
     super
   end

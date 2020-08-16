@@ -8,8 +8,10 @@
 
 class Route
   attr_reader   :routes
+                :name
 
   def initialize(from_station, to_station)
+    @name = "#{from_station} - #{to_station}"
     @routes = [from_station, to_station]
     # @routes << @from_station << @to_station
     # puts "Создан маршрут из #{routes[0]} в #{routes[-1]}"
@@ -33,18 +35,14 @@ class Route
   end
 
   def delete(station)
-    # if routes.delete(station).nil?
-    # puts "#{station.name.capitalize} нет в вашем маршруте"
+    # puts "#{station.name.capitalize} нет в вашем маршруте" if routes.delete(station).nil?
     routes.delete(station) if [routes.first, routes.last].none?(station)
-    # routes.delete(station) if station != from_station && station != to_station
-    # routes.delete(station) if station != (from_station || to__station)
-    # self.points.delete(station)  # надо вводить для новой станции геттер: attr_reader :points
     puts "Станция «#{station}» удалена из текущего маршрута" # желательно присвоить имя маршруту или номер #{self.name} || #{self.name}
   end
 
   def list_stations
-    puts "На заданном маршруте имеются станции:"
-    routes.each { |station| puts " - #{station}" }
+    puts "На маршруте '#{@name}' имеются станции: #{routes.first} and #{routes.last}"
+    # routes.each { |station| puts " - #{station}" }
     # [@start, @points, @finish].flatten.compact # надо вводить для новой станции геттер: attr_reader :points
   end
   
