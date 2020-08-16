@@ -41,9 +41,11 @@ class Route
   end
 
   def list_stations
-    puts "На маршруте '#{@name}' имеются станции: #{routes.first} and #{routes.last}"
-    # routes.each { |station| puts " - #{station}" }
-    # [@start, @points, @finish].flatten.compact # надо вводить для новой станции геттер: attr_reader :points
+    puts "На маршруте '#{@name}' имеются станции:" # отправления: #{@routes.first} и прибытия: #{@routes.last}\nВсе станции на маршруте: "
+    # @routes.each { |station| puts station }
+    # puts "#{@routes[0..-1]}"
+    @routes[0..-1].each_with_index { |station, index| p "#{index.next}. #{station}" }
+    # @routes.each { |station| print "->#{station.name} " }
   end
   
 =begin
