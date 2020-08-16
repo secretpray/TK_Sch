@@ -3,16 +3,20 @@ class Train
   attr_reader   :number, 
                 :index
   
-  attr_accessor :route, 
+  attr_accessor :route,
+                :routes, 
                 :speed,
-                :wagons,  
+                :wagons,
+                :current_route,  
                 :current_station
 
 
   def initialize(number, wagons) 
-    @number   =  number
-    @speed    =  0
-    @wagons = wagons
+    @number           = number
+    @wagons           = wagons
+    @speed            = 0
+    @current_route    = []
+    @current_station  = []
   end
 
   def accelerate(value = 10)
@@ -48,47 +52,42 @@ class Train
     puts "Отцеплен вагон. В составе осталось #{@wagons.size} вагонов."
   end
 
-  def take_route(route)
-    return unless @route.nil?
-    @route = route
-    @index = 0
-    current_station.add_train_to_list(self)
-    puts "Поезд находится на станции #{current_station.name_station} и проследует по марщруту: #{route.stations.first.name_station} - #{route.stations.last.name_station}" # " #{self.route.first} - #{self.route.last}"
+  def set_route(route)
+    # return unless @current_route?
+    # @index = 0
+    @current_route = route
+    @current_station = route.routes[0]
+    @current_station.add_train(self)
+    puts "Поезд находится на станции #{current_station.name_station} и проследует по марщруту: #{route.routes.first.name_station} - #{route.routes.last.name_station}" # " #{self.route.first} - #{self.route.last}"
   end
 
   def current_station
-    return unless route
-    route.stations[@index]
+    return unless current_route?    # return unless route
+    puts @current_station           # route.stations[index]
   end
 
   def next_station
-    return if route? || last?
-    route.stations[index + 1]
+    return if current_route? || last?
+    # current_route.routes[index + 1] 
+    count = @current_route.routes.index(@current_station) + 1
+    @current_station.emove_train_from_list(self)
+    @current_station = @current_route.routes[count]
+    @current_station.add_train_to_list(self)
   end
 
-  def previous_station
-    return if route? || first?
-    route.stations[index - 1] 
-  end
-
-  def go_forward
-    return if last?
-    current_station.remove_train_from_list(self)
-    @index += 1
-    # next_station.add_train_to_list(self)
-    puts "Поезд приехал на станцию #{current_station.name_station}"  # self.current_location
-  end
-
-  def go_backward
-    return if first?
-    current_station.add_train_to_list(self)
-    @index -= 1
-    # previous_station.remove_train_from_list(self)
-    puts "Поезд приехал на станцию #{current_station.name_station}"  #self.station_location
+  def previous_station 
+    return if current_route? || first?
+    # current_route.routes[index - 1]
+    count = @current_route.routes.index(@current_station) - 1
+    @current_station.remove_train_from_list(self)
+    @current_station = @current_route.routes[count]
+    @current_station.add_train_to_list(self) 
+    puts "Поезд приехал на станцию #{current_station.name_station}" 
   end
 
   protected
-  
+
+  # Чтобы запретить вмешиваться в проверки   
   def valid_wagon!(type_wagon)
     # raise 'Тип вагона не совпадает с типом поезда! Вагон не прицеплен.' if self.type != type_wagon.to_sym
     if self.type != type_wagon.to_sym
@@ -104,18 +103,20 @@ class Train
   end
 
   def valid_route(route)
-    raise 'Неверный маршрут!' if route.class != Route && route.stations.size < 2
+    raise 'Неверный маршрут!' if @current_route.class != Route && @current_route.routes.size < 2
   end
 
-  def route?
-    route.nil?
+  def current_route?
+    @current_route.nil?
   end
 
   def last?
-    route.stations.last
+    @current_station == @current_route.routes.last
+    # @current_route.routes.last
   end
 
   def first?
-    route.stations.first
+    @current_station == @current_route.routes.first
+    # @current_route.routes.first
   end
 end
