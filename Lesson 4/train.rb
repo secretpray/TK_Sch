@@ -1,90 +1,89 @@
 class Train
 
   attr_reader   :number, 
-                :index
-  
-  attr_accessor :route,
-                :routes, 
                 :speed,
-                :wagons,
-                :current_route,  
-                :current_station
+                :route
+  
+  attr_accessor :wagons
 
 
   def initialize(number, wagons) 
     @number           = number
-    @wagons           = wagons
+    @wagons           = wagons  # @wagons = []
     @speed            = 0
-    @current_route    = []
-    @current_station  = []
   end
 
-  def accelerate(value = 10)
-    self.speed += value
+  def to_s
+    "поезд номер #{@number} (вагонов: #{@wagons.size})"
+  end
+
+  def speed_up(value = 20)
+    @speed += value
     puts "Скорость увеличена на #{value} км/ч"
   end
 
-  def decrease_speed(value = 10)
-    return if self.speed - value < 0  
-    self.speed -= value # unless stop?
+  def speed_down(value = 20)
+    return if @speed - value < 0  
+    @speed -= value # unless stop?
     puts "Скорость снижена на #{value} км/ч"
   end
 
-  def stop
-    self.speed = 0
-    puts "Скорость позда снижена до #{speed} км/ч. Поезд остановился"
+  def brake
+    @speed = 0
+    puts "Поезд остановился"
   end
 
-  def attache_wagon(type_wagon)
+=begin
+  def attach_wagon(wagon)
+  end
+
+  def detach_wagon(wagon)
+    @wagons.delete(wagon)
+  end
+=end
+  
+  def attach_wagon(type_wagon)
     return unless valid_wagon!(type_wagon)
     if type_wagon == :cargo 
       @wagons << CargoWagon.new 
     else 
-      wagons << PassengerWagon.new
+      @wagons << PassengerWagon.new
     end
     # @wagons += 1 if stop? # for integer count
     puts "Прицеплен #{type_wagon} вагон. В составе сейчас #{@wagons.size} вагонов."
   end
 
-  def remove_wagon
+  def detach_wagon
     @wagons.pop if stop? && @wagons.size != 0
-    # @wagons -= 1 if stop? && @wagons != 0  # for integer count
     puts "Отцеплен вагон. В составе осталось #{@wagons.size} вагонов."
   end
 
-  def set_route(route)
-    # return unless @current_route?
-    # @index = 0
-    @current_route = route
-    @current_station = route.routes[0]
-    @current_station.add_train(self)
-    puts "Поезд находится на станции #{current_station.name_station} и проследует по марщруту: #{route.routes.first.name_station} - #{route.routes.last.name_station}" # " #{self.route.first} - #{self.route.last}"
+  def assign_a_route(route)
+    current_station.depart(self) if @route
+    @route = route
+    @current_location_index = 0
+    current_station.handle(self)
+    # puts "Поезд находится на станции #{current_station.name_station} и проследует по марщруту: #{route.routes.first.name_station} - #{route.routes.last.name_station}" # " #{self.route.first} - #{self.route.last}"
   end
+
+  def go_to_next_station
+    current_station.depart(self)
+    @current_location_index += 1
+    current_station.handle(self)
+  end
+
+  def go_to_previous_station
+    current_station.depart(self)
+    @current_location_index -= 1
+    current_station.handle(self)
+  end
+  
 
   def current_station
-    return unless current_route?    # return unless route
-    puts @current_station           # route.stations[index]
+    @route.stations[@current_location_index] if @route
   end
 
-  def next_station
-    return if current_route? || last?
-    # current_route.routes[index + 1] 
-    count = @current_route.routes.index(@current_station) + 1
-    @current_station.emove_train_from_list(self)
-    @current_station = @current_route.routes[count]
-    @current_station.add_train_to_list(self)
-  end
-
-  def previous_station 
-    return if current_route? || first?
-    # current_route.routes[index - 1]
-    count = @current_route.routes.index(@current_station) - 1
-    @current_station.remove_train_from_list(self)
-    @current_station = @current_route.routes[count]
-    @current_station.add_train_to_list(self) 
-    puts "Поезд приехал на станцию #{current_station.name_station}" 
-  end
-
+  
   protected
 
   # Чтобы запретить вмешиваться в проверки   
@@ -102,21 +101,17 @@ class Train
     self.speed.zero?
   end
 
-  def valid_route(route)
-    raise 'Неверный маршрут!' if @current_route.class != Route && @current_route.routes.size < 2
-  end
-
   def current_route?
     @current_route.nil?
   end
 
-  def last?
-    @current_station == @current_route.routes.last
-    # @current_route.routes.last
+  def on_first_station?
+    @current_location_index == 0    
   end
 
-  def first?
-    @current_station == @current_route.routes.first
-    # @current_route.routes.first
+  def on_last_station?
+    @current_location_index == @route.stations.size - 1
   end
+
+
 end

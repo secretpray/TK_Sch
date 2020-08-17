@@ -7,4 +7,11 @@ class CargoTrain < Train
     super
   end
 
+  def to_s
+    'Грузовой ' + super
+  end
+
+  def attach_wagon(wagon)
+    @wagons << wagon if wagon.is_a? CargoWagon
+  end
 end

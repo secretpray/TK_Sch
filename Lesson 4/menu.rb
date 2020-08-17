@@ -7,59 +7,48 @@ require_relative "wagon"
 require_relative "wagon_cargo"
 require_relative "wagon_passenger"
 #require_relative "ss"
-
-
-# Создадим class контроллер действий в меню.
-# Что мы должны создавать и в каком алгоритме?
-# 1) Поезд (train) с номером (number), типом (type): ('грузовой' :cargo  и 'пассажирский' :passenger):
-#   -  train.name.to_i 		(attr_reader) 			- имя поезда   
-#	  -  train.type.to_sym 	(attr_reader)   		- тип поезда, учитывается при создании вагонов и их типа, при формировании состава
-#   -  class wagon: ('грузовой' :cargo  и 'пассажирский' :passenger) - []
-#   -  количество вагонов (wagon || carriage)
-# train = CargoTrain.new((name => 1212, type => :cargo, wagons => [WagonCargo.new, WagonCargo.new, WagonCargo.new, WagonCargo.new], carriage => wagons.size, speed =>)
-# 2) Станция пока без изменений
-# 3) Маршрут пока без изменений 
-
-# Необходимо создание меню с возможностью выюора:
-# 1 -> Создание станции, поезда, вагона, маршрута;
-#  подпункты 	1.1 создание поезда 	(номер, тип, количество вагонов, которые должны создаваться автоматически по типу поезда в массиве)
-#  				1.2 создание машрута 	(станция отправления и станция назначения в массиве)
-# 	 			1.3 передача машрута поезду (как обьект)
-# 2 -> Изменение маршрута, состава поездов, перемещение поезда;
-# подпункты		2.1 формирование состава, перемещение поезда, изменение его скорости движения
-# 				2.2 добавление/удаление (промежуточных) станций в маршрут 
-# 3 -> Вывести текущие данные о машруте, поезде, станции и количестве обьектов.
-# подпункты.    3.1 информация о поезде, его типе, количестве вагонов, скорости и местонахождении
-#  				3.2	инофрмация о маршруте (количество и имена станций)
-# 				3.3 инф-ция о станции (название, количество и тип поездов на станции)
-# 4 -> Выход   
+ 
 
 class Menu
-  attr_reader :stations, :trains, :wagons, :type, :number
 
   def initialize
-  	@routes     = []
-    @stations   = []
-    @trains     = []
-    @carriages  = []
+  @stations =   []
+  @routes   =   []
+  @trains   =   []
+
   end
   
   def show_stations_list
-    @stations.each { |station| puts station.name_station }
+    @stations.each_with_index { |station, index| puts "#{index.next}. #{station}" }
+  end
+
+  def show_stations_list_route
+    @stations.each { |station| puts "#{station}" }
   end
 
   def show_trains_list
-    trains.each { |train| puts "Поезд номер: #{train.number}, тип #{train.type}, в составе которого #{train.wagons.size} вагонов(а)" }
+    @trains.each { |train| puts "Поезд номер: #{train.number}, тип #{train.type}, в составе которого #{train.wagons.size} вагонов(а)" }
+  end
+
+    def show_trains_list_number
+    @trains.each_with_index { |train, index| puts "#{index.next}. Поезд номер: #{train.number}, тип #{train.type}, в составе которого #{train.wagons.size} вагонов(а)" }
   end
 
   def show_routes_list
-    @routes.each { |route| route.list_stations }
+    @routes.each_with_index { |route, index| puts "#{index.next}. #{route}" }
+    # @routes.each { |route| puts "#{route.list_stations}" }
   end
 
-  def show_train_on_station
+  def show_station_info
     show_stations_list
-    puts '-*-' * 15
-    stations.each_with_index { |station, index| puts "#{index}. #{station.name_station} #{station.trains.size}"}
+    puts 'Выберите станцию:'
+    station = @stations[gets.chomp.to_i - 1]
+    if station.trains.empty?
+      puts "На станции #{station} нет поездов"
+    else
+      puts "Сейчас на станции #{station} следующие поезда (#{station.trains.size}):\n" \
+           "#{station.current_trains.join("\n")}"
+    end
   end
 
   def clear_screen
@@ -109,10 +98,12 @@ class Menu
       when 1 
       	system 'clear'
       	puts 'Создаем поезд...'
-      	print "Введите номер поезда: "
+      	print "Введите номер нового поезда: "
         number = gets.chomp.to_i
-        puts "Введите тип поезда (1 - грузовой, 2 - пассажирский)"
+
+        puts "Введите тип поезда:\n1. Пассажирский, 2. Грузовой"
         type = gets.chomp.to_i
+
         puts "Введите количество вагонов:"
         wagons_count = gets.chomp.to_i
         wagons = []
@@ -129,29 +120,36 @@ class Menu
         else
           @trains << PassengerTrain.new(number, wagons)
         end
+        # puts "#{@trains.last} создан."
         puts 'Создан(ы):'
         show_trains_list
-        puts "\n\n"
+        puts "\n"
+        sleep(1)
       when 2 
       	system 'clear'
       	puts 'Создаем станцию...'
-   		  print "Введите название станции: "
-    	  name = gets.chomp.to_s
-    	  @stations << Station.new(name)
-        puts 'Создан(ы):'
-        show_stations_list  # @stations.each { |station| puts "Создана(ы) станция #{station.name_station}" }
+   		  print "Введите название для новой станции: "
+    	  @stations << Station.new(gets.chomp.to_s) # + Add route & Info train on station
+        puts "Станция #{@stations.last} создана"
+        puts 'Список всех станций:'
+        show_stations_list 
     	  puts "\n\n"
+        sleep(1)
       when 3 
       	system 'clear'
       	puts 'Создаем маршрут...'
+        show_stations_list_route
       	print "Введите имя начальной станции: "
-      	@from_station = gets.chomp.to_s
+      	departure_station = gets.chomp.to_s
+        show_stations_list_route
       	print "Введите имя конечнй станции: "
-      	@to_station = gets.chomp.to_s
-		    @routes << Route.new(@from_station, @to_station)
+      	destination_station = gets.chomp.to_s
+		    @routes << Route.new(departure_station, destination_station)
+        puts "Маршрут #{@routes.last} создан."
         puts 'Создан(ы):'
-        show_routes_list  # @routes.each { |route| puts "#{route.list_stations}" }
-		    puts "\n\n"
+        show_routes_list  
+		    puts "\n"
+        sleep(1)
       else
         puts 'Неизвестная команда!'
       end
@@ -178,51 +176,66 @@ class Menu
         break
       when 1  
         system 'clear'
-        puts 'Управления станциями...'
+        puts 'Управление станциями на маршруте...'
+        puts  '-*-' * 15
+        show_routes_list
+        puts  '-*-' * 15
+        puts 'Выберите маршрут для его корректировки...'  
+        route = @routes[gets.chomp.to_i - 1]
+        puts "Выбран маршрут: #{route}"
+
         puts "Введите:\n 1 => для добавления промежуточной станции\n 2 => для удаления промежуточной станции\n 0 => для выхода из меню"
         selects = gets.chomp.to_i
         return if selects == 0
         if selects == 1
-          puts 'Добавление станции.'
-          puts "Имеющиеся маршрут(ы):"
-          puts  '-*-' * 15
-          @routes.each_with_index { |route,index| puts " #{index.next}. Из #{route.routes[0]} в #{route.routes[-1]}"}
-          puts  '-*-' * 15
-          puts 'Выберите маршрут для добавления промежуточной станции'
-          index_r = gets.chomp.to_i
-          puts "Выбран маршрут: #{@routes[index_r - 1].routes[0]} => #{@routes[index_r - 1].routes[-1]}"
-          
-          puts 'Введите назавние новой промежуточной станции ...'
-          new_station = gets.chomp.capitalize
-          @routes[index_r - 1].list_stations
-          @routes[index_r - 1].add(new_station)
-          puts '-*-' * 15 
-          #puts "Станций:" + @routes[index_r - 1].size
-          @routes[index_r - 1].list_stations
+          puts 'Добавление промежуточной станции.'
+          stations_to_add = @stations - route.stations
+            if stations_to_add.any?
+              puts stations_to_add
+              puts 'Введите назавние новой промежуточной станции ...'
+              intermediate_station = gets.chomp.capitalize
+              route.add_intermediate_station(intermediate_station)
+              puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}" # маршрут #{route} 
+            else
+              puts 'Ошибка, нет станций, которые можно было бы добавить в маршрут.'
+            end
         elsif selects == 2 
-          puts 'Удадение станции'
-          puts "Имеющиеся маршрут(ы):"
-          @routes.each_with_index { |route,index| puts " #{index.next}. Из #{route.routes[0]} в #{route.routes[-1]}"}
-          puts  '-*-' * 15
-          puts 'Выберите маршрут для удаления промежуточной станции'
-          index_d = gets.chomp.to_i
-          puts "Выбран маршрут: #{@routes[index_d - 1].routes[0]} => #{@routes[index_d - 1].routes[-1]}"
-          puts 'Введите назавние промежуточной станции для удаления...'
-          station = gets.chomp.capitalize
-          @routes[index_d - 1].list_stations
-          @routes[index_d - 1].delete(station)
-          puts '-*-' * 15 
-          #puts "Станций:" + @routes[index_d - 1].size
-          @routes[index_d - 1].list_stations
+          puts 'Удаление промежуточной станции'
+          stations_to_remove = route.stations[1...-1]
+          if stations_to_remove.any?
+            puts stations_to_remove
+            remove_station = gets.chomp.capitalize
+            route.remove_intermediate_station(remove_station)
+            puts "Станция #{remove_station} удалена из маршрута."
+            puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}"
+          else
+            puts 'Ошибка, в маршруте нет промежуточных станций.'
+          end
         else
           puts 'Неизвестная команда!'
         end
+        sleep(1)
       when 2  
         system 'clear'
+        puts  '-*-' * 15
+        show_trains_list_number
+        puts  '-*-' * 15
+        puts 'Выберите поезд для управления его составом...'  
+        train = @trains[gets.chomp.to_i - 1]
+        #check = gets.chomp
+        #train = @trains.find { |train| train.number == check - 1 } if @trains
+        puts "Выбран - #{train}"
+
         puts "Введите:\n 1 => для добавления вагона в состав\n 2 => для удаления вагона из состава\n 0 => для выхода из меню"
-        selectw = gets.chomp.to_i
-        return if selectw == 0
-        if selectw == 1
+        sel = gets.chomp.to_i
+        return if sel == 0
+        if sel == 1
+=begin
+          unless train.speed == 0
+            puts 'Ошибка. Невозможно присоединить вагон, когда поезд движется.'
+            return nil
+          end
+
           puts 'Доступны следующие поезда:'
           show_trains_list
           print 'Введите номер поезда для добавления вагона: '
@@ -230,19 +243,27 @@ class Menu
           train = @trains.find { |train| train.number == number_train } if @trains
           puts 'Доступны: '
           @trains.each {|train| print " #{train.wagons.size} вагонов(а) типа: #{train.wagons.type_wagon} " if train.wagons.empty?}  #if wagon.train.empty? ; #{train.wagons.size}
-          print ' Введеите 1 для добавления товарного (cargo) вагона и 2 - для добавления пассажирского (passenger) '
+=end
+          puts ' Введеите 1 для добавления товарного (cargo) и 2 - для добавления пассажирского (passenger) вагонов'
           wagon_type = gets.chomp.to_i
           if wagon_type == 1 
-            train.attache_wagon(:cargo) 
+            train.attach_wagon(CargoWagon.new)
+            # train.attache_wagon(:cargo) 
             puts "Вагон добавлен"
           elsif wagon_type == 2 
-            train.attache_wagon(:cargo)
+            train.attach_wagon(PassengerWagon.new)
             puts "Вагон добавлен"
           else
-            puts "Вагон не добавлен"
+            puts "Вагон другого типа. Вагон не добавлен в состав."
           end
         end
-        if selectw == 2
+        if sel == 2
+=begin
+          unless train.speed == 0
+            puts 'Ошибка. Невозможно отсоединить вагон, когда поезд движется.'
+            return nil
+          end
+
           puts 'Доступны следующие поезда:'
           show_trains_list
           print 'Введите номер поезда для удаления вагона: '
@@ -250,8 +271,10 @@ class Menu
           train = @trains.find { |train| train.number == number_train} if @trains
           puts 'Доступны: '
           @trains.each {|train| print " #{train.wagons.size} вагонов(а) типа: #{train.wagons.type_wagon} " if train.wagons.empty?}
-          train.remove_wagon
+=end
+          train.detach_wagon # train.detach_wagon(train.wagons.last)
         end
+        sleep(1)
       when 3  
         system 'clear'
         puts 'Назначения маршрута поезду...'
@@ -267,6 +290,7 @@ class Menu
           @trains[trainr].set_route(@routes[router])
           puts "Маршрут успешно присвоен"
         end
+        sleep(1)
       when 4  # need work
         system 'clear'
         puts 'Перемещение поезда по маршруту...'
@@ -295,6 +319,7 @@ class Menu
       else
         puts 'Неизвестная команда!'
       end
+      sleep(1)
     end
   end
 
@@ -308,19 +333,42 @@ class Menu
 
   def info_object
     system 'clear'
-    puts "Информация о поездах"
-    show_trains_list
-    puts '-*-' * 20
+    loop do
+
+      help_info
+
+      case gets.chomp.to_i
+      when 0
+        break
+      when 1 
+        clear_screen 
+        puts "Информация о поездах"
+        show_trains_list
+        puts '-*-' * 20
+        puts "Информация о станциях"
+        show_stations_list
+        puts '-*-' * 20
+        puts "Информация о маршрутах"
+        show_routes_list
+        puts '-*-' * 20
+      when 2
+        puts  'Информация о поездах на станциях '
+        show_station_info
+        puts '-*-' * 20
+      else
+        puts 'Неизвестная команда!'
+      end
+      sleep(1)
+    end
+  end
   
-    puts "Информация о станциях и поездах на станциях"
-    show_stations_list
-    puts '-*-' * 20
-  
-    puts "Информация о маршрутах"
-    show_routes_list
-    puts '-*-' * 20
+  def help_info
+    puts 'Введите 1 => для вывода информации о поездах, станциях и маршрутах;'
+    puts 'Введите 2 => для вывода информации о поездах на станции;'
+    puts 'Введите 0 => для возврата в предыдущее меню'
   end
 end
+
 
 menu = Menu.new
 menu.start
