@@ -233,11 +233,10 @@ class Menu
           if wagon_type == 1 
             train.attach_wagon(CargoWagon.new)
             # train.attache_wagon(:cargo) 
-            puts "Вагон добавлен"
           elsif wagon_type == 2 
             train.attach_wagon(PassengerWagon.new)
           else
-            puts "Выберите из указанного диапазона."
+            puts "Вагон другого типа и не добавлен в состав."
           end
         end
         if sel == 2
@@ -260,12 +259,12 @@ class Menu
           show_routes_list
           puts 'Введите номер маршрута для его назначения.'
           route = @routes[gets.chomp.to_i - 1]
-          puts "train => #{train}, route => #{route}" 
+          p route
           # train.assign_a_route(route)
           puts 'Маршрут успешно назначен'
         end
         sleep(1)
-      when 4  # need work
+      when 4  
         system 'clear'
         puts 'Перемещение поезда по маршруту...'
         puts 'Доступны следующие поезда:'

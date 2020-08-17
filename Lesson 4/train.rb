@@ -32,15 +32,6 @@ class Train
     @speed = 0
     puts "Поезд остановился"
   end
-
-=begin
-  def attach_wagon(wagon)
-  end
-
-  def detach_wagon(wagon)
-    @wagons.delete(wagon)
-  end
-=end
   
   def attach_wagon(type_wagon)
     return unless valid_wagon!(type_wagon)
@@ -49,7 +40,6 @@ class Train
     else 
       @wagons << PassengerWagon.new
     end
-    # @wagons += 1 if stop? # for integer count
     puts "Прицеплен #{type_wagon} вагон. В составе сейчас #{@wagons.size} вагонов."
   end
 
