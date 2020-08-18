@@ -73,7 +73,22 @@ class Train
     @route.stations[@current_location_index] if @route
   end
 
-  
+    def on_first_station?
+    @current_location_index == 0    
+  end
+
+  def on_last_station?
+    @current_location_index == @route.stations.size - 1
+  end
+
+  def stop? 
+    @speed.zero?
+  end
+
+  def current_route?
+    @current_route.nil?
+  end
+
   protected
 
   # Чтобы запретить вмешиваться в проверки   
@@ -86,22 +101,5 @@ class Train
       true
     end
   end
-
-  def stop? 
-    self.speed.zero?
-  end
-
-  def current_route?
-    @current_route.nil?
-  end
-
-  def on_first_station?
-    @current_location_index == 0    
-  end
-
-  def on_last_station?
-    @current_location_index == @route.stations.size - 1
-  end
-
 
 end

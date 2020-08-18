@@ -9,7 +9,7 @@ require_relative "wagon_passenger"
 #require_relative "ss"
  
 
-class Menu
+class Main
 
   def initialize
   @stations =   []
@@ -77,11 +77,16 @@ class Menu
   end
 
   def help_main
+    puts '*****' * 17
+    puts '*                   Главное меню "Управления железной дорогой.                       *'
+    puts '*****' * 17
+    puts 
     puts 'Выберите желаемое действие. Некоторые функции станут доступны после создания обьектов!'
     puts 'Введите 1 => для создания поезда, станции, маршрута;'
     puts 'Введите 2 => для изменение маршрута, состава поездов и их перемещения;' unless @trains.empty? && @routes.empty?
     puts 'Введите 3 => для получения информации о поездах, маршрутах и станциях;'
-    puts 'Введите 0 или нажмите Enter => для выхода из программы'
+    puts
+    puts 'Для выхода из программы нажмите Enter или 0...'
   end
 
 
@@ -101,7 +106,7 @@ class Menu
       	print "Введите номер нового поезда: "
         number = gets.chomp.to_i
 
-        puts "Введите тип поезда:\n1. Пассажирский, 2. Грузовой"
+        puts "Введите тип поезда:\n 1. Пассажирский,\n 2. Грузовой"
         type = gets.chomp.to_i
 
         puts "Введите количество вагонов:"
@@ -139,9 +144,9 @@ class Menu
       	system 'clear'
       	puts 'Создаем маршрут...'
         show_stations_list
-        puts  'Введите номер начальной станции...'
+        puts  'Ввберите номер начальной станции...'
       	departure_station = @stations[gets.chomp.to_i - 1]
-      	puts  'Введите номер конечной станции...'
+      	puts  'Выберите номер конечной станции...'
         destination_station = @stations[gets.chomp.to_i - 1]
 		    @routes << Route.new(departure_station, destination_station)
         puts "Маршрут #{@routes.last} создан."
@@ -160,7 +165,8 @@ class Menu
     puts 'Введите 1 => для создания поезда;'
     puts 'Введите 2 => для создания станции;'
     puts 'Введите 3 => для создания маршрута;' unless @stations.size < 2
-    puts 'Введите 0 => для возврата в предыдущее меню'
+    puts
+    puts 'Для возврата в предыдущее меню нажмите Enter или 0 ...'
   end
 
 
@@ -259,7 +265,6 @@ class Menu
           show_routes_list
           puts 'Введите номер маршрута для его назначения.'
           route = @routes[gets.chomp.to_i - 1]
-          p route
           train.assign_a_route(route)
           puts 'Маршрут успешно назначен'
         end
@@ -270,14 +275,15 @@ class Menu
         puts 'Доступны следующие поезда:'
         show_trains_list_number
         puts 'Введите номер поезда для отправления: '
-        train = @trains.find { |train| train.number == gets.chomp.to_i} if @trains
+        train = @trains[gets.chomp.to_i - 1]
         if train
           loop do
             puts "Поезд находится на станции: #{train.current_station}"
             puts 'Введите 1 для отправления поезда вперед'
             puts 'Введите 2 для отправления поезда назад'
-            puts 'Введите 0 для выхода в предыдущее меню'
-            opt = gets.chomp
+            puts
+            puts 'Для возврата в предыдущее меню нажмите Enter или 0 ...'
+            opt = gets.chomp.to_i
             case opt
             when 0
               break
@@ -295,6 +301,8 @@ class Menu
                 train.go_to_previous_station
                 puts "Поезд прибыл на станцию #{train.current_station}"
               end
+            else
+              puts 'Неизвестная команда!'
             end
           end
         end
@@ -311,7 +319,9 @@ class Menu
     puts 'Введите 2 => для управления составом;'  unless @trains.empty?
     puts 'Введите 3 => для назначения маршрута поезду;' unless @trains.empty? || @routes.empty?
     puts 'Введите 4 => для перемещения поезда по маршруту' unless @trains.empty? || @routes.empty?
-    puts 'Введите 0 => для возврата в предыдущее меню'
+    puts
+    puts 'Для возврата в предыдущее меню нажмите Enter или 0 ...'
+    
   end
 
   def info_object
@@ -349,10 +359,11 @@ class Menu
     puts 'Выберите желаемое действие. Некоторые функции станут доступны после создания обьектов!'
     puts 'Введите 1 => для вывода информации о поездах, станциях и маршрутах;'
     puts 'Введите 2 => для вывода информации о поездах на станции;' unless @stations.size < 2
-    puts 'Введите 0 => для возврата в предыдущее меню'
+    puts
+    puts 'Для возврата в предыдущее меню нажмите Enter или 0 ...'
   end
 end
 
 
-menu = Menu.new
+menu = Main.new
 menu.start
