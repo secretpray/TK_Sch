@@ -77,11 +77,11 @@ class Menu
   end
 
   def help_main
+    puts 'Выберите желаемое действие. Некоторые функции станут доступны после создания обьектов!'
     puts 'Введите 1 => для создания поезда, станции, маршрута;'
-    puts 'Введите 2 => для изменение маршрута, состава поездов и их перемещения;'
+    puts 'Введите 2 => для изменение маршрута, состава поездов и их перемещения;' unless @trains.empty? && @routes.empty?
     puts 'Введите 3 => для получения информации о поездах, маршрутах и станциях;'
-    puts 'Введите 0 => для выхода из программы'
-    puts 'Выберите желаемое действие...'
+    puts 'Введите 0 или нажмите Enter => для выхода из программы'
   end
 
 
@@ -124,7 +124,7 @@ class Menu
         puts 'Создан(ы):'
         show_trains_list
         puts "\n"
-        sleep(1)
+        sleep(0.3)
       when 2 
       	system 'clear'
       	puts 'Создаем станцию...'
@@ -134,22 +134,21 @@ class Menu
         puts 'Список всех станций:'
         show_stations_list 
     	  puts "\n\n"
-        sleep(1)
+        sleep(0.3)
       when 3 
       	system 'clear'
       	puts 'Создаем маршрут...'
-        show_stations_list_route
-      	print "Введите имя начальной станции: "
-      	departure_station = gets.chomp.to_s
-        show_stations_list_route
-      	print "Введите имя конечнй станции: "
-      	destination_station = gets.chomp.to_s
+        show_stations_list
+        puts  'Введите номер начальной станции...'
+      	departure_station = @stations[gets.chomp.to_i - 1]
+      	puts  'Введите номер конечной станции...'
+        destination_station = @stations[gets.chomp.to_i - 1]
 		    @routes << Route.new(departure_station, destination_station)
         puts "Маршрут #{@routes.last} создан."
         puts 'Создан(ы):'
         show_routes_list  
 		    puts "\n"
-        sleep(1)
+        sleep(0.3)
       else
         puts 'Неизвестная команда!'
       end
@@ -157,9 +156,10 @@ class Menu
   end
 
   def help_create
+    puts 'Выберите желаемое действие. Некоторые функции станут доступны после создания обьектов!'
     puts 'Введите 1 => для создания поезда;'
     puts 'Введите 2 => для создания станции;'
-    puts 'Введите 3 => для создания маршрута;;'
+    puts 'Введите 3 => для создания маршрута;' unless @stations.size < 2
     puts 'Введите 0 => для возврата в предыдущее меню'
   end
 
@@ -214,7 +214,7 @@ class Menu
         else
           puts 'Неизвестная команда!'
         end
-        sleep(1)
+        sleep(0.3)
       when 2  
         system 'clear'
         puts  '-*-' * 15
@@ -242,7 +242,7 @@ class Menu
         if sel == 2
           train.detach_wagon
         end
-        sleep(1)
+        sleep(0.3)
       when 3  
         system 'clear'
         puts 'Назначаем маршрут поезду...'
@@ -260,10 +260,10 @@ class Menu
           puts 'Введите номер маршрута для его назначения.'
           route = @routes[gets.chomp.to_i - 1]
           p route
-          # train.assign_a_route(route)
+          train.assign_a_route(route)
           puts 'Маршрут успешно назначен'
         end
-        sleep(1)
+        sleep(0.3)
       when 4  
         system 'clear'
         puts 'Перемещение поезда по маршруту...'
@@ -301,15 +301,16 @@ class Menu
       else
         puts 'Неизвестная команда!'
       end
-      sleep(1)
+      sleep(0.3)
     end
   end
 
   def help_edit
-    puts 'Введите 1 => для управления станциями;'
-    puts 'Введите 2 => для управления составом;'
-    puts 'Введите 3 => для назначения маршрута поезду;'
-    puts 'Введите 4 => для перемещения поезда по маршруту'
+    puts 'Выберите желаемое действие. Некоторые функции станут доступны после создания обьектов!'
+    puts 'Введите 1 => для управления станциями;' unless @stations.size < 2
+    puts 'Введите 2 => для управления составом;'  unless @trains.empty?
+    puts 'Введите 3 => для назначения маршрута поезду;' unless @trains.empty? || @routes.empty?
+    puts 'Введите 4 => для перемещения поезда по маршруту' unless @trains.empty? || @routes.empty?
     puts 'Введите 0 => для возврата в предыдущее меню'
   end
 
@@ -340,13 +341,14 @@ class Menu
       else
         puts 'Неизвестная команда!'
       end
-      sleep(1)
+      sleep(0.3)
     end
   end
   
   def help_info
+    puts 'Выберите желаемое действие. Некоторые функции станут доступны после создания обьектов!'
     puts 'Введите 1 => для вывода информации о поездах, станциях и маршрутах;'
-    puts 'Введите 2 => для вывода информации о поездах на станции;'
+    puts 'Введите 2 => для вывода информации о поездах на станции;' unless @stations.size < 2
     puts 'Введите 0 => для возврата в предыдущее меню'
   end
 end
