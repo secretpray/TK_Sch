@@ -139,10 +139,10 @@ class Main
       	puts 'Создаем станцию...'
    		  print "Введите название для новой станции: "
     	  @stations << Station.new(gets.chomp.to_s) # + Add route & Info train on station
-        puts "Станция #{@stations.last} создана"
+        puts "Станция #{@stations.last} создана."
         puts 'Список всех станций:'
         show_stations_list 
-    	  puts "\n\n"
+    	  puts "Общее количество созданных станций - #{@stations.last.all_station}"
         sleep(0.3)
       when 3 
       	system 'clear'
