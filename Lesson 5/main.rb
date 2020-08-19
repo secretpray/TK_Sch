@@ -1,3 +1,4 @@
+require_relative "instance_counter"
 require_relative "manufacture"
 require_relative "station"
 require_relative "route"
@@ -30,7 +31,7 @@ class Main
   def show_trains_list
     @trains.each { |train| puts "Поезд номер: #{train.number}, тип #{train.type}, в составе которого #{train.wagons.size} вагонов(а)" }
     #@trains.each do |train| 
-    #  puts "Поезд номер: #{train.number}, тип #{train.type}, в составе которого #{train.wagons.size} вагонов(а).\nПроизводитель поезда - #{train.info_manufacture} и вагонов - #{Wagon.new.info_manufacture}"
+    #  puts "Поезд номер: #{train.number}, тип #{train.type}, в составе которого #{train.wagons.size} вагонов(а).\nПроизводитель поезда - #{train.info_company_name} и вагонов - #{Wagon.new.info_company_name}"
     #end 
   end
 
@@ -132,7 +133,7 @@ class Main
         # puts "#{@trains.last} создан."
         puts 'Создан(ы):'
         show_trains_list
-        puts "Производитель созданных вагонов: #{Wagon.new.info_manufacture},  поезда: #{@trains.last.info_manufacture}"
+        puts "Производитель созданных вагонов: #{Wagon.new.info_company_name},  поезда: #{@trains.last.info_company_name}"
         sleep(0.3)
       when 2 
       	system 'clear'
@@ -352,6 +353,17 @@ class Main
         puts  'Информация о поездах на станциях '
         show_station_info
         puts '-*-' * 20
+      when 3
+        if @trains.size == 0
+          puts 'Поееда отсутствуют...'
+        else
+          puts 'Для удобстав выводим список поездов:'
+          show_trains_list
+          print 'Для проверки наличия поезда введите его номер - '
+          view_train = Train.find(gets.chomp.to_i)
+          return nil if view_train.nil? 
+          puts "Данные по поезду с выбранным номером: #{view_train}"
+        end
       else
         puts 'Неизвестная команда!'
       end
@@ -363,6 +375,7 @@ class Main
     puts 'Выберите желаемое действие. Некоторые функции станут доступны после создания обьектов!'
     puts 'Введите 1 => для вывода информации о поездах, станциях и маршрутах;'
     puts 'Введите 2 => для вывода информации о поездах на станции;' unless @stations.size < 2
+    puts 'Введите 3 => для проверки наличия поезда по его номеру' unless @trains.size == 0
     puts
     puts 'Для возврата в предыдущее меню нажмите Enter или 0 ...'
   end

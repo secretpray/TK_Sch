@@ -1,6 +1,8 @@
 class Route
   attr_reader   :stations
 
+  include InstanceCounter
+
   def initialize(departure_station, destination_station)
     @stations = [departure_station, destination_station]
   end
@@ -11,7 +13,7 @@ class Route
 
   def add_intermediate_station(station)
     @stations.insert(-2, station)
-    # puts "Станция '#{stations[-2]}' добавлена в текущий маршрут"
+    # puts "Станция '#{@stations[-2]}' добавлена в текущий маршрут" # s@tations.last
   end
 
   def remove_intermediate_station(station)
