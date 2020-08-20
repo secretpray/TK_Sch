@@ -11,6 +11,7 @@ class Station
     @name = name
     @trains = []
     @@all += 1
+    register_instance
     # @@list_station << self
   end
 

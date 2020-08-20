@@ -7,46 +7,62 @@
        При этом данный метод не должен быть публичным.
 Подключить этот модуль в классы поезда, маршрута и станции.
 Примечание: инстансы подклассов могут считаться по отдельности, не увеличивая счетчик инстансев базового класса. 
-=end
 
-=begin 
+
 module InstanceCounter
-
-  def self.included(base)
-    base.extended ClassMethod
-    base.send :include, InstanceMethod 
+  def self.included(mod)
+    mod.extend ClassMethods
+    mod.send :include, InstanceMethods
   end
+
+  module ClassMethods
+    
+    #@@instance_count = 0
+
+    def instances
+      #@@instance_count
+      self.class_variable_get("@@instance_count")
+    end
+  end
+
+  module InstanceMethods
+    
+    protected
+    def register_instance
+      @@instance_count ||= 0
+      @@instance_count  += 1
+    end
+  end  
+end
+
+module InstanceCounter
   
-  module ClassMethod
+  def self.included(mod)
+    mod.extend ClassMethods
+    mod.send :include, InstanceMethods
+  end
 
-    attr_accessor :class_count,
-                  :instance_count
+  module ClassMethods
+    
+    attr_reader :instances
 
-    @@class_count = 0
-
-    def initialize
-      @@class_count += 1
-      self.class.register_instance
-    end
-
-    def self.instances
-      @@class_count
+    def increase_instances
+      @@instances ||= 0
+      @@instances += 1
     end
   end
 
-  module InstanceMethod
-
-    @instance_count = 0
-   
+  module InstanceMethods
+    
     protected
 
     def register_instance
-      @self.class.instance_count += 1
+      self.class.increase_instances
     end
   end
 end
-
 =end
+
 module InstanceCounter
   def self.included(base)
     base.extend ClassMethods
@@ -54,18 +70,23 @@ module InstanceCounter
   end
 
   module ClassMethods
-    def instances
-      self.class_variable_get("@@instance_count")
+
+  attr_reader :instances
+
+    @instances = 0 
+    
+    def counter_up
+      @instances ||= 0
+      @instances +=1
     end
   end
 
   module InstanceMethods
-    @@instance_count = 0
-
-    protected
-
+    
+    private
     def register_instance
-      @@instance_count += 1
+      self.class.send :counter_up
     end
-  end  
+
+  end
 end

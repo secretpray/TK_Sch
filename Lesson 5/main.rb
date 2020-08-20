@@ -362,6 +362,10 @@ class Main
         puts "Информация о маршрутах"
         show_routes_list
         puts '-*-' * 20
+        puts "Информация о созданных обьектах:"
+        puts "Всего создано поездов: #{Train.instances}"    # #{@trains.last.class.instances} or #{Train.instances}
+        #puts "Всего создано станций: #{Station.instanses}"  # #{Station.instanses} or #{@stations.last.class.instanses} 
+        #puts "Всего создано маршрутов: #{Route.instanses}"  # #{Route.instanses} or #{@routes.last.class.instanses}
       when 2
         puts  'Информация о поездах на станциях '
         show_station_info
@@ -385,7 +389,7 @@ class Main
   end
   
   def help_info
-    system 'clear'
+    # system 'clear'
     puts 'Выберите действие. Некоторые функции доступны после создания обьектов!'
     puts 'Введите 1 => для вывода информации о поездах, станциях и маршрутах;'
     puts 'Введите 2 => для вывода информации о поездах на станции;' unless @stations.size < 2

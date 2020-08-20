@@ -27,6 +27,7 @@ class Train
     "поезд номер #{@number} (вагонов: #{@wagons.size})"
   end
 
+
 =begin
     1. Class method
     class << self 
