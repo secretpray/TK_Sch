@@ -21,7 +21,7 @@ class Main
   end
   
   def show_stations_list
-    @stations.each_with_index { |station, index| puts "#{index.next}. #{station}" }
+    @stations.each_with_index { |station, index| puts "#{index.next}. #{station}" }  # each.with_index(1), чтобы не делать next
   end
 
   def show_stations_list_route
@@ -36,11 +36,11 @@ class Main
   end
 
   def show_trains_list_number
-    @trains.each_with_index { |train, index| puts "#{index.next}. Поезд номер: #{train.number}, тип #{train.type}, в составе которого #{train.wagons.size} вагонов(а)" }
+    @trains.each_with_index { |train, index| puts "#{index.next}. Поезд номер: #{train.number}, тип #{train.type}, в составе которого #{train.wagons.size} вагонов(а)" }  # each.with_index(1), чтобы не делать next
   end
 
   def show_routes_list
-    @routes.each_with_index { |route, index| puts "#{index.next}. #{route}" }
+    @routes.each_with_index { |route, index| puts "#{index.next}. #{route}" }  #  each.with_index(1), чтобы не делать next
   end
 
   def show_station_info
