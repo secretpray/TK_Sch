@@ -35,7 +35,7 @@ class Main
     #end 
   end
 
-    def show_trains_list_number
+  def show_trains_list_number
     @trains.each_with_index { |train, index| puts "#{index.next}. Поезд номер: #{train.number}, тип #{train.type}, в составе которого #{train.wagons.size} вагонов(а)" }
   end
 
@@ -50,8 +50,7 @@ class Main
     if station.trains.empty?
       puts "На станции #{station} нет поездов"
     else
-      puts "Сейчас на станции #{station} следующие поезда (#{station.trains.size}):\n" \
-           "#{station.current_trains.join("\n")}"
+      puts "Сейчас на станции #{station} следующие поезда (#{station.trains.size}):\n#{station.current_trains.join("\n")}"
     end
   end
 
