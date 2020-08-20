@@ -4,24 +4,20 @@ class Station
 
   include InstanceCounter
 
-  @@all = 0
-  # @@list_station = []
+  @@list_all_station = []
 
   def initialize(name)
     @name = name
     @trains = []
     @@all += 1
     register_instance
-    # @@list_station << self
+    @@list_all_station << self
   end
 
-  # def self.all
-  #   @@list_station
-  # end
-  
-  def all_station
-    @@all
+  def self.all
+    @@list_all_station
   end
+  
 
   def to_s
     @name

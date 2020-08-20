@@ -143,7 +143,7 @@ class Main
         puts "Станция #{@stations.last} создана."
         puts 'Список всех станций:'
         show_stations_list 
-    	  puts "Общее количество созданных станций - #{@stations.last.all_station}"
+    	  puts "Общее количество созданных станций - " # #{@stations.last.all_station}
         sleep(1)
       when 3 
       	system 'clear'
@@ -362,10 +362,10 @@ class Main
         puts "Информация о маршрутах"
         show_routes_list
         puts '-*-' * 20
-        puts "Информация о созданных обьектах:"
-        puts "Всего создано поездов: #{Train.instances}"    # #{@trains.last.class.instances} or #{Train.instances}
-        #puts "Всего создано станций: #{Station.instanses}"  # #{Station.instanses} or #{@stations.last.class.instanses} 
-        #puts "Всего создано маршрутов: #{Route.instanses}"  # #{Route.instanses} or #{@routes.last.class.instanses}
+        puts "Общая ннформация о всех созданных обьектах (при их наличии):"
+        puts "Всего создано поездов: #{PassengerTrain.instances + CargoTrain.instances} (пассажирских - #{PassengerTrain.instances}, грузовых - #{CargoTrain.instances})" unless @trains.size <1 
+        puts "Всего создано станций: #{Station.instances}"  unless @stations.size < 1
+        puts "Всего создано маршрутов: #{Route.instances}"  unless @routes.size < 1 
       when 2
         puts  'Информация о поездах на станциях '
         show_station_info
