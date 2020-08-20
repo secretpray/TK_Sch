@@ -106,7 +106,7 @@ class Main
       when 0
         break
       when 1 
-      	system 'clear'
+      	#system 'clear'
       	puts 'Создаем поезд...'
       	print "Введите номер нового поезда: "
         number = gets.chomp.to_i
@@ -136,17 +136,17 @@ class Main
         puts "Производитель созданных вагонов: #{wagons.last.company_name}, поезда: #{@trains.last.company_name}" 
         sleep(1)
       when 2 
-      	system 'clear'
+      	#system 'clear'
       	puts 'Создаем станцию...'
    		  print "Введите название для новой станции: "
     	  @stations << Station.new(gets.chomp.to_s) # + Add route & Info train on station
         puts "Станция #{@stations.last} создана."
         puts 'Список всех станций:'
         show_stations_list 
-    	  puts "Общее количество созданных станций - " # #{@stations.last.all_station}
+    	  puts "Общее количество созданных станций - #{Station.all.size}" 
         sleep(1)
       when 3 
-      	system 'clear'
+      	#system 'clear'
       	puts 'Создаем маршрут...'
         show_stations_list
         puts  'Ввберите номер начальной станции...'
@@ -166,7 +166,7 @@ class Main
   end
 
   def help_create
-    system 'clear'
+    #system 'clear'
     puts 'Выберите действие. Некоторые функции доступны после создания обьектов!'
     puts 'Введите 1 => для создания поезда;'
     puts 'Введите 2 => для создания станции;'

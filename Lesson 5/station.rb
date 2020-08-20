@@ -9,7 +9,6 @@ class Station
   def initialize(name)
     @name = name
     @trains = []
-    @@all += 1
     register_instance
     @@list_all_station << self
   end
@@ -18,7 +17,6 @@ class Station
     @@list_all_station
   end
   
-
   def to_s
     @name
   end
