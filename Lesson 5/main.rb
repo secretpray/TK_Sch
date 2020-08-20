@@ -133,7 +133,7 @@ class Main
         # puts "#{@trains.last} создан."
         puts 'Создан(ы):'
         show_trains_list
-        puts "Производитель созданных вагонов: #{Wagon.new.info_company_name},  поезда: #{@trains.last.info_company_name}"
+        puts "Производитель созданных вагонов: #{wagons.last.company_name}, поезда: #{@trains.last.company_name}" 
         sleep(0.3)
       when 2 
       	system 'clear'

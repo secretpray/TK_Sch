@@ -18,6 +18,7 @@ class Train
     @number             = number
     @wagons             = wagons  # @wagons = []
     @speed              = 0
+    @company_name = 'Ford Inc.'
     @@train_all[number] = self
     register_instance
   end
@@ -26,6 +27,26 @@ class Train
     "поезд номер #{@number} (вагонов: #{@wagons.size})"
   end
 
+=begin
+    1. Class method
+    class << self 
+      def self.find(number)
+        @@train_all[number]
+      end
+    
+    2. Class method
+    def Train.find(number)
+      @@train_all[number]
+    end 
+    
+    3. Class method 
+    class Train; end
+    def Train.find(number)
+      @@train_all[number
+    end
+=end
+
+  # 4. Class method (standard)
   def self.find(number)
     @@train_all[number]
   end

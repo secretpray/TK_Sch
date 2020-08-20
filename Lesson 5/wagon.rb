@@ -5,15 +5,6 @@ class Wagon
   include Manufacture
 
   def initialize
-  
+     @company_name = 'Vega Inc.'
   end
-=begin
-  def cargo?
-    self.class == CargoWagon 
-  end
-
-  def passanger?
-    self.class == PassengerWagon 
-  end
-=end
 end
