@@ -31,7 +31,7 @@ class Main
   def show_trains_list
     @trains.each { |train| puts "Поезд номер: #{train.number}, тип #{train.type}, в составе которого #{train.wagons.size} вагонов(а)" }
     #@trains.each do |train| 
-    #  puts "Поезд номер: #{train.number}, тип #{train.type}, в составе которого #{train.wagons.size} вагонов(а).\nПроизводитель поезда - #{train.info_company_name} и вагонов - #{Wagon.new.info_company_name}"
+    #  puts "Поезд номер: #{train.number}, тип #{train.type}, в составе которого #{train.wagons.size} вагонов(а).\nПроизводитель поезда - #{@trains.last.company_name} и вагонов - #{wagons.last.company_name}"
     #end 
   end
 
