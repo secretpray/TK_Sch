@@ -41,7 +41,6 @@ class Main
 
   def show_routes_list
     @routes.each_with_index { |route, index| puts "#{index.next}. #{route}" }
-    # @routes.each { |route| puts "#{route.list_stations}" }
   end
 
   def show_station_info
@@ -82,11 +81,12 @@ class Main
   end
 
   def help_main
-    puts '*****' * 17
-    puts '*                   Главное меню "Управления железной дорогой.                       *'
-    puts '*****' * 17
+    system 'clear'
+    puts '*****' * 14
+    puts '*            Главное меню "Управления железной дорогой.            *'
+    puts '*****' * 14
     puts 
-    puts 'Выберите желаемое действие. Некоторые функции станут доступны после создания обьектов!'
+    puts 'Выберите действие. Некоторые функции доступны после создания обьектов!'
     puts 'Введите 1 => для создания поезда, станции, маршрута;'
     puts 'Введите 2 => для изменение маршрута, состава поездов и их перемещения;' unless @trains.empty? && @routes.empty?
     puts 'Введите 3 => для получения информации о поездах, маршрутах и станциях;'
@@ -134,7 +134,7 @@ class Main
         puts 'Создан(ы):'
         show_trains_list
         puts "Производитель созданных вагонов: #{wagons.last.company_name}, поезда: #{@trains.last.company_name}" 
-        sleep(0.3)
+        sleep(1)
       when 2 
       	system 'clear'
       	puts 'Создаем станцию...'
@@ -144,7 +144,7 @@ class Main
         puts 'Список всех станций:'
         show_stations_list 
     	  puts "Общее количество созданных станций - #{@stations.last.all_station}"
-        sleep(0.3)
+        sleep(1)
       when 3 
       	system 'clear'
       	puts 'Создаем маршрут...'
@@ -158,7 +158,7 @@ class Main
         puts 'Создан(ы):'
         show_routes_list  
 		    puts "\n"
-        sleep(0.3)
+        sleep(1)
       else
         puts 'Неизвестная команда!'
       end
@@ -166,7 +166,8 @@ class Main
   end
 
   def help_create
-    puts 'Выберите желаемое действие. Некоторые функции станут доступны после создания обьектов!'
+    system 'clear'
+    puts 'Выберите действие. Некоторые функции доступны после создания обьектов!'
     puts 'Введите 1 => для создания поезда;'
     puts 'Введите 2 => для создания станции;'
     puts 'Введите 3 => для создания маршрута;' unless @stations.size < 2
@@ -199,14 +200,23 @@ class Main
         selects = gets.chomp.to_i
         return if selects == 0
         if selects == 1
-          puts 'Добавление промежуточной станции.'
+          puts "Добавление новой, промежуточной станции в маршрут #{route}."
           stations_to_add = @stations - route.stations
             if stations_to_add.any?
+=begin 
+              Не работает корректно: не создается обьект станции, как следствие, поезд не перемещается на промежуточную станцию!!!
+              @stations << Station.new(gets.chomp.to_s)
+              show_stations_list
+              puts 'Введите номер новой промежуточной станции ...'
+              intermediate_station = @stations[gets.chomp.to_i - 1]
+
+              Рабочий вариант. Можно убрать список свободных станций и проверку - лишние, но это как-то выпадает из общей концепции...
+=end
               puts stations_to_add
               puts 'Введите назавние новой промежуточной станции ...'
               intermediate_station = gets.chomp.capitalize
               route.add_intermediate_station(intermediate_station)
-              puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}" # маршрут #{route} 
+              puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}" 
             else
               puts 'Ошибка, нет станций, которые можно было бы добавить в маршрут.'
             end
@@ -214,8 +224,10 @@ class Main
           puts 'Удаление промежуточной станции'
           stations_to_remove = route.stations[1...-1]
           if stations_to_remove.any?
-            puts stations_to_remove
-            remove_station = gets.chomp.capitalize
+            # remove_station = gets.chomp.capitalize
+            # Фикс удаления станции как обьекта
+            stations_to_remove.each_with_index { |station, index| puts "#{index.next}. #{station}" }
+            remove_station = @stations[gets.chomp.to_i - 1]
             route.remove_intermediate_station(remove_station)
             puts "Станция #{remove_station} удалена из маршрута."
             puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}"
@@ -225,7 +237,7 @@ class Main
         else
           puts 'Неизвестная команда!'
         end
-        sleep(0.3)
+        sleep(1)
       when 2  
         system 'clear'
         puts  '-*-' * 15
@@ -253,7 +265,7 @@ class Main
         if sel == 2
           train.detach_wagon
         end
-        sleep(0.3)
+        sleep(1)
       when 3  
         system 'clear'
         puts 'Назначаем маршрут поезду...'
@@ -273,7 +285,7 @@ class Main
           train.assign_a_route(route)
           puts 'Маршрут успешно назначен'
         end
-        sleep(0.3)
+        sleep(1)
       when 4  
         system 'clear'
         puts 'Перемещение поезда по маршруту...'
@@ -314,12 +326,13 @@ class Main
       else
         puts 'Неизвестная команда!'
       end
-      sleep(0.3)
+      sleep(1)
     end
   end
 
   def help_edit
-    puts 'Выберите желаемое действие. Некоторые функции станут доступны после создания обьектов!'
+    system 'clear'
+    puts 'Выберите действие. Некоторые функции доступны после создания обьектов!'
     puts 'Введите 1 => для управления станциями;' unless @stations.size < 2
     puts 'Введите 2 => для управления составом;'  unless @trains.empty?
     puts 'Введите 3 => для назначения маршрута поезду;' unless @trains.empty? || @routes.empty?
@@ -367,12 +380,13 @@ class Main
       else
         puts 'Неизвестная команда!'
       end
-      sleep(0.3)
+      sleep(1)
     end
   end
   
   def help_info
-    puts 'Выберите желаемое действие. Некоторые функции станут доступны после создания обьектов!'
+    system 'clear'
+    puts 'Выберите действие. Некоторые функции доступны после создания обьектов!'
     puts 'Введите 1 => для вывода информации о поездах, станциях и маршрутах;'
     puts 'Введите 2 => для вывода информации о поездах на станции;' unless @stations.size < 2
     puts 'Введите 3 => для проверки наличия поезда по его номеру' unless @trains.size == 0

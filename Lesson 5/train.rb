@@ -87,7 +87,6 @@ class Train
     @route = route
     @current_location_index = 0
     current_station.handle(self)
-    # puts "Поезд находится на станции #{current_station.name_station} и проследует по марщруту: #{route.routes.first.name_station} - #{route.routes.last.name_station}" # " #{self.route.first} - #{self.route.last}"
   end
 
   def go_to_next_station
