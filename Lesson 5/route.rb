@@ -35,6 +35,7 @@ end
   end
 
   def remove_intermediate_station(station)
+    # stations.delete(station) if stations[1...-1].include?(station)
     unless [stations.first, stations.last].include?(station)
     @stations.delete(station)
     puts "#{@stations.delete(station)}"
