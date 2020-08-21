@@ -147,7 +147,7 @@ class Main
         puts "Станция #{@stations.last} создана."
         puts 'Список всех станций:'
         show_stations_list 
-    	  puts "Общее количество созданных станций - #{Station.all.size}" 
+        puts "Общее количество созданных станций - #{Station.all.size}" 
         sleep(1)
       when 3 
       	system 'clear'
@@ -161,7 +161,7 @@ class Main
         puts "Маршрут #{@routes.last} создан."
         puts 'Создан(ы):'
         show_routes_list  
-		    puts "\n"
+        puts "\n"
         sleep(1)
       else
         puts 'Неизвестная команда!'
