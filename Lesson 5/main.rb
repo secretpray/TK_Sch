@@ -139,7 +139,7 @@ class Main
       when 2 
       	system 'clear'
       	puts 'Создаем станцию...'
-   		  print "Введите название для новой станции: "
+        print "Введите название для новой станции: "
         # new_station  = gets.chomp.to_s
         # @stations.each { |station| return false if station == new_station }
         # @stations << Station.new(new_station) 
@@ -157,7 +157,7 @@ class Main
       	departure_station = @stations[gets.chomp.to_i - 1]
       	puts  'Выберите номер конечной станции...'
         destination_station = @stations[gets.chomp.to_i - 1]
-		    @routes << Route.new(departure_station, destination_station)
+        @routes << Route.new(departure_station, destination_station)
         puts "Маршрут #{@routes.last} создан."
         puts 'Создан(ы):'
         show_routes_list  
