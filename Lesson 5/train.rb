@@ -72,10 +72,12 @@ class Train
     return unless valid_wagon!(type_wagon)
     if type_wagon == :cargo 
       @wagons << CargoWagon.new 
+      puts "Прицеплен #{type_wagon} вагон. В составе сейчас #{@wagons.size} вагонов."  # #{@wagons.last.class} проверить?
     else 
       @wagons << PassengerWagon.new
+      puts "Прицеплен #{type_wagon} вагон. В составе сейчас #{@wagons.size} вагонов."  # #{@wagons.last.class} проверить?
     end
-    puts "Прицеплен #{type_wagon} вагон. В составе сейчас #{@wagons.size} вагонов."
+    
   end
 
   def detach_wagon

@@ -21,7 +21,8 @@ class Main
   end
   
   def show_stations_list
-    @stations.each_with_index { |station, index| puts "#{index.next}. #{station}" }  # each.with_index(1), чтобы не делать next
+    @stations.each_with_index { |station, index| puts "#{index.next}. #{station}" } 
+    # @stations.each_with_index(1) { |station, index| puts "#{index}. #{station}" }  # !! each.with_index(1), чтобы не делать next -> не отрабатывает - ждет 1 аргумент... 
   end
 
   def show_stations_list_route
@@ -36,11 +37,13 @@ class Main
   end
 
   def show_trains_list_number
-    @trains.each_with_index { |train, index| puts "#{index.next}. Поезд номер: #{train.number}, тип #{train.type}, в составе которого #{train.wagons.size} вагонов(а)" }  # each.with_index(1), чтобы не делать next
+    @trains.each_with_index { |train, index| puts "#{index.next}. Поезд номер: #{train.number}, тип #{train.type}, в составе которого #{train.wagons.size} вагонов(а)" }
+    # @trains.each_with_index(1) { |train, index| puts "#{index}. Поезд номер: #{train.number}, тип #{train.type}, в составе которого #{train.wagons.size} вагонов(а)" } 
   end
 
   def show_routes_list
-    @routes.each_with_index { |route, index| puts "#{index.next}. #{route}" }  #  each.with_index(1), чтобы не делать next
+    @routes.each_with_index { |route, index| puts "#{index.next}. #{route}" }
+    # @routes.each_with_index(1) { |route, index| puts "#{index}. #{route}" }  #  !! # each.with_index(1), чтобы не делать next -> не отрабатывает - ждет 1 аргумент... 
   end
 
   def show_station_info
@@ -129,7 +132,6 @@ class Main
         else
           @trains << PassengerTrain.new(number, wagons)
         end
-        # puts "#{@trains.last} создан."
         puts 'Создан(ы):'
         show_trains_list
         puts "Производитель созданных вагонов: #{wagons.last.company_name}, поезда: #{@trains.last.company_name}" 
@@ -138,7 +140,7 @@ class Main
       	system 'clear'
       	puts 'Создаем станцию...'
    		  print "Введите название для новой станции: "
-    	  @stations << Station.new(gets.chomp.to_s) # + Add route & Info train on station
+        @stations << Station.new(gets.chomp.to_s) # + Add route & Info train on station
         puts "Станция #{@stations.last} создана."
         puts 'Список всех станций:'
         show_stations_list 
@@ -202,18 +204,9 @@ class Main
           puts "Добавление новой, промежуточной станции в маршрут #{route}."
           stations_to_add = @stations - route.stations
             if stations_to_add.any?
-=begin 
-              Не работает корректно: не создается обьект станции, как следствие, поезд не перемещается на промежуточную станцию!!!
-              @stations << Station.new(gets.chomp.to_s)
-              show_stations_list
+              stations_to_add.each_with_index { |station, index| puts "#{index.next}. #{station}" } # each_with_index(1) не отрабатывает - ждет 1 аргумент...
               puts 'Введите номер новой промежуточной станции ...'
-              intermediate_station = @stations[gets.chomp.to_i - 1]
-
-              Рабочий вариант. Можно убрать список свободных станций и проверку - лишние, но это как-то выпадает из общей концепции...
-=end
-              puts stations_to_add
-              puts 'Введите назавние новой промежуточной станции ...'
-              intermediate_station = gets.chomp.capitalize
+              intermediate_station = stations_to_add[gets.chomp.to_i - 1]
               route.add_intermediate_station(intermediate_station)
               puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}" 
             else
@@ -223,9 +216,10 @@ class Main
           puts 'Удаление промежуточной станции'
           stations_to_remove = route.stations[1...-1]
           if stations_to_remove.any?
+            # упрощенный вариант
             # remove_station = gets.chomp.capitalize
-            # Фикс удаления станции как обьекта
             stations_to_remove.each_with_index { |station, index| puts "#{index.next}. #{station}" }
+            #stations_to_remove.each_with_index(1) { |station, index| puts "#{index}. #{station}" }  # each_with_index(1) не отрабатывает - ждет 1 аргумент...
             remove_station = @stations[gets.chomp.to_i - 1]
             route.remove_intermediate_station(remove_station)
             puts "Станция #{remove_station} удалена из маршрута."
@@ -254,7 +248,6 @@ class Main
           wagon_type = gets.chomp.to_i
           if wagon_type == 1 
             train.attach_wagon(CargoWagon.new)
-            # train.attache_wagon(:cargo) 
           elsif wagon_type == 2 
             train.attach_wagon(PassengerWagon.new)
           else
