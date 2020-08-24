@@ -15,7 +15,8 @@ class Main
   
   attr_reader :stations,
               :trains,
-              :routes
+              :routes,
+              :interface
 
   def initialize
     @interface = Interface.new(self)
@@ -28,7 +29,7 @@ class Main
   def start
     system 'clear'
     loop do
-      input = @interface.help_main
+      input = interface.help_main
       case input
       when 0
         break
@@ -48,7 +49,7 @@ class Main
     clear_screen  # system 'clear'
 	  puts 'Создаем обьекты'
 	  loop do
-      input = @interface.help_create
+      input = interface.help_create
       case input
       when 0
         break
@@ -68,7 +69,7 @@ class Main
     clear_screen  #system 'clear'
     puts 'Изменяем обьекты'
     loop do
-      input = @interface.help_edit
+      input = interface.help_edit
       case input
       when 0
         break
@@ -90,7 +91,7 @@ class Main
   def info_object
     system 'clear'
     loop do
-      input = @interface.help_info
+      input = interface.help_info
       case input
       when 0
         break
