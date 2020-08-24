@@ -1,10 +1,13 @@
 class Wagon
   
-  attr_reader :type_wagon
-
   include Manufacture
 
+  COMPANY_NAME = 'Vega Inc.'
+
+  attr_reader :type_wagon
+  
   def initialize
-     @company_name = 'Vega Inc.'
+    @company_name = COMPANY_NAME
   end
+
 end

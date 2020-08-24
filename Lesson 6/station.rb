@@ -1,13 +1,23 @@
 class Station
   
-  attr_reader   :trains
 
   include InstanceCounter
+  include Validate
+
+  ALL_INFO              = 'Общая информация по количеству поездов по типам на станции...'
+  NIL_NAME_ERROR        = 'Название станции не может быть пустым или меньше 2 символов'
+  NAME_TOO_LENGTH_ERROR = 'Слишком длинное название, не больше 30 символов'
+  NAME_NOT_OBJECT       = 'Имя станции не является обьектом класса String'  # /[a-z]/i  - только латинница
+
+
+  attr_reader   :trains,
+                :name
 
   @@list_all_station = []
 
   def initialize(name)
     @name = name
+    validate!
     @trains = []
     register_instance
     @@list_all_station << self
@@ -55,10 +65,20 @@ class Station
   def list_trains_by_type(type = nil)
     return list_trains unless type
     list_trains.each { |train| puts "Поезд типа #{train[1]} имеет номер #{train[0]}" if train[1] == type.to_sym} 
-    puts "Общая информация по количеству поездов по типам на станции..."
+    puts ALL_INFO
     c = 0
     p = 0
     list_trains.each { |train| train[1] == type.to_sym ? c += 1 : p += 1 }
     puts "На станции пассажирских поездов: #{p}, грузовых поездов: #{c} "
+  end
+
+  protected
+
+  def validate!
+    raise InvalidData, NIL_NAME_ERROR if name.empty? || name.nil?
+    raise InvalidData, NIL_NAME_ERROR if name.length < 2
+    raise InvalidData, NAME_TOO_LENGTH_ERROR if name.length > 30
+    raise InvalidData, NAME_NOT_OBJECT unless @name.is_a? String
+    
   end
 end

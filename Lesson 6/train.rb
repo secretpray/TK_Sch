@@ -3,22 +3,32 @@
 
 class Train
 
+  include Manufacture
+  include InstanceCounter
+  include Validate
+
+
+  TRAIN_STOPPED       = 'Поезд остановился'
+  COMPANY_NAME        = 'Ford Inc.'
+  NUMBER_FORMAT_ERROR = 'Неверный формат номера (3 знака (опционально дефис) 2 знака)'
+  NUMBER_WAGONS_ERROR = 'Некорректное количество вагонов'
+  NUMBER_FORMAT       = /^[a-zа-яё\d]{3}[-]*[a-zа-яё\d]{2}$/i
+  #/^([a-zа-я0-9]{3})([-— − –])?([a-zа-я0-9]{2})$/i  or /^[а-яa-z0-9]{3}-{0,1}[а-яa-z0-9]{2}$/i or /^\w{3}-?\w{2}$/i or /\A[a-z\d]{3}-?[a-z\d]{2}\z/i or /^([a-z]|\d){3}[-]*([a-z]|\d){2}$/i
+
   attr_reader   :number, 
                 :speed,
                 :route
-  
-  attr_accessor :wagons
 
-  include Manufacture
-  include InstanceCounter
+  attr_accessor :wagons
 
   @@train_all= {}
 
   def initialize(number, wagons) 
     @number             = number
     @wagons             = wagons  # @wagons = []
+    validate!
     @speed              = 0
-    @company_name = 'Ford Inc.'
+    @company_name = COMPANY_NAME
     @@train_all[number] = self
     register_instance
   end
@@ -65,19 +75,17 @@ class Train
 
   def brake
     @speed = 0
-    puts "Поезд остановился"
+    puts TRAIN_STOPPED
   end
   
   def attach_wagon(type_wagon)
-    return unless valid_wagon!(type_wagon)
     if type_wagon == :cargo 
       @wagons << CargoWagon.new 
-      puts "Прицеплен #{type_wagon} вагон. В составе сейчас #{@wagons.size} вагонов."  # #{@wagons.last.class} проверить?
+      # puts "Прицеплен #{type_wagon} вагон. В составе сейчас #{@wagons.size} вагонов."  # #{@wagons.last.class} проверить?
     else 
       @wagons << PassengerWagon.new
-      puts "Прицеплен #{type_wagon} вагон. В составе сейчас #{@wagons.size} вагонов."  # #{@wagons.last.class} проверить?
+      # puts "Прицеплен #{type_wagon} вагон. В составе сейчас #{@wagons.size} вагонов."  # #{@wagons.last.class} проверить?
     end
-    
   end
 
   def detach_wagon
@@ -128,14 +136,10 @@ class Train
   protected
 
   # Чтобы запретить вмешиваться в проверки   
-  def valid_wagon!(type_wagon)
-    # raise 'Тип вагона не совпадает с типом поезда! Вагон не прицеплен.' if self.type != type_wagon.to_sym
-    if self.type != type_wagon.to_sym
-      puts 'Тип вагона не совпадает с типом поезда' if self.type != type_wagon.to_sym
-      false
-    else
-      true
-    end
+  
+  def validate!
+    raise InvalidData, NUMBER_FORMAT_ERROR if number !~ NUMBER_FORMAT
+    raise InvalidData, NUMBER_WAGONS_ERROR if @wagons.size  < 1 || @wagons.size  > 150 
   end
 
 end

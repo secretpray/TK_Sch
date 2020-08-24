@@ -1,11 +1,16 @@
 class Route
   
-  attr_reader   :stations
-
   include InstanceCounter
+  include Validate
+
+  ROUTE_POINT_ERROR     = 'Станции прибытия и отправления должны отличаться'
+  ROUTE_SIZE_ERROR      = 'В маршруте должно быть минимум 2 станций'
+
+  attr_reader   :stations
 
   def initialize(departure_station, destination_station)
     @stations = [departure_station, destination_station]
+    validate!
     register_instance
   end
 
@@ -13,33 +18,28 @@ class Route
     stations.join(' - ')   # => "Station 1 - Station 2"
   end
 
+  # def name
+  #  stations.map(&:name).join('-')
+  # end
+
   def add_intermediate_station(station)
+    raise ArgumentError, 'Станция не является промежуточной' if [stations.first, stations.last].include?(station)
     unless [stations.first, stations.last].include?(station)
       @stations.insert(-2, station)
-      puts "Станция '#{station}' добавлена в текущий маршрут" # or #{stations[-2]}
     end
   end
 
   def remove_intermediate_station(station)
+    raise ArgumentError, 'Станция не является промежуточной' if [stations.first, stations.last].include?(station)
     unless [stations.first, stations.last].include?(station)
       @stations.delete(station)
-      puts "Станция «#{station}» удалена из текущего маршрута"
     end
   end
+
+  protected
+
+  def validate!
+    raise InvalidData, ROUTE_POINT_ERROR if stations[0] == stations[-1]
+    raise InvalidData, ROUTE_SIZE_ERROR if stations.size < 2
+  end
 end
-
-=begin
-  def add_intermediate_station(station)
-    unless [stations.first, stations.last].include?(station)
-    @stations.insert(-2, station)
-    #@stations.insert(-2, Station.new(station))
-  end
-
-  def remove_intermediate_station(station)
-    # stations.delete(station) if stations[1...-1].include?(station)
-    unless [stations.first, stations.last].include?(station)
-    @stations.delete(station)
-    puts "#{@stations.delete(station)}"
-    puts "Станция «#{station}» удалена из текущего маршрута"
-  end
-=end

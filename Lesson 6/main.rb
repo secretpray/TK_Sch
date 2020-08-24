@@ -1,5 +1,6 @@
 require_relative "instance_counter"
 require_relative "manufacture"
+require_relative 'validate'
 require_relative "interface"
 require_relative "station"
 require_relative "route"
@@ -13,6 +14,8 @@ require 'io/console' # (для использования STDIN.getch вмест
 
 
 class Main
+
+  include Validate
   
   attr_reader :stations,
               :trains,
@@ -24,7 +27,6 @@ class Main
     @trains   = []
     @routes   = []
     @stations = []
-
   end
 
   def start
@@ -171,10 +173,11 @@ class Main
   def create_train
     system 'clear'
     puts 'Создаем поезд...'
-    print "Введите номер нового поезда: "
-    number = gets.chomp.to_i
+    print "Введите номер поезда (формат -> xxx-xx): "
+    number = gets.chomp
     puts "Введите тип поезда:\n 1. Пассажирский,\n 2. Грузовой"
     type = gets.chomp.to_i
+    validate!(type)
     puts "Введите количество вагонов:"
     wagons_count = gets.chomp.to_i
     wagons = []
@@ -251,6 +254,7 @@ class Main
           puts 'Введите номер новой промежуточной станции ...'
           intermediate_station = stations_to_add[gets.chomp.to_i - 1]
           route.add_intermediate_station(intermediate_station)
+          # puts "Станция '#{station}' добавлена в текущий маршрут" # or #{stations[-2]}
           puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}"
           press_key
           # STDIN.getch
@@ -264,7 +268,7 @@ class Main
         stations_to_remove.each.with_index(1) { |station, index| puts "#{index}. #{station}" } 
         remove_station = stations_to_remove[gets.chomp.to_i - 1] # @stations -> stations_to_remove 
         route.remove_intermediate_station(remove_station)
-        puts "Станция #{remove_station} удалена из маршрута."
+        # puts "Станция #{remove_station} удалена из маршрута."
         puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}"
         press_key
         # STDIN.getch # gets 
@@ -409,6 +413,14 @@ class Main
       press_key
     end  
   end
+
+
+  protected
+
+  def validate!(type)
+    raise 'Введен неверный тип вагона' unless type == 1 || type == 2
+  end
+
 end
 
 
