@@ -1,4 +1,5 @@
 class Route
+  
   attr_reader   :stations
 
   include InstanceCounter

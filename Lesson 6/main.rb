@@ -9,6 +9,7 @@ require_relative "train_cargo"
 require_relative "wagon"
 require_relative "wagon_passenger"
 require_relative "wagon_cargo"
+require 'io/console' # (для использования STDIN.getch вместо gets)
 
 
 class Main
@@ -84,7 +85,6 @@ class Main
       else
         puts 'Неизвестная команда!'
       end
-      sleep(1)
     end
   end
 
@@ -104,12 +104,18 @@ class Main
       else
         puts 'Неизвестная команда!'
       end
-      sleep(1)
     end
   end
 
   def clear_screen
     print "\e[2J\e[f"
+  end
+
+  def press_key
+    print "\nДля продолжения - нажмите пробел или Enter..."
+      loop do
+        break if [' ', "\r"].include?(STDIN.getch)
+      end 
   end
 
   def show_stations_list
@@ -171,7 +177,8 @@ class Main
     puts 'Создан(ы):'
     show_trains_list
     puts "Производитель созданных вагонов: #{wagons.last.company_name}, поезда: #{@trains.last.company_name}"
-    sleep(1)
+    press_key
+    # STDIN.getch
   end
 
   def create_station
@@ -183,7 +190,10 @@ class Main
     puts 'Список всех станций:'
     show_stations_list
     puts "Общее количество созданных станций - #{Station.all.size}"
-    sleep(1)
+    press_key
+    # gets
+    # STDIN.getch
+    #sleep(1)
   end
 
   def create_route
@@ -198,8 +208,10 @@ class Main
     puts "Маршрут #{@routes.last} создан."
     puts 'Создан(ы):'
     show_routes_list
-    puts "\n"
-    sleep(1)
+    press_key
+    # STDIN.getch
+    # puts "\n"
+    # sleep(1)
   end
 
   def edit_station
@@ -224,6 +236,8 @@ class Main
           intermediate_station = stations_to_add[gets.chomp.to_i - 1]
           route.add_intermediate_station(intermediate_station)
           puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}"
+          press_key
+          # STDIN.getch
         else
           puts 'Ошибка, нет станций, которые можно было бы добавить в маршрут.'
         end
@@ -231,18 +245,19 @@ class Main
       puts 'Удаление промежуточной станции'
       stations_to_remove = route.stations[1...-1]
       if stations_to_remove.any?
-        stations_to_remove.each.with_index(1) { |station, index| puts "#{index}. #{station}" }  # each.with_index(1)
-        remove_station = @stations[gets.chomp.to_i]
+        stations_to_remove.each.with_index(1) { |station, index| puts "#{index}. #{station}" } 
+        remove_station = stations_to_remove[gets.chomp.to_i - 1] # @stations -> stations_to_remove 
         route.remove_intermediate_station(remove_station)
         puts "Станция #{remove_station} удалена из маршрута."
         puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}"
+        press_key
+        # STDIN.getch # gets 
       else
         puts 'Ошибка, в маршруте нет промежуточных станций.'
       end
     else
       puts 'Неизвестная команда!'
     end
-    sleep(1)
   end
 
   def edit_train
@@ -253,7 +268,6 @@ class Main
     puts 'Выберите поезд для управления его составом...'
     train = @trains[gets.chomp.to_i - 1]
     puts "Выбран - #{train}"
-
     puts "Введите:\n 1 => для добавления вагона в состав\n 2 => для удаления вагона из состава\n 0 => для выхода из меню"
     sel = gets.chomp.to_i
     return if sel == 0
@@ -271,7 +285,9 @@ class Main
     if sel == 2
       train.detach_wagon
     end
-    sleep(1)
+    press_key
+    # STDIN.getch
+    # sleep(1)
   end
 
   def assign_route
@@ -292,8 +308,9 @@ class Main
       route = @routes[gets.chomp.to_i - 1]
       train.assign_a_route(route)
       puts 'Маршрут успешно назначен'
+      press_key
+      # STDIN.getch
     end
-    sleep(1)
   end
 
   def move_train
@@ -320,6 +337,7 @@ class Main
           else
             train.go_to_next_station
             puts "Поезд прибыл на станцию #{train.current_station}"
+            STDIN.getch
           end
         when 2
           if train.on_first_station?
@@ -327,6 +345,8 @@ class Main
           else
             train.go_to_previous_station
             puts "Поезд прибыл на станцию #{train.current_station}"
+            press_key
+            # STDIN.getch
           end
         else
           puts 'Неизвестная команда!'
