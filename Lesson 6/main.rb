@@ -28,12 +28,14 @@ class Main
   end
 
   def start
-    system 'clear'
+    system "printf '\e[1;40;96m'"  # 1 - bold (0 - light); (40 code background, 91 - red, 92 - green, 93 - yellow, 94 - blue, 95 - purple, 96 - cyan);  
+    system 'clear'  # printf "I '\033[0;32m'love'\033[0m' Stack Overflow\n" => 'love' in green color
     loop do
       input = interface.help_main
       case input
       when 0
-        break
+        color_reset
+        break 
       when 1
       	create_object
       when 2
@@ -47,12 +49,15 @@ class Main
   end
   
   def create_object
-    clear_screen  # system 'clear'
+    system "printf '\e[0;44;93m'"
+    system 'clear'
+    # clear_screen
 	  puts 'Создаем обьекты'
 	  loop do
       input = interface.help_create
       case input
       when 0
+        color_main_menu
         break
       when 1
         create_train
@@ -67,12 +72,15 @@ class Main
   end
 
   def change_object
-    clear_screen  #system 'clear'
+    system "printf '\e[0;40;94m'"
+    system 'clear'
+    #clear_screen
     puts 'Изменяем обьекты'
     loop do
       input = interface.help_edit
       case input
       when 0
+        color_main_menu
         break
       when 1
         edit_station
@@ -89,11 +97,13 @@ class Main
   end
 
   def info_object
+    system "printf '\e[0;40;32m'"
     system 'clear'
     loop do
       input = interface.help_info
       case input
       when 0
+        color_main_menu
         break
       when 1
         all_information
@@ -107,8 +117,19 @@ class Main
     end
   end
 
-  def clear_screen
-    print "\e[2J\e[f"
+  # def clear_screen
+  #  system 'printf "\e[2J\e[f"'
+  # end
+
+  def color_main_menu
+    system "printf '\e[1;40;96m\033[u'"
+    # system "printf '\e[1;40;96m'"
+    # system 'clear'
+  end
+
+  def color_reset
+    system "printf '\033[0m'"
+    system 'clear'
   end
 
   def press_key
@@ -356,7 +377,7 @@ class Main
   end
 
   def all_information
-    clear_screen
+    system 'clear'
     puts "Информация о поездах"
     show_trains_list
     puts '-*-' * 20
@@ -370,12 +391,14 @@ class Main
     puts "Всего создано поездов: #{PassengerTrain.instances + CargoTrain.instances} (пассажирских - #{PassengerTrain.instances}, грузовых - #{CargoTrain.instances})" unless @trains.size <1
     puts "Всего создано станций: #{Station.instances}"  unless @stations.size < 1
     puts "Всего создано маршрутов: #{Route.instances}"  unless @routes.size < 1
+    press_key
   end
 
   def train_on_station
     puts  'Информация о поездах на станциях '
     show_station_info
     puts '-*-' * 20
+    press_key
   end
 
   def exist_train_by_number
@@ -388,6 +411,7 @@ class Main
       view_train = Train.find(gets.chomp.to_i)
       return nil if view_train.nil?
       puts "Данные по поезду с выбранным номером: #{view_train}"
+      press_key
     end  
   end
 end
