@@ -28,8 +28,9 @@ class Main
   end
 
   def start
-    system "printf '\e[1;40;96m'"  # 1 - bold (0 - light); (40 code background, 91 - red, 92 - green, 93 - yellow, 94 - blue, 95 - purple, 96 - cyan);  
-    system 'clear'  # printf "I '\033[0;32m'love'\033[0m' Stack Overflow\n" => 'love' in green color
+    system "printf '\e[1;40;96m\033[u'" # one string
+    # system "printf '\e[1;40;96m'"  # 1 - bold (0 - light); (40 code background, 91 - red, 92 - green, 93 - yellow, 94 - blue, 95 - purple, 96 - cyan);  
+    # system 'clear'  # printf "I '\033[0;32m'love'\033[0m' Stack Overflow\n" => 'love' in green color
     loop do
       input = interface.help_main
       case input
@@ -49,9 +50,8 @@ class Main
   end
   
   def create_object
-    system "printf '\e[0;44;93m'"
-    system 'clear'
-    # clear_screen
+    system "printf '\e[0;44;93m\033[u'"
+    # system 'clear'
 	  puts 'Создаем обьекты'
 	  loop do
       input = interface.help_create
@@ -72,9 +72,7 @@ class Main
   end
 
   def change_object
-    system "printf '\e[0;40;94m'"
-    system 'clear'
-    #clear_screen
+    system "printf '\e[0;40;94m\033[u'"
     puts 'Изменяем обьекты'
     loop do
       input = interface.help_edit
@@ -97,8 +95,8 @@ class Main
   end
 
   def info_object
-    system "printf '\e[0;40;32m'"
-    system 'clear'
+    system "printf '\e[0;40;32m\033[u'"
+    # system 'clear'
     loop do
       input = interface.help_info
       case input
@@ -117,10 +115,6 @@ class Main
     end
   end
 
-  # def clear_screen
-  #  system 'printf "\e[2J\e[f"'
-  # end
-
   def color_main_menu
     system "printf '\e[1;40;96m\033[u'"
     # system "printf '\e[1;40;96m'"
@@ -128,8 +122,9 @@ class Main
   end
 
   def color_reset
-    system "printf '\033[0m'"
-    system 'clear'
+    system 'printf "\033[0m\033[2J\e[f"' # one string (\033[0m - reset color; \033[2J\e[f - reset position) or #  system 'printf "\e[2J\e[f"'
+    # system "printf '\033[0m'"
+    # system 'clear'
   end
 
   def press_key
