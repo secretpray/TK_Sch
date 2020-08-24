@@ -13,8 +13,16 @@ require_relative "wagon_cargo"
 
 class Main
   
+  attr_reader :stations,
+              :trains,
+              :routes
+
   def initialize
-    @interface = Interface.new
+    @interface = Interface.new(self)
+    @trains   = []
+    @routes   = []
+    @stations = []
+
   end
 
   def start
