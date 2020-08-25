@@ -14,8 +14,6 @@ require 'io/console' # (для использования STDIN.getch вмест
 
 
 class Main
-
-  include Validate
   
   attr_reader :stations,
               :trains,
