@@ -6,8 +6,8 @@ class Wagon
 
   attr_reader :type_wagon
   
-  def initialize
+  def initialize(size)
     @company_name = COMPANY_NAME
+    @size_any     = size
   end
-
 end

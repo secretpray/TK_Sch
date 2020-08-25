@@ -40,22 +40,25 @@ class Station
   end
 
   def depart(train)
-    if @trains.delete(train).nil?
+    if trains.delete(train).nil?
       puts "Нет станции для удаления!"   # raise
     else
-      @trains.delete(train)
+      trains.delete(train)
     end
   end
  
+   def each_train
+    trains.each { |train| yield(train) }
+  end
 
   def list_all_trains
-    puts "#{@trains.length} поезда(ов) на станции."
-    @trains.each { |train| puts "Поезд номер: #{train[0]}, тип: #{train[1]}, вагонов: #{train[2]}"  }
+    puts "#{trains.length} поезда(ов) на станции."
+    trains.each { |train| puts "Поезд номер: #{train[0]}, тип: #{train[1]}, вагонов: #{train[2]}"  }
   end
 
   def current_trains(type=:all)
-    return @trains if type == :all
-    @trains.select { |train| train.type == type }
+    return trains if type == :all
+    trains.select { |train| train.type == type }
   end
 
   def total_trains(type=:all)
@@ -74,11 +77,12 @@ class Station
 
   protected
 
+  attr_writer :trains
+
   def validate!
     raise InvalidData, NIL_NAME_ERROR if name.empty? || name.nil?
     raise InvalidData, NIL_NAME_ERROR if name.length < 2
     raise InvalidData, NAME_TOO_LENGTH_ERROR if name.length > 30
     raise InvalidData, NAME_NOT_OBJECT unless @name.is_a? String
-    
   end
 end
