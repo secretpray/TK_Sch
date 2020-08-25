@@ -168,7 +168,7 @@ class Main
     number = gets.chomp
     puts "Введите тип поезда:\n 1. Пассажирский,\n 2. Грузовой"
     type = gets.chomp.to_i
-    validate!(type)
+    # raise 'Введен неверный тип вагона' unless type == 1 || type == 2
     puts "Введите количество вагонов:"
     wagons_count = gets.chomp.to_i
     wagons = []
@@ -400,14 +400,6 @@ class Main
       press_key
     end  
   end
-
-
-  protected
-
-  def validate!(type)
-    raise 'Введен неверный тип вагона' unless type == 1 || type == 2
-  end
-
 end
 
 
