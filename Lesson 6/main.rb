@@ -30,7 +30,7 @@ class Main
   end
 
   def start
-    system "printf '\e[1;40;96m\033[u'" # one string
+    system "printf '\e[1;40;96m\033[u'" # one string + reset -> system "printf '\e[1;40;96m\033[2J\e[f'"
     # system "printf '\e[1;40;96m'"  # 1 - bold (0 - light); (40 code background, 91 - red, 92 - green, 93 - yellow, 94 - blue, 95 - purple, 96 - cyan);  
     # system 'clear'  # printf "I '\033[0;32m'love'\033[0m' Stack Overflow\n" => 'love' in green color
     loop do
@@ -52,8 +52,6 @@ class Main
   end
   
   def create_object
-    system "printf '\e[0;44;93m\033[u'"
-    # system 'clear'
 	  puts 'Создаем обьекты'
 	  loop do
       input = interface.help_create
@@ -74,7 +72,6 @@ class Main
   end
 
   def change_object
-    system "printf '\e[0;40;94m\033[u'"
     puts 'Изменяем обьекты'
     loop do
       input = interface.help_edit
@@ -97,7 +94,7 @@ class Main
   end
 
   def info_object
-    system "printf '\e[0;40;32m\033[u'"
+    # system "printf '\e[0;40;32m\033[u'"
     # system 'clear'
     loop do
       input = interface.help_info
@@ -119,18 +116,14 @@ class Main
 
   def color_main_menu
     system "printf '\e[1;40;96m\033[u'"
-    # system "printf '\e[1;40;96m'"
-    # system 'clear'
   end
 
   def color_reset
     system 'printf "\033[0m\033[2J\e[f"' # one string (\033[0m - reset color; \033[2J\e[f - reset position) or #  system 'printf "\e[2J\e[f"'
-    # system "printf '\033[0m'"
-    # system 'clear'
   end
 
   def press_key
-    print "\nДля продолжения - нажмите пробел или Enter..."
+    print "\nДля продолжения - нажмите пробел или Enter... ... \033[1;5m _ \033[0;25m"
       loop do
         break if [' ', "\r"].include?(STDIN.getch)
       end 
@@ -228,9 +221,6 @@ class Main
     puts 'Создан(ы):'
     show_routes_list
     press_key
-    # STDIN.getch
-    # puts "\n"
-    # sleep(1)
   end
 
   def edit_station
@@ -257,7 +247,6 @@ class Main
           # puts "Станция '#{station}' добавлена в текущий маршрут" # or #{stations[-2]}
           puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}"
           press_key
-          # STDIN.getch
         else
           puts 'Ошибка, нет станций, которые можно было бы добавить в маршрут.'
         end
@@ -271,7 +260,6 @@ class Main
         # puts "Станция #{remove_station} удалена из маршрута."
         puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}"
         press_key
-        # STDIN.getch # gets 
       else
         puts 'Ошибка, в маршруте нет промежуточных станций.'
       end
@@ -306,8 +294,6 @@ class Main
       train.detach_wagon
     end
     press_key
-    # STDIN.getch
-    # sleep(1)
   end
 
   def assign_route
@@ -342,6 +328,7 @@ class Main
     train = @trains[gets.chomp.to_i - 1]
     if train
       loop do
+        system 'clear'
         puts "Поезд находится на станции: #{train.current_station}"
         puts 'Введите 1 для отправления поезда вперед'
         puts 'Введите 2 для отправления поезда назад'
@@ -355,6 +342,7 @@ class Main
           if train.on_last_station?
             puts 'Ошибка, поезд на последней станции маршрута.'
           else
+            system 'clear'
             train.go_to_next_station
             puts "Поезд прибыл на станцию #{train.current_station}"
             STDIN.getch
@@ -363,10 +351,10 @@ class Main
           if train.on_first_station?
             puts 'Ошибка, поезд на первой станции маршрута.'
           else
+            system 'clear'
             train.go_to_previous_station
             puts "Поезд прибыл на станцию #{train.current_station}"
             press_key
-            # STDIN.getch
           end
         else
           puts 'Неизвестная команда!'
@@ -394,6 +382,7 @@ class Main
   end
 
   def train_on_station
+    system 'clear'
     puts  'Информация о поездах на станциях '
     show_station_info
     puts '-*-' * 20
