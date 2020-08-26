@@ -136,7 +136,9 @@ class Main
   end
 
   def show_trains_list
-    @trains.each { |train| puts "Поезд номер: #{train.number}, тип #{train.type}, в составе которого #{train.wagons.size} вагонов(а)" }
+    @trains.each do |train| 
+      puts "Поезд номер: #{train.number}, тип #{train.type}, в составе которого #{train.wagons.size} вагонов(а).\nВместимость вагонов - #{train.wagons.last.size}."
+    end
     #@trains.each do |train|
     #  puts "Поезд номер: #{train.number}, тип #{train.type}, в составе которого #{train.wagons.size} вагонов(а).\nПроизводитель поезда - #{@trains.last.company_name} и вагонов - #{wagons.last.company_name}"
     #end
@@ -166,16 +168,22 @@ class Main
     puts 'Создаем поезд...'
     print "Введите номер поезда (формат -> xxx-xx): "
     number = gets.chomp
-    puts "Введите тип поезда:\n 1. Пассажирский,\n 2. Грузовой"
+    puts "Введите тип поезда:\n 1. Грузовой,\n 2. Пассажирский"
     type = gets.chomp.to_i
     # raise 'Введен неверный тип вагона' unless type == 1 || type == 2
     puts "Введите количество вагонов:"
     wagons_count = gets.chomp.to_i
     wagons = []
     if type == 1
-      wagons_count.times { wagons << CargoWagon.new }
+      puts 'Введите грузоподьемность вагона в тоннах (от 60 до 120)'
+      volume_size = gets.chomp.to_i
+      volume_size = 60 if volume_size > 120 || volume_size < 60
+      wagons_count.times { wagons << CargoWagon.new(volume_size) }
     elsif type == 2
-      wagons_count.times { wagons << PassengerWagon.new }
+      puts 'Введите количество мест в вагоне (от 18 до 64)'
+      place_count = gets.chomp.to_i
+      place_count = 54 if place_count > 64 || place_count < 18
+      wagons_count.times { wagons << PassengerWagon.new(place_count) }
     else
       puts "Неверный тип поезда"
     end
@@ -278,7 +286,7 @@ class Main
     sel = gets.chomp.to_i
     return if sel == 0
     if sel == 1
-      puts ' Введеите 1 для добавления товарного (cargo) и 2 - для добавления пассажирского (passenger) вагонов'
+      puts ' Введеите:\n 1 для добавления товарного (cargo)\n 2 - для добавления пассажирского (passenger) вагонов'
       wagon_type = gets.chomp.to_i
       if wagon_type == 1
         train.attach_wagon(CargoWagon.new)

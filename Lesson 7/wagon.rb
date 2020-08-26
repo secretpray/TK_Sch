@@ -4,10 +4,13 @@ class Wagon
 
   COMPANY_NAME = 'Vega Inc.'
 
-  attr_reader :type_wagon
+  attr_reader :type_wagon,
+              :size_wagon
+
+   alias size size_wagon
   
-  def initialize(size)
+  def initialize(size_wagon)
     @company_name = COMPANY_NAME
-    @size_any     = size
+    @size_any     = size_wagon
   end
 end
