@@ -147,18 +147,15 @@ class Main
       puts "Количество поездов на станции #{station}: #{station.trains.size}."
       puts "Номер поезда: #{train.number}, тип поезда: #{train.type}"
       puts "Количество вагонов: #{train.wagons.size}"
+      end
     end
   end
 
   def show_trains_list
     @trains.each do |train| 
-      puts "Поезд номер: #{train.number}, тип #{train.type}, в составе которого #{train.wagons.size} вагонов(а).\nВместимость вагонов - #{train.wagons.last.size}."
-    end
-    #@trains.each do |train|
-    #  puts "Поезд номер: #{train.number}, тип #{train.type}, в составе которого #{train.wagons.size} вагонов(а).\nПроизводитель поезда - #{@trains.last.company_name} и вагонов - #{wagons.last.company_name}"
-    #end
-  end
-
+      puts "Поезд номер: #{train.number}, тип #{train.type}, в составе которого #{train.wagons.size} вагонов(а)."
+      puts "Вместимость вагонов - #{train.wagons.last.size}." 
+      end
   end
 
   def show_trains_list_number
@@ -169,11 +166,10 @@ class Main
     @routes.each.with_index(1) { |route, index| puts "#{index}. #{route}" }  #  @routes.each_with_index { |route, index| puts "#{index.next}. #{route}" }
   end
 
-  def show_train_wagon_yield(train)
-    train.each_wagons do |wagon| 
-    puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type_wagon}"
-    puts "кол-во свободных мест: #{wagon.free_places}, количество занятых мест:#{wagon.filled_size}"
-    end
+  def show_train_wagon_yield
+    self.each_wagons do |wagon| 
+      puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type_wagon}, кол-во свободных мест: #{wagon.free_places}, количество занятых мест:#{wagon.filled_size}"
+      end
   end
 
   def show_station_info
@@ -429,7 +425,7 @@ class Main
     puts  'Информация о поездах на станциях (стандарт)'
     show_station_info
     puts '-*-' * 20
-    puts 'Информация щ поездах на станции (yield)'
+    puts 'Информация о поездах на станции (yield)'
     show_station_info_yield
     puts '-*-' * 20
     press_key
@@ -440,14 +436,14 @@ class Main
       puts 'Поезда отсутствуют...'
     else
       puts 'Для удобстав выводим список поездов:'
-      show_trains_list
+      show_trains_list_number
       print 'Для проверки наличия поезда введите его номер - '
       view_train = Train.find(gets.chomp.to_i)
       return nil if view_train.nil?
       puts "Данные по поезду с выбранным номером: #{view_train}"
       puts '-*-' * 20
       puts 'Информация о вагонах в поезде (yield)'
-      show_train_wagon_yield(view_train)
+      #view_train.show_train_wagon_yield
       puts '-*-' * 20 
       press_key
     end  
