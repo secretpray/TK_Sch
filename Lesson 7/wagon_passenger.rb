@@ -32,7 +32,7 @@ class PassengerWagon < Wagon
     can_clear? ? self.places_filled -= 1 : (raise 'Вагон пуст')
   end
 
-  def free_places
+  def free_size # free_places
     place_count - filled_size
   end
 

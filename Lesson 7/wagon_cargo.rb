@@ -32,7 +32,7 @@ class CargoWagon < Wagon
     can_clear? ? self.volume -= 1 : (raise 'Вагон пуст')
   end
 
-  def free_volume
+  def free_size # free_volume
     volume_size - volume
   end
 

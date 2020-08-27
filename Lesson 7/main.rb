@@ -166,9 +166,9 @@ class Main
     @routes.each.with_index(1) { |route, index| puts "#{index}. #{route}" }  #  @routes.each_with_index { |route, index| puts "#{index.next}. #{route}" }
   end
 
-  def show_train_wagon_yield
-    self.each_wagons do |wagon| 
-      puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type_wagon}, кол-во свободных мест: #{wagon.free_places}, количество занятых мест:#{wagon.filled_size}"
+  def show_train_wagon_yield(train)
+    train.each_wagons do |wagon| 
+      puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type_wagon}, кол-во свободных мест: #{wagon.free_size}, количество занятых мест:#{wagon.filled_size}"
       end
   end
 
@@ -308,31 +308,55 @@ class Main
     puts 'Выберите поезд для управления его составом...'
     train = @trains[gets.chomp.to_i - 1]
     puts "Выбран - #{train}"
-    puts "Введите:\n 1 => для добавления вагона в состав\n 2 => для удаления вагона из состава\n 0 => для выхода из меню"
-    sel = gets.chomp.to_i
-    return if sel == 0
-    if sel == 1
-      puts "Введеите:\n 1 для добавления товарного (cargo)\n 2 - для добавления пассажирского (passenger) вагонов"
-      wagon_type = gets.chomp.to_i
-      if type == 1
-        puts 'Введите грузоподьемность вагона в тоннах (от 60 до 120)'
-        volume_size = gets.chomp.to_i
-        volume_size = 60 if volume_size > 120 || volume_size < 60
-        train.attach_wagon CargoWagon.new(volume_size)
-      elsif type == 2
-        puts 'Введите количество мест в вагоне (от 18 до 64)'
-        place_count = gets.chomp.to_i
-        place_count = 54 if place_count > 64 || place_count < 18
-        train.attach_wagon PassengerWagon.new(place_count)
+    puts "1 -> чтобы измененить состав\n2 -> чтобы занять или освободить место в вагоне\3 - чтобы выйти в меню"
+    operation = gets.chomp.to_i
+      if operation == 1
+        puts "Введите:\n 1 => для добавления вагона в состав\n 2 => для удаления вагона из состава\n 0 => для выхода из меню"
+        sel = gets.chomp.to_i
+        return if sel == 0
+        if sel == 1
+          puts "Введеите:\n 1 - для добавления товарного (cargo)\n 2 - для добавления пассажирского (passenger) вагонов"
+          wagon_type = gets.chomp.to_i
+          if wagon_type == 1
+            puts 'Введите грузоподьемность вагона в тоннах (от 60 до 120)'
+            volume_size = gets.chomp.to_i
+            volume_size = 60 if volume_size > 120 || volume_size < 60
+            train.attach_wagon(CargoWagon.new(volume_size))
+          elsif wagon_type == 2
+            puts 'Введите количество мест в вагоне (от 18 до 64)'
+            place_count = gets.chomp.to_i
+            place_count = 54 if place_count > 64 || place_count < 18
+            train.attach_wagon(PassengerWagon.new(place_count))
+          else
+            puts "Вагон неверного типа не может быть добавлен в состав."
+          end  
+        elsif sel == 2
+          train.detach_wagon
+        else
+          puts 'Неизвестная команда!'
+        end
+      elsif operation == 2
+        show_train_wagon_yield(train)
+        puts 'Укажите номер вагона'
+        number_select = gets.chomp.to_i
+        wagon_select = 0
+        train.wagons.each { |wagon| wagon_select = wagon if wagon.number == number_select }
+        puts "Выбран вагон #{wagon_select}: (свободно: #{wagon_select.free_size}, занято: #{wagon_select.filled_size})"
+        puts "1. Заполнить вагон\n2. Освободить вагон\n"
+        wg = gets.chomp.to_i
+        if wg == 1
+          wagon_select.fill
+          puts "Номер вагона: #{wagon_select.number}, свободно: #{wagon_select.free_size}, занято: #{wagon_select.filled_size}"
+        elsif wg == 2
+          wagon_select.clear
+          puts "Номер вагона: #{wagon_select.number}, свободно: #{wagon_select.free_size}, занято: #{wagon_select.filled_size}"
+        else
+          puts 'Неизвестная команда!'
+        end
+        press_key
       else
-        puts "Вагон неверного типа не может быть добавлен в состав."
-      end  
-    elsif sel == 2
-      train.detach_wagon
-    else
-      puts 'Неизвестная команда!'
-    end
-    press_key
+        puts 'Неизвестная команда!'
+      end 
   end
 
   def assign_route
@@ -436,14 +460,14 @@ class Main
       puts 'Поезда отсутствуют...'
     else
       puts 'Для удобстав выводим список поездов:'
-      show_trains_list_number
+      show_trains_list
       print 'Для проверки наличия поезда введите его номер - '
-      view_train = Train.find(gets.chomp.to_i)
+      view_train = Train.find(gets.chomp)
       return nil if view_train.nil?
       puts "Данные по поезду с выбранным номером: #{view_train}"
       puts '-*-' * 20
       puts 'Информация о вагонах в поезде (yield)'
-      #view_train.show_train_wagon_yield
+      show_train_wagon_yield(view_train)
       puts '-*-' * 20 
       press_key
     end  
