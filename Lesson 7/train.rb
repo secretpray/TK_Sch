@@ -61,6 +61,10 @@ class Train
   def self.find(number)
     @@train_all[number]
   end
+
+  def each_wagons
+    wagons.each { |wagon| yield(wagon) }
+  end
   
   def speed_up(value = 20)
     @speed += value
