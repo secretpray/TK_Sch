@@ -47,9 +47,13 @@ class Station
     end
   end
  
-   def each_train
+  def each_train
     trains.each { |train| yield(train) }
   end
+
+  # def each_train
+  #  yield.trains.map { |train| train } if block_given?
+  # end
 
   def list_all_trains
     puts "#{trains.length} поезда(ов) на станции."
