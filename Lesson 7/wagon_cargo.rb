@@ -6,6 +6,8 @@ class CargoWagon < Wagon
   SIZE_ERROR_DATE  = 'Вместимость выражается в числах'
   SIZE_ERROR       = 'Должна быть больше нуля'
   NAME_WAGON       = 'Грузовой вагон'
+  MIN_SIZE         = 60 
+  MAX_SIZE         = 120
 
   attr_reader :type_wagon,
               :number,
@@ -17,7 +19,7 @@ class CargoWagon < Wagon
 
   def initialize(size)
     @type_wagon   = :cargo
-    size > 120 || size < 60 ? @volume_size = 60 : @volume_size  = size
+    MAX_SIZE > 120 || size < MIN_SIZE ? @volume_size = 60 : @volume_size  = size
     # @volume_size  = size
     validate!
     @volume       = 0

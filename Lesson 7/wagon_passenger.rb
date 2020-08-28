@@ -6,6 +6,8 @@ class PassengerWagon < Wagon
   NAME_WAGON       = 'Пассажирский вагон'
   SIZE_ERROR_DATE  = 'Вместимость выражается в числах'
   SIZE_ERROR       = 'Должна быть больше нуля'
+  MIN_SIZE         = 18 
+  MAX_SIZE         = 64
 
   attr_reader :type_wagon, 
               :number,
@@ -17,7 +19,7 @@ class PassengerWagon < Wagon
 
   def initialize(size)
     @type_wagon     = :passenger
-    size > 64 || size < 18 ? @place_count = 54 : @place_count  = size
+    size > MAX_SIZE || size < MIN_SIZE ? @place_count = 54 : @place_count  = size
     # @place_count    = size
     @places_filled  = 0
     validate!
