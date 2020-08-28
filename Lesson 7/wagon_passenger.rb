@@ -17,7 +17,8 @@ class PassengerWagon < Wagon
 
   def initialize(size)
     @type_wagon     = :passenger
-    @place_count    = size
+    size > 64 || size < 18 ? @place_count = 54 : @place_count  = size
+    # @place_count    = size
     @places_filled  = 0
     validate!
     @number = rand(1..40)

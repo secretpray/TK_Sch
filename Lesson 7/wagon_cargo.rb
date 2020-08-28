@@ -17,7 +17,8 @@ class CargoWagon < Wagon
 
   def initialize(size)
     @type_wagon   = :cargo
-    @volume_size  = size
+    size > 120 || size < 60 ? @volume_size = 60 : @volume_size  = size
+    # @volume_size  = size
     validate!
     @volume       = 0
     @number       =rand(1..1000)

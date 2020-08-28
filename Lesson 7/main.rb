@@ -120,10 +120,13 @@ class Main
   end
 
   def press_key
-    print "\nДля продолжения - нажмите пробел или Enter... ... \033[1;5m _ \033[0;25m"
+    print "\nДля продолжения - нажмите пробел или Enter ... \033[1;5m _ \033[0;25m"
       loop do
         break if [' ', "\r"].include?(STDIN.getch)
-      end 
+      end
+    # gets
+    # STDIN.getch
+    #sleep(1) 
   end
 
   def show_stations_list
@@ -203,12 +206,12 @@ class Main
     if type == 1
       puts 'Введите грузоподьемность вагона в тоннах (от 60 до 120)'
       volume_size = gets.chomp.to_i
-      volume_size = 60 if volume_size > 120 || volume_size < 60
+      # volume_size = 60 if volume_size > 120 || volume_size < 60
       wagons_count.times { wagons << CargoWagon.new(volume_size) }
     elsif type == 2
       puts 'Введите количество мест в вагоне (от 18 до 64)'
       place_count = gets.chomp.to_i
-      place_count = 54 if place_count > 64 || place_count < 18
+      # place_count = 54 if place_count > 64 || place_count < 18
       wagons_count.times { wagons << PassengerWagon.new(place_count) }
     else
       puts "Неверный тип поезда"
@@ -234,9 +237,6 @@ class Main
     show_stations_list
     puts "Общее количество созданных станций - #{Station.all.size}"
     press_key
-    # gets
-    # STDIN.getch
-    #sleep(1)
   end
 
   def create_route
