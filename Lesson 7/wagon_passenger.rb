@@ -49,7 +49,7 @@ class PassengerWagon < Wagon
   attr_writer :places_filled
 
   def can_fill?
-    free_places > 0
+    free_size > 0  # free_places
   end
 
   def can_clear?

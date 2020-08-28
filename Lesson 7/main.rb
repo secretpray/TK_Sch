@@ -16,6 +16,8 @@ require 'io/console' # (для использования STDIN.getch вмест
 
 class Main
   
+  UNKNOWN_COMMAND = 'Неизвестная команда!'
+
   attr_reader :stations,
               :trains,
               :routes,
@@ -29,9 +31,7 @@ class Main
   end
 
   def start
-    system "printf '\e[1;40;96m\033[u'" # one string + reset -> system "printf '\e[1;40;96m\033[2J\e[f'"
-    # system "printf '\e[1;40;96m'"  # 1 - bold (0 - light); (40 code background, 91 - red, 92 - green, 93 - yellow, 94 - blue, 95 - purple, 96 - cyan);  
-    # system 'clear'  # printf "I '\033[0;32m'love'\033[0m' Stack Overflow\n" => 'love' in green color
+    system "printf '\e[1;40;96m\033[u'" 
     loop do
       input = interface.help_main
       case input
@@ -45,7 +45,7 @@ class Main
       when 3
       	info_object
       else
-        puts 'Неизвестная команда!'
+        puts UNKNOWN_COMMAND
       end
     end
   end
@@ -65,7 +65,7 @@ class Main
       when 3
         create_route
       else
-        puts 'Неизвестная команда!'
+        puts UNKNOWN_COMMAND
       end
     end
   end
@@ -87,14 +87,12 @@ class Main
       when 4
         move_train
       else
-        puts 'Неизвестная команда!'
+        puts UNKNOWN_COMMAND
       end
     end
   end
 
   def info_object
-    # system "printf '\e[0;40;32m\033[u'"
-    # system 'clear'
     loop do
       input = interface.help_info
       case input
@@ -108,7 +106,7 @@ class Main
       when 3
         exist_train_by_number
       else
-        puts 'Неизвестная команда!'
+        puts UNKNOWN_COMMAND
       end
     end
   end
@@ -118,7 +116,7 @@ class Main
   end
 
   def color_reset
-    system 'printf "\033[0m\033[2J\e[f"' # one string (\033[0m - reset color; \033[2J\e[f - reset position) or #  system 'printf "\e[2J\e[f"'
+    system 'printf "\033[0m\033[2J\e[f"' 
   end
 
   def press_key
@@ -129,7 +127,7 @@ class Main
   end
 
   def show_stations_list
-    @stations.each.with_index(1) { |station, index| puts "#{index}. #{station}" }  # @stations.each_with_index { |station, index| puts "#{index.next}. #{station}" }
+    @stations.each.with_index(1) { |station, index| puts "#{index}. #{station}" } 
   end
 
   def show_stations_list_route
@@ -163,7 +161,7 @@ class Main
   end
 
   def show_routes_list
-    @routes.each.with_index(1) { |route, index| puts "#{index}. #{route}" }  #  @routes.each_with_index { |route, index| puts "#{index.next}. #{route}" }
+    @routes.each.with_index(1) { |route, index| puts "#{index}. #{route}" }  
   end
 
   def show_train_wagon_yield(train)
@@ -188,13 +186,17 @@ class Main
     puts 'Создаем поезд...'
     print "Введите номер поезда (формат -> xxx-xx): "
     number = gets.chomp
-    # recue RuntimeError => e
+    # rescue RuntimeError => e
     #   puts "Ошибка: #{e.message}. Попробуйте еще раз."
     #   retry
     # end
     puts "Введите тип поезда:\n 1. Грузовой,\n 2. Пассажирский"
     type = gets.chomp.to_i
     # raise 'Введен неверный тип вагона' unless type == 1 || type == 2
+    #  rescue StandardError => e 
+    #    puts "Ошибка: #{e.message}. Попробуйте еще раз."
+    #    press_key
+    #    retry
     puts "Введите количество вагонов:"
     wagons_count = gets.chomp.to_i
     wagons = []
@@ -220,7 +222,6 @@ class Main
     show_trains_list
     puts "Производитель созданных вагонов: #{wagons.last.company_name}, поезда: #{@trains.last.company_name}"
     press_key
-    # STDIN.getch
   end
 
   def create_station
@@ -275,7 +276,7 @@ class Main
           puts 'Введите номер новой промежуточной станции ...'
           intermediate_station = stations_to_add[gets.chomp.to_i - 1]
           route.add_intermediate_station(intermediate_station)
-          # puts "Станция '#{station}' добавлена в текущий маршрут" # or #{stations[-2]}
+          puts "Станция '#{intermediate_station}' добавлена в текущий маршрут" # or #{stations[-2]}
           puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}"
           press_key
         else
@@ -286,16 +287,16 @@ class Main
       stations_to_remove = route.stations[1...-1]
       if stations_to_remove.any?
         stations_to_remove.each.with_index(1) { |station, index| puts "#{index}. #{station}" } 
-        remove_station = stations_to_remove[gets.chomp.to_i - 1] # @stations -> stations_to_remove 
+        remove_station = stations_to_remove[gets.chomp.to_i - 1] 
         route.remove_intermediate_station(remove_station)
-        # puts "Станция #{remove_station} удалена из маршрута."
+        puts "Станция #{remove_station} удалена из маршрута."
         puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}"
         press_key
       else
         puts 'Ошибка, в маршруте нет промежуточных станций.'
       end
     else
-      puts 'Неизвестная команда!'
+      puts UNKNOWN_COMMAND
     end
   end
 
@@ -333,7 +334,7 @@ class Main
         elsif sel == 2
           train.detach_wagon
         else
-          puts 'Неизвестная команда!'
+          puts UNKNOWN_COMMAND
         end
       elsif operation == 2
         show_train_wagon_yield(train)
@@ -351,11 +352,11 @@ class Main
           wagon_select.clear
           puts "Номер вагона: #{wagon_select.number}, свободно: #{wagon_select.free_size}, занято: #{wagon_select.filled_size}"
         else
-          puts 'Неизвестная команда!'
+          puts UNKNOWN_COMMAND
         end
         press_key
       else
-        puts 'Неизвестная команда!'
+        puts UNKNOWN_COMMAND
       end 
   end
 
@@ -420,7 +421,7 @@ class Main
             press_key
           end
         else
-          puts 'Неизвестная команда!'
+          puts UNKNOWN_COMMAND
         end
       end
     end
@@ -449,6 +450,7 @@ class Main
     puts  'Информация о поездах на станциях (стандарт)'
     show_station_info
     puts '-*-' * 20
+    press_key
     puts 'Информация о поездах на станции (yield)'
     show_station_info_yield
     puts '-*-' * 20
