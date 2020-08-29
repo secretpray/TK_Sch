@@ -129,20 +129,17 @@ class Main
   def select_station
     show_stations_list
     puts 'Выберите станцию:'
-    @station = @stations[gets.chomp.to_i - 1]
-    puts "Выбрана станция #{@station}"
+    station = @stations[gets.chomp.to_i - 1]
   end
 
   def select_route
     puts 'Выберите маршрут для его корректировки...'
-    @route = @routes[gets.chomp.to_i - 1]
-    puts "Выбран маршрут: #{@route}" 
+    route = @routes[gets.chomp.to_i - 1]
   end
 
   def select_train
     puts 'Выберите поезд для управления его составом...'
-    @train = @trains[gets.chomp.to_i - 1]
-    puts "Выбран поезд: #{@train}"
+    train = @trains[gets.chomp.to_i - 1]
   end
 
   def show_stations_list
@@ -154,12 +151,13 @@ class Main
   end
 
   def show_station_info_yield
-    select_station
-    if @station.trains.empty?
-      puts "На станции #{@station} нет поездов"
+    station = select_station
+    puts "Выбрана станция #{station}"
+    if station.trains.empty?
+      puts "На станции #{station} нет поездов"
     else
-      @station.each_train do |train|
-      puts "Количество поездов на станции #{@station}: #{@station.trains.size}."
+      station.each_train do |train|
+      puts "Количество поездов на станции #{station}: #{station.trains.size}."
       puts "Номер поезда: #{train.number}, тип поезда: #{train.type}, количество вагонов: #{train.wagons.size}"
       end
     end
@@ -187,11 +185,11 @@ class Main
   end
 
   def show_station_info
-    select_station
-    if @station.trains.empty?
-      puts "На станции #{@station} нет поездов"
+    station = select_station
+    if station.trains.empty?
+      puts "На станции #{station} нет поездов"
     else
-      puts "Сейчас на станции #{@station} следующие поезда (#{@station.trains.size}):\n#{@station.current_trains.join("\n")}"
+      puts "Сейчас на станции #{station} следующие поезда (#{station.trains.size}):\n#{station.current_trains.join("\n")}"
     end
   end
 
@@ -318,14 +316,15 @@ class Main
     puts  '-*-' * 15
     show_routes_list
     puts  '-*-' * 15
-    select_route
+    route = select_route
+    puts "Выбран маршрут: #{route}" 
     puts "Введите:\n 1 => для добавления промежуточной станции\n 2 => для удаления промежуточной станции\n 0 => для выхода из меню"
     selects = gets.chomp.to_i
     return if selects == 0
     if selects == 1
-      add_station_to_route(@route)
+      add_station_to_route(route)
     elsif selects == 2
-      del_station_to_route(@route)
+      del_station_to_route(route)
     else
       puts UNKNOWN_COMMAND
       press_key
@@ -385,7 +384,8 @@ class Main
     # show(trains)
     show_trains_list_number
     puts  '-*-' * 15
-    select_train
+    train = select_train
+    puts "Выбран поезд: #{train}"
     puts "1 -> чтобы добавить или отцепить вагоны в состав\n2 -> чтобы занять или освободить место в вагоне"
     operation = gets.chomp.to_i
       if operation == 1
@@ -393,15 +393,15 @@ class Main
         sel = gets.chomp.to_i
         case sel
           when 1
-            add_wagon_to_train(@train)
+            add_wagon_to_train(train)
           when 2
-            @train.detach_wagon
+            train.detach_wagon
           else
             raise ArgumentError, UNKNOWN_COMMAND
             press_key
         end
       elsif operation == 2
-        change_wagon_size(@train)
+        change_wagon_size(train)
       else
         raise ArgumentError, UNKNOWN_COMMAND
         press_key
