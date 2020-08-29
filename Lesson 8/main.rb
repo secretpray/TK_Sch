@@ -134,17 +134,21 @@ class Main
     @stations.each { |station| puts "#{station}" }
   end
 
-  def show_station_info_yield
+  def select_station
     show_stations_list
     puts 'Выберите станцию:'
     station = @stations[gets.chomp.to_i - 1]
+    return station
+  end
+
+  def show_station_info_yield
+    select_station
     if station.trains.empty?
       puts "На станции #{station} нет поездов"
     else
       station.each_train do |train|
       puts "Количество поездов на станции #{station}: #{station.trains.size}."
-      puts "Номер поезда: #{train.number}, тип поезда: #{train.type}"
-      puts "Количество вагонов: #{train.wagons.size}"
+      puts "Номер поезда: #{train.number}, тип поезда: #{train.type}, количество вагонов: #{train.wagons.size}"
       end
     end
   end
@@ -171,9 +175,7 @@ class Main
   end
 
   def show_station_info
-    show_stations_list
-    puts 'Выберите станцию:'
-    station = @stations[gets.chomp.to_i - 1]
+    select_station
     if station.trains.empty?
       puts "На станции #{station} нет поездов"
     else
@@ -298,16 +300,19 @@ class Main
     press_key
   end
 
+  def select_route
+    puts 'Выберите маршрут для его корректировки...'
+    route = @routes[gets.chomp.to_i - 1]
+    puts "Выбран маршрут: #{route}" 
+  end
+
   def edit_station
     system 'clear'
     puts 'Управление станциями на маршруте...'
     puts  '-*-' * 15
     show_routes_list
     puts  '-*-' * 15
-    puts 'Выберите маршрут для его корректировки...'
-    route = @routes[gets.chomp.to_i - 1]
-    puts "Выбран маршрут: #{route}"
-
+    select_route
     puts "Введите:\n 1 => для добавления промежуточной станции\n 2 => для удаления промежуточной станции\n 0 => для выхода из меню"
     selects = gets.chomp.to_i
     return if selects == 0
@@ -327,12 +332,12 @@ class Main
     if wagon_type == 1
       puts 'Введите грузоподьемность вагона в тоннах (от 60 до 120)'
       volume_size = gets.chomp.to_i
-      volume_size = 60 if volume_size > 120 || volume_size < 60
+      # volume_size = 60 if volume_size > 120 || volume_size < 60
       train.attach_wagon(CargoWagon.new(volume_size))
     elsif wagon_type == 2
       puts 'Введите количество мест в вагоне (от 18 до 64)'
       place_count = gets.chomp.to_i
-      place_count = 54 if place_count > 64 || place_count < 18
+      # place_count = 54 if place_count > 64 || place_count < 18
       train.attach_wagon(PassengerWagon.new(place_count))
     else
       raise "Вагон неверного типа не может быть добавлен в состав."
@@ -352,16 +357,17 @@ class Main
     puts "Выбран вагон #{wagon_select}: (свободно: #{wagon_select.free_size}, занято: #{wagon_select.filled_size})"
     puts "1. Заполнить вагон\n2. Освободить вагон\n"
     wg = gets.chomp.to_i
-    if wg == 1
-      wagon_select.fill
-      puts "Номер вагона: #{wagon_select.number}, свободно: #{wagon_select.free_size}, занято: #{wagon_select.filled_size}"
-    elsif wg == 2
-      wagon_select.clear
-      puts "Номер вагона: #{wagon_select.number}, свободно: #{wagon_select.free_size}, занято: #{wagon_select.filled_size}"
-    else
-      raise UNKNOWN_COMMAND
-      press_key
-    end
+    case wg
+      when 1
+        wagon_select.fill
+        puts "Номер вагона: #{wagon_select.number}, свободно: #{wagon_select.free_size}, занято: #{wagon_select.filled_size}"
+      when 2
+        wagon_select.clear
+        puts "Номер вагона: #{wagon_select.number}, свободно: #{wagon_select.free_size}, занято: #{wagon_select.filled_size}"
+      else
+        raise ArgumentError, UNKNOWN_COMMAND
+        press_key
+      end
     rescue Exception => e
       puts "Возникла ошибка #{e.message}."
     press_key
