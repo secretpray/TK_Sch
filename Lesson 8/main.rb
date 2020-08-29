@@ -126,6 +126,25 @@ class Main
       end
   end
 
+  def select_station
+    show_stations_list
+    puts 'Выберите станцию:'
+    @station = @stations[gets.chomp.to_i - 1]
+    puts "Выбрана станция #{@station}"
+  end
+
+  def select_route
+    puts 'Выберите маршрут для его корректировки...'
+    @route = @routes[gets.chomp.to_i - 1]
+    puts "Выбран маршрут: #{@route}" 
+  end
+
+  def select_train
+    puts 'Выберите поезд для управления его составом...'
+    @train = @trains[gets.chomp.to_i - 1]
+    puts "Выбран поезд: #{@train}"
+  end
+
   def show_stations_list
     @stations.each.with_index(1) { |station, index| puts "#{index}. #{station}" } 
   end
@@ -134,20 +153,13 @@ class Main
     @stations.each { |station| puts "#{station}" }
   end
 
-  def select_station
-    show_stations_list
-    puts 'Выберите станцию:'
-    station = @stations[gets.chomp.to_i - 1]
-    return station
-  end
-
   def show_station_info_yield
     select_station
-    if station.trains.empty?
-      puts "На станции #{station} нет поездов"
+    if @station.trains.empty?
+      puts "На станции #{@station} нет поездов"
     else
-      station.each_train do |train|
-      puts "Количество поездов на станции #{station}: #{station.trains.size}."
+      @station.each_train do |train|
+      puts "Количество поездов на станции #{@station}: #{@station.trains.size}."
       puts "Номер поезда: #{train.number}, тип поезда: #{train.type}, количество вагонов: #{train.wagons.size}"
       end
     end
@@ -176,10 +188,10 @@ class Main
 
   def show_station_info
     select_station
-    if station.trains.empty?
-      puts "На станции #{station} нет поездов"
+    if @station.trains.empty?
+      puts "На станции #{@station} нет поездов"
     else
-      puts "Сейчас на станции #{station} следующие поезда (#{station.trains.size}):\n#{station.current_trains.join("\n")}"
+      puts "Сейчас на станции #{@station} следующие поезда (#{@station.trains.size}):\n#{@station.current_trains.join("\n")}"
     end
   end
 
@@ -300,12 +312,6 @@ class Main
     press_key
   end
 
-  def select_route
-    puts 'Выберите маршрут для его корректировки...'
-    route = @routes[gets.chomp.to_i - 1]
-    puts "Выбран маршрут: #{route}" 
-  end
-
   def edit_station
     system 'clear'
     puts 'Управление станциями на маршруте...'
@@ -317,9 +323,9 @@ class Main
     selects = gets.chomp.to_i
     return if selects == 0
     if selects == 1
-      add_station_to_route(route)
+      add_station_to_route(@route)
     elsif selects == 2
-      del_station_to_route(route)
+      del_station_to_route(@route)
     else
       puts UNKNOWN_COMMAND
       press_key
@@ -379,31 +385,30 @@ class Main
     # show(trains)
     show_trains_list_number
     puts  '-*-' * 15
-    puts 'Выберите поезд для управления его составом...'
-    train = @trains[gets.chomp.to_i - 1]
-    puts "Выбран - #{train}"
-    puts "1 -> чтобы добавить или отцепить вагоны в состав\n2 -> чтобы занять или освободить место в вагоне\n0 -> для выхода из меню"
+    select_train
+    puts "1 -> чтобы добавить или отцепить вагоны в состав\n2 -> чтобы занять или освободить место в вагоне"
     operation = gets.chomp.to_i
       if operation == 1
-        puts "Введите:\n 1 => для добавления вагона в состав\n 2 => для удаления вагона из состава\n 0 => для выхода из меню"
+        puts "Введите:\n 1 => для добавления вагона в состав\n 2 => для удаления вагона из состава"
         sel = gets.chomp.to_i
-        return if sel == 0
-        if sel == 1
-          add_wagon_to_train(train)
-        elsif sel == 2
-          train.detach_wagon
-        else
-          puts UNKNOWN_COMMAND
+        case sel
+          when 1
+            add_wagon_to_train(@train)
+          when 2
+            @train.detach_wagon
+          else
+            raise ArgumentError, UNKNOWN_COMMAND
+            press_key
         end
       elsif operation == 2
-        change_wagon_size(train)
+        change_wagon_size(@train)
       else
-        raise UNKNOWN_COMMAND
-      end 
-      press_key
-      rescue Exception => e
-        puts "Возникла ошибка #{e.message}."
-      press_key
+        raise ArgumentError, UNKNOWN_COMMAND
+        press_key
+      end
+    rescue Exception => e
+      puts "Возникла ошибка #{e.message}."
+    press_key
   end
 
   def assign_route
