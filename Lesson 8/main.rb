@@ -18,10 +18,7 @@ class Main
   
   UNKNOWN_COMMAND = 'Неизвестная команда!'
 
-  attr_reader :stations,
-              :trains,
-              :routes,
-              :interface
+  attr_reader :stations, :trains, :routes, :interface
 
   def initialize
     @interface = Interface.new(self)
