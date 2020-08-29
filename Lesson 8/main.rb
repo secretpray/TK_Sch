@@ -157,7 +157,7 @@ class Main
   end
 
   def show_trains_list_number
-    @trains.each.with_index(1) { |train, index| puts "#{index}. Поезд номер: #{train.number}, тип #{train.type}, в составе которого #{train.wagons.size} вагонов(а)" }
+    @trains.each.with_index(1) { |train, index| puts "#{index}. Поезд номер: #{train.number}, тип #{train.type}, #{train.wagons.size} вагонов(а)" }
   end
 
   def show_routes_list
@@ -166,7 +166,7 @@ class Main
 
   def show_train_wagon_yield(train)
     train.each_wagons do |wagon| 
-      puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type_wagon}, кол-во свободных мест: #{wagon.free_size}, количество занятых мест:#{wagon.filled_size}"
+      puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type_wagon}, свободно: #{wagon.free_size}, занято: #{wagon.filled_size}"
       end
   end
 
@@ -183,13 +183,6 @@ class Main
 
   def create_train
     system 'clear'
-    puts 'Создаем поезд...'
-    print "Введите номер поезда (формат -> xxx-xx): "
-    number = gets.chomp
-    # rescue RuntimeError => e
-    #   puts "Ошибка: #{e.message}. Попробуйте еще раз."
-    #   retry
-    # end
     puts "Введите тип поезда:\n 1. Грузовой,\n 2. Пассажирский"
     type = gets.chomp.to_i
     raise 'Введен неверный тип вагона' unless type == 1 || type == 2
@@ -207,13 +200,22 @@ class Main
     else
       raise "Введен неверный тип поезда."
     end
-    if type == 1
-      @trains << CargoTrain.new(number, wagons)
-    elsif type == 2
-      @trains << PassengerTrain.new(number, wagons)
-    else 
-      raise UNKNOWN_COMMAND
+    begin
+      print "Введите номер поезда (формат -> xxx-xx): "
+      number = gets.chomp
+    
+      if type == 1
+        @trains << CargoTrain.new(number, wagons)
+      elsif type == 2
+        @trains << PassengerTrain.new(number, wagons)
+      else 
+        raise ArgumentError, UNKNOWN_COMMAND
+      end
+    rescue RuntimeError => e
+      puts "Ошибка: #{e.message}. Попробуйте еще раз."
+      retry
     end
+    
     puts 'Создан(ы):'
     show_trains_list
     press_key

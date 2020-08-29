@@ -56,7 +56,7 @@ class CargoWagon < Wagon
   end
 
   def can_clear?
-    volume < 1
+    volume >= 1
   end
   
   def validate!

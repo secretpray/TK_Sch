@@ -56,7 +56,7 @@ class PassengerWagon < Wagon
   end
 
   def can_clear?
-    places_filled < 1
+    places_filled >= 1
   end
 
   def validate!
