@@ -10,7 +10,6 @@ require_relative "train_cargo"
 require_relative "wagon"
 require_relative "wagon_passenger"
 require_relative "wagon_cargo"
-# require_relative "main"
 require 'io/console' # (для использования STDIN.getch вместо gets)
 
 

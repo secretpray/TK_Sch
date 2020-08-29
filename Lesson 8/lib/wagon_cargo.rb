@@ -4,7 +4,7 @@ class CargoWagon < Wagon
 
   TYPE_WAGON_ERROR = '-> yеверный тип вагона'
   SIZE_ERROR_DATE  = '-> вместимость выражается в числах'
-  SIZE_ERROR       = '->  неверно указана вместимость вагона'
+  SIZE_ERROR       = '-> неверно указана вместимость вагона'
   NAME_WAGON       = 'Грузовой вагон'
   MIN_SIZE         = 60 
   MAX_SIZE         = 120
@@ -21,8 +21,8 @@ class CargoWagon < Wagon
     @type_wagon   = :cargo
     # size > MAX_SIZE || size < MIN_SIZE ? @volume_size = 72 : @volume_size  = size
     @volume_size  = size
-    validate!
     @volume       = 0
+    validate!
     @number       =rand(1..1000)
     super
   end
@@ -52,11 +52,11 @@ class CargoWagon < Wagon
   attr_writer :volume
 
   def can_fill?
-    volume_size - volume > 0
+    free_size > 0
   end
 
   def can_clear?
-    volume > 1
+    volume < 1
   end
   
   def validate!
