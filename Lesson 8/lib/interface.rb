@@ -1,10 +1,9 @@
 class Interface
-
-  EXIT                  = "Для выхода из программы нажмите Enter или 0 ... \033[5m _ \033[25m"   
-  RETURN                = "Для возврата в предыдущее меню нажмите Enter или 0 ... \033[5m _ \033[25m" 
-  CYAN_ON_BLACK_COLOR   = 'printf "\033[1;40;96m\033[2J\e[f"'  
+  EXIT                  = "Для выхода из программы нажмите Enter или 0 \033[5m _ \033[25m"
+  RETURN                = "Для возврата в предыдущее меню нажмите Enter или 0 \033[5m _ \033[25m"
+  CYAN_ON_BLACK_COLOR   = 'printf "\033[1;40;96m\033[2J\e[f"'
   YELLOW_ON_BLUE_COLOR  = 'printf "\033[1;44;93m\033[2J\e[f"'
-  CYAN_ON_BLUE_COLOR    = 'printf "\033[1;44;96m\033[2J\e[f"' 
+  CYAN_ON_BLUE_COLOR    = 'printf "\033[1;44;96m\033[2J\e[f"'
   GREEN_ON_GREY_COLOR   = 'printf "\033[1;100;92m\033[2J\e[f"'
   attr_reader :main
 
@@ -13,7 +12,7 @@ class Interface
   end
 
   def help_main
-    system CYAN_ON_BLACK_COLOR 
+    system CYAN_ON_BLACK_COLOR
     system 'clear'
     puts '*****' * 14
     puts '*            Главное меню "Управления железной дорогой.            *'
@@ -21,7 +20,7 @@ class Interface
     puts
     puts 'Выберите действие. Некоторые функции доступны после создания обьектов!'
     puts 'Введите 1 => для создания поезда, станции, маршрута;'
-    puts 'Введите 2 => для изменение маршрута, состава поездов и их перемещения;' unless main.trains.empty? && main.routes.empty?
+    puts 'Введите 2 => для изменение маршрута, поезда и перемещения;' unless main.trains.empty? && main.routes.empty?
     puts 'Введите 3 => для получения информации о поездах, маршрутах и станциях;'
     puts
     print EXIT
@@ -29,19 +28,19 @@ class Interface
   end
 
   def help_create
-    system YELLOW_ON_BLUE_COLOR  # alt. system 'printf "\033[1;44;96m\033[2J\e[f"'    
+    system YELLOW_ON_BLUE_COLOR  # alt. system 'printf "\033[1;44;96m\033[2J\e[f"'
     system 'clear'
     puts 'Выберите действие. Некоторые функции доступны после создания обьектов!'
     puts 'Введите 1 => для создания поезда;'
     puts 'Введите 2 => для создания станции;'
     puts 'Введите 3 => для создания маршрута;' unless main.stations.size < 2
     puts
-    print RETURN 
+    print RETURN
     gets.chomp.to_i
   end
 
   def help_edit
-    system CYAN_ON_BLUE_COLOR 
+    system CYAN_ON_BLUE_COLOR
     system 'clear'
     puts 'Выберите действие. Некоторые функции доступны после создания обьектов!'
     puts 'Введите 1 => для управления станциями;' unless main.stations.size < 2
@@ -59,7 +58,7 @@ class Interface
     puts 'Выберите действие. Некоторые функции доступны после создания обьектов!'
     puts 'Введите 1 => для вывода информации о поездах, станциях и маршрутах;'
     puts 'Введите 2 => для вывода информации о поездах на станции;' unless main.stations.size < 2
-    puts 'Введите 3 => для проверки наличия поезда по его номеру' unless main.trains.size == 0
+    puts 'Введите 3 => для проверки наличия поезда по его номеру' unless  main.trains.size.zero?
     puts
     print RETURN
     gets.chomp.to_i

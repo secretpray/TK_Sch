@@ -15,7 +15,7 @@ class Route
   end
 
   def to_s
-    stations.join(' - ')   # => "Station 1 - Station 2"
+    stations.join(' - ')  # => "Station 1 - Station 2"
   end
 
   # def name

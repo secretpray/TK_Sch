@@ -1,15 +1,15 @@
-require_relative "instance_counter"
-require_relative "manufacture"
+require_relative 'instance_counter'
+require_relative 'manufacture'
 require_relative 'validate'
-require_relative "interface"
-require_relative "station"
-require_relative "route"
-require_relative "train"
-require_relative "train_passenger"
-require_relative "train_cargo"
-require_relative "wagon"
-require_relative "wagon_passenger"
-require_relative "wagon_cargo"
+require_relative 'interface'
+require_relative 'station'
+require_relative 'route'
+require_relative 'train'
+require_relative 'train_passenger'
+require_relative 'train_cargo'
+require_relative 'wagon'
+require_relative 'wagon_passenger'
+require_relative 'wagon_cargo'
 require 'io/console' # (для использования STDIN.getch вместо gets)
 
 
@@ -45,7 +45,6 @@ rand(7..30).times { wagon_pass3 << PassengerWagon.new(rand(18...64)) }
 
 @route1 = Route.new(@station1, @station2)
 @route2 = Route.new(@station2, @station3)
-
 
 @cargo1.assign_a_route(@route2)
 @passenger1.assign_a_route(@route1)

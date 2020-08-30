@@ -1,17 +1,17 @@
-require_relative "lib/instance_counter"
-require_relative "lib/manufacture"
+require_relative 'lib/instance_counter'
+require_relative 'lib/manufacture'
 require_relative 'lib/validate'
-require_relative "lib/interface"
-require_relative "lib/station"
-require_relative "lib/route"
-require_relative "lib/train"
-require_relative "lib/train_passenger"
-require_relative "lib/train_cargo"
-require_relative "lib/wagon"
-require_relative "lib/wagon_passenger"
-require_relative "lib/wagon_cargo"
-require_relative "lib/string"
-# require_relative "lib/test"
+require_relative 'lib/interface'
+require_relative 'lib/station'
+require_relative 'lib/route'
+require_relative 'lib/train'
+require_relative 'lib/train_passenger'
+require_relative 'lib/train_cargo'
+require_relative 'lib/wagon'
+require_relative 'lib/wagon_passenger'
+require_relative 'lib/wagon_cargo'
+require_relative 'lib/string'
+# require_relative 'lib/test'
 require 'io/console' # (для использования STDIN.getch вместо gets)
 
 
@@ -98,11 +98,11 @@ class Main
         color_main_menu
         break
       when 1
-        all_information
+        all_info
       when 2
         train_on_station
       when 3
-        exist_train_by_number
+        exist_train_number
       else
         puts UNKNOWN_COMMAND
       end
@@ -117,7 +117,7 @@ class Main
     RESET_COLOR 
   end
 
-  def press_key
+  def press_but
     printf PRESS_KEY_BLINK
       loop do
         break if [' ', "\r"].include?(STDIN.getch)
@@ -127,21 +127,21 @@ class Main
   def select_station
     show_stations_list
     puts 'Выберите станцию:'
-    station = @stations[gets.chomp.to_i - 1]
+    @stations[gets.chomp.to_i - 1]
   end
 
   def select_route
     puts 'Выберите маршрут для его корректировки...'
-    route = @routes[gets.chomp.to_i - 1]
+    @routes[gets.chomp.to_i - 1]
   end
 
   def select_train
     puts 'Выберите поезд для управления его составом...'
-    train = @trains[gets.chomp.to_i - 1]
+    @trains[gets.chomp.to_i - 1]
   end
 
   def show_stations_list
-    @stations.each.with_index(1) { |station, index| puts "#{index}. #{station}" } 
+    @stations.each.with_index(1) { |station, index| puts "#{index}. #{station}" }
   end
 
   def show_stations_list_route
@@ -155,31 +155,34 @@ class Main
       puts "На станции #{station} нет поездов"
     else
       station.each_train do |train|
-      puts "Количество поездов на станции #{station}: #{station.trains.size}."
-      puts "Номер поезда: #{train.number}, тип поезда: #{train.type}, количество вагонов: #{train.wagons.size}"
+        puts "Количество поездов на станции #{station}: #{station.trains.size}."
+        puts "Номер поезда: #{train.number}, тип поезда: #{train.type}, количество вагонов: #{train.wagons.size}"
       end
     end
   end
 
   def show_trains_list
-    @trains.each do |train| 
+    @trains.each do |train|
       puts "Поезд номер: #{train.number}, тип #{train.type}, в составе которого #{train.wagons.size} вагонов(а)."
-      puts "Вместимость вагонов - #{train.wagons.last.size}." 
-      end
+      puts "Вместимость вагонов - #{train.wagons.last.size}."
+    end
   end
 
   def show_trains_list_number
-    @trains.each.with_index(1) { |train, index| puts "#{index}. Поезд номер: #{train.number}, тип #{train.type}, #{train.wagons.size} вагонов(а)" }
+    @trains.each.with_index(1) do |train, index|
+      puts "#{index}. Поезд номер: #{train.number}, тип #{train.type}, #{train.wagons.size} вагонов(а)"
+    end
   end
 
   def show_routes_list
-    @routes.each.with_index(1) { |route, index| puts "#{index}. #{route}" }  
+    @routes.each.with_index(1) { |route, index| puts "#{index}. #{route}" }
   end
 
   def show_train_wagon_yield(train)
-    train.each_wagons do |wagon| 
-      puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type_wagon}, свободно: #{wagon.free_size}, занято: #{wagon.filled_size}"
-      end
+    train.each_wagons do |wagon|
+      puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type_wagon};"
+      puts "свободно: #{wagon.free_size}, занято: #{wagon.filled_size}"
+    end
   end
 
   def show_station_info
@@ -187,7 +190,7 @@ class Main
     if station.trains.empty?
       puts "На станции #{station} нет поездов"
     else
-      puts "Сейчас на станции #{station} следующие поезда (#{station.trains.size}):\n#{station.current_trains.join("\n")}"
+      puts "На станции #{station} следующие поезда (#{station.trains.size}):\n#{station.current_trains.join("\n")}"
     end
   end
 
@@ -196,7 +199,8 @@ class Main
     puts "Введите тип поезда:\n 1. Грузовой,\n 2. Пассажирский"
     type = gets.chomp.to_i
     raise ArgumentError, 'Введен неверный тип вагона' unless type == 1 || type == 2
-    puts "Введите количество вагонов:"
+
+    puts 'Введите количество вагонов:'
     wagons_count = gets.chomp.to_i
     wagons = []
     if type == 1
@@ -208,124 +212,117 @@ class Main
       place_count = gets.chomp.to_i
       wagons_count.times { wagons << PassengerWagon.new(place_count) }
     else
-      raise ArgumentError, "Введен неверный тип поезда."
+      raise ArgumentError, 'Введен неверный тип поезда.'
     end
     begin
-      print "Введите номер поезда (формат -> xxx-xx): "
+      print 'Введите номер поезда (формат -> xxx-xx): '
       number = gets.chomp
-    
       if type == 1
         @trains << CargoTrain.new(number, wagons)
       elsif type == 2
         @trains << PassengerTrain.new(number, wagons)
-      else 
+      else
         raise ArgumentError, UNKNOWN_COMMAND
       end
     rescue RuntimeError => e
       puts "Ошибка: #{e.message}. Попробуйте еще раз."
       retry
     end
-    
     puts 'Создан(ы):'
     show_trains_list
-    press_key
+    press_but
     puts "Производитель созданных вагонов: #{wagons.last.company_name}, поезда: #{@trains.last.company_name}"
-    rescue Exception => e
-      puts "Возникла ошибка #{e.message}. Поезд не создан."
-    press_key
+  rescue StandardError => e
+    puts "Возникла ошибка #{e.message}. Поезд не создан."
+    press_but
   end
 
   def create_station
     system 'clear'
     puts 'Создаем станцию...'
-    print "Введите название для новой станции: "
+    print 'Введите название для новой станции: '
     @stations << Station.new(gets.chomp.to_s)
     puts "Станция #{@stations.last} создана."
     puts 'Список всех станций:'
     show_stations_list
     puts "Общее количество созданных станций - #{Station.all.size}"
-    press_key
-    rescue Exception => e
-      puts "Возникла ошибка #{e.message}. Станция не создана."
-    press_key
+    press_but
+  rescue StandardError => e
+    puts "Возникла ошибка #{e.message}. Станция не создана."
+    press_but
   end
 
   def create_route
     system 'clear'
     puts 'Создаем маршрут...'
     show_stations_list
-    puts  'Ввберите номер начальной станции...'
+    puts 'Ввберите номер начальной станции...'
     departure_station = @stations[gets.chomp.to_i - 1]
-    puts  'Выберите номер конечной станции...'
+    puts 'Выберите номер конечной станции...'
     destination_station = @stations[gets.chomp.to_i - 1]
     @routes << Route.new(departure_station, destination_station)
     puts "Маршрут #{@routes.last} создан."
     # show(routes)
     puts 'Создан(ы):'
     show_routes_list
-    press_key
-    rescue Exception => e
-      puts "Возникла ошибка #{e.message}. Маршрут не создан."
-    press_key
+    press_but
+  rescue StandardError => e
+    puts "Возникла ошибка #{e.message}. Маршрут не создан."
+    press_but
   end
 
   def add_station_to_route(route)
     puts "Добавление новой, промежуточной станции в маршрут #{route}."
     stations_to_add = @stations - route.stations
-      if stations_to_add.any?
-        stations_to_add.each.with_index(1) { |station, index| puts "#{index}. #{station}" } #
-        puts 'Введите номер новой промежуточной станции ...'
-        intermediate_station = stations_to_add[gets.chomp.to_i - 1]
-        route.add_intermediate_station(intermediate_station)
-        puts "Станция '#{intermediate_station}' добавлена в текущий маршрут" # or #{stations[-2]}
-        puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}"
-        press_key
-      else
-        raise ArgumentError, 'Ошибка, нет станций, которые можно было бы добавить в маршрут.'
-        press_key
-      end
-      rescue Exception => e
-        puts "Возникла ошибка #{e.message}."
-      press_key
+    raise ArgumentError, 'Ошибка, нет станций, для добавления в маршрут.' unless stations_to_add.any?
+
+    stations_to_add.each.with_index(1) { |station, index| puts "#{index}. #{station}" }
+    puts 'Введите номер новой промежуточной станции ...'
+    intermediate_station = stations_to_add[gets.chomp.to_i - 1]
+    route.add_intermediate_station(intermediate_station)
+    puts "Станция '#{intermediate_station}' добавлена в текущий маршрут" # or #{stations[-2]}
+    puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}"
+    press_but
+  rescue StandardError => e
+    puts "Возникла ошибка #{e.message}."
+    press_but
   end
 
   def del_station_to_route(route)
     puts 'Удаление промежуточной станции'
     stations_to_remove = route.stations[1...-1]
-    if stations_to_remove.any?
-      stations_to_remove.each.with_index(1) { |station, index| puts "#{index}. #{station}" } 
-      remove_station = stations_to_remove[gets.chomp.to_i - 1] 
-      route.remove_intermediate_station(remove_station)
-      puts "Станция #{remove_station} удалена из маршрута."
-      puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}"
-      press_key
-    else
-      raise ArgumentError, 'Ошибка, в маршруте нет промежуточных станций.'
-      press_key
-    end
-    rescue Exception => e
-      puts "Возникла ошибка #{e.message}."
-    press_key
+    raise ArgumentError, 'Ошибка, в маршруте нет промежуточных станций.' unless stations_to_remove.any?
+
+    stations_to_remove.each.with_index(1) { |station, index| puts "#{index}. #{station}" }
+    remove_station = stations_to_remove[gets.chomp.to_i - 1]
+    route.remove_intermediate_station(remove_station)
+    puts "Станция #{remove_station} удалена из маршрута."
+    puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}"
+    press_but
+  rescue StandardError => e
+    puts "Возникла ошибка #{e.message}."
+    press_but
   end
 
   def edit_station
     system 'clear'
     puts 'Управление станциями на маршруте...'
-    puts  '-*-' * 15
+    puts '-*-' * 15
     show_routes_list
-    puts  '-*-' * 15
+    puts '-*-' * 15
     route = select_route
-    puts "Выбран маршрут: #{route}" 
-    puts "Введите:\n 1 => для добавления промежуточной станции\n 2 => для удаления промежуточной станции\n 0 => для выхода из меню"
+    puts "Выбран маршрут: #{route}"
+    puts "Введите:\n 1 => для добавления станции\n 2 => для удаления станции\n 0 => для выхода из меню"
     selects = gets.chomp.to_i
-    return if selects == 0
+    return if selects.zero?
+
     if selects == 1
       add_station_to_route(route)
     elsif selects == 2
       del_station_to_route(route)
     else
       puts UNKNOWN_COMMAND
-      press_key
+      press_but
     end
   end
 
@@ -343,12 +340,11 @@ class Main
       # place_count = 54 if place_count > 64 || place_count < 18
       train.attach_wagon(PassengerWagon.new(place_count))
     else
-      raise ArgumentError, "Вагон неверного типа не может быть добавлен в состав."
-      press_key
+      raise ArgumentError, 'Вагон неверного типа не может быть добавлен в состав.'
     end
-    rescue Exception => e
-      puts "Возникла ошибка #{e.message}."
-    press_key  
+  rescue StandardError => e
+    puts "Возникла ошибка #{e.message}."
+    press_but
   end
 
   def change_wagon_size(train)
@@ -361,63 +357,60 @@ class Main
     puts "1. Заполнить вагон\n2. Освободить вагон\n"
     wg = gets.chomp.to_i
     case wg
-      when 1
-        wagon_select.fill
-        puts "Номер вагона: #{wagon_select.number}, свободно: #{wagon_select.free_size}, занято: #{wagon_select.filled_size}"
-      when 2
-        wagon_select.clear
-        puts "Номер вагона: #{wagon_select.number}, свободно: #{wagon_select.free_size}, занято: #{wagon_select.filled_size}"
-      else
-        raise ArgumentError, UNKNOWN_COMMAND
-        press_key
-      end
-    rescue Exception => e
-      puts "Возникла ошибка #{e.message}."
-    press_key
+    when 1
+      wagon_select.fill
+      puts "Номер вагона #{wagon_select.number}, free #{wagon_select.free_size}, filled #{wagon_select.filled_size}"
+    when 2
+      wagon_select.clear
+      puts "Номер вагона #{wagon_select.number}, free #{wagon_select.free_size}, filled #{wagon_select.filled_size}"
+    else
+      raise ArgumentError, UNKNOWN_COMMAND
+    end
+  rescue StandardError => e
+    puts "Возникла ошибка #{e.message}."
+    press_but
   end
 
   def edit_train
     system 'clear'
-    puts  '-*-' * 15
+    puts '-*-' * 15
     # show(trains)
     show_trains_list_number
-    puts  '-*-' * 15
+    puts '-*-' * 15
     train = select_train
     puts "Выбран поезд: #{train}"
     puts "1 -> чтобы добавить или отцепить вагоны в состав\n2 -> чтобы занять или освободить место в вагоне"
     operation = gets.chomp.to_i
-      if operation == 1
-        puts "Введите:\n 1 => для добавления вагона в состав\n 2 => для удаления вагона из состава"
-        sel = gets.chomp.to_i
-        case sel
-          when 1
-            add_wagon_to_train(train)
-          when 2
-            train.detach_wagon
-          else
-            raise ArgumentError, UNKNOWN_COMMAND
-            press_key
-        end
-      elsif operation == 2
-        change_wagon_size(train)
+    if operation == 1
+      puts "Введите:\n 1 => для добавления вагона в состав\n 2 => для удаления вагона из состава"
+      sel = gets.chomp.to_i
+      case sel
+      when 1
+        add_wagon_to_train(train)
+      when 2
+        train.detach_wagon
       else
         raise ArgumentError, UNKNOWN_COMMAND
-        press_key
       end
-    rescue Exception => e
-      puts "Возникла ошибка #{e.message}."
-    press_key
+    elsif operation == 2
+      change_wagon_size(train)
+    else
+      raise ArgumentError, UNKNOWN_COMMAND
+    end
+  rescue StandardError => e
+    puts "Возникла ошибка #{e.message}."
+    press_but
   end
 
   def assign_route
     system 'clear'
     puts 'Назначаем маршрут поезду...'
     if @trains.empty? || @routes.empty?
-      puts "Нужно сначала создать поезд/маршрут"
+      puts 'Нужно сначала создать поезд/маршрут'
     else
-      puts  '-*-' * 15
+      puts '-*-' * 15
       show_trains_list_number
-      puts  '-*-' * 15
+      puts '-*-' * 15
       puts 'Выберите поезд для назначения маршрута...'
       train = @trains[gets.chomp.to_i - 1]
       puts "Выбран - #{train}"
@@ -427,7 +420,7 @@ class Main
       route = @routes[gets.chomp.to_i - 1]
       train.assign_a_route(route)
       puts 'Маршрут успешно назначен'
-      press_key
+      press_but
       # STDIN.getch
     end
   end
@@ -439,75 +432,76 @@ class Main
     show_trains_list_number
     puts 'Введите номер поезда для отправления: '
     train = @trains[gets.chomp.to_i - 1]
-    if train
-      loop do
-        system 'clear'
-        puts "Поезд находится на станции: #{train.current_station}"
-        puts 'Введите 1 для отправления поезда вперед'
-        puts 'Введите 2 для отправления поезда назад'
-        puts
-        puts 'Для возврата в предыдущее меню нажмите Enter или 0 ...'
-        opt = gets.chomp.to_i
-        case opt
-        when 0
-          break
-        when 1
-          if train.on_last_station?
-            puts 'Ошибка, поезд на последней станции маршрута.'
-          else
-            system 'clear'
-            train.go_to_next_station
-            puts "Поезд прибыл на станцию #{train.current_station}"
-            STDIN.getch
-          end
-        when 2
-          if train.on_first_station?
-            puts 'Ошибка, поезд на первой станции маршрута.'
-          else
-            system 'clear'
-            train.go_to_previous_station
-            puts "Поезд прибыл на станцию #{train.current_station}"
-            press_key
-          end
+    return unless train
+
+    loop do
+      system 'clear'
+      puts "Поезд находится на станции: #{train.current_station}"
+      puts 'Введите 1 для отправления поезда вперед'
+      puts 'Введите 2 для отправления поезда назад'
+      puts
+      puts 'Для возврата в предыдущее меню нажмите Enter или 0 ...'
+      opt = gets.chomp.to_i
+      case opt
+      when 0
+        break
+      when 1
+        if train.on_last_station?
+          puts 'Ошибка, поезд на последней станции маршрута.'
         else
-          puts UNKNOWN_COMMAND
+          system 'clear'
+          train.go_to_next_station
+          puts "Поезд прибыл на станцию #{train.current_station}"
+          STDIN.getch
         end
+      when 2
+        if train.on_first_station?
+          puts 'Ошибка, поезд на первой станции маршрута.'
+        else
+          system 'clear'
+          train.go_to_previous_station
+          puts "Поезд прибыл на станцию #{train.current_station}"
+          press_but
+        end
+      else
+        puts UNKNOWN_COMMAND
       end
     end
   end
 
-  def all_information
+  def all_info
     system 'clear'
-    puts "Информация о поездах"
+    puts 'Информация о поездах'
     show_trains_list
     puts '-*-' * 20
-    puts "Информация о станциях"
+    puts 'Информация о станциях'
     show_stations_list
     puts '-*-' * 20
-    puts "Информация о маршрутах"
+    puts 'Информация о маршрутах'
     show_routes_list
     puts '-*-' * 20
-    puts "Общая ннформация о всех созданных обьектах (при их наличии):"
-    puts "Всего создано поездов: #{PassengerTrain.instances + CargoTrain.instances} (пассажирских - #{PassengerTrain.instances}, грузовых - #{CargoTrain.instances})" unless @trains.size <1
-    puts "Всего создано станций: #{Station.instances}"  unless @stations.size < 1
-    puts "Всего создано маршрутов: #{Route.instances}"  unless @routes.size < 1
-    press_key
+    puts 'Общая ннформация о всех созданных обьектах (при их наличии):'
+    puts "Всего создано поездов: #{PassengerTrain.instances + CargoTrain.instances}" unless @trains.empty?
+    puts "Из них пассажирских - #{PassengerTrain.instances}, грузовых - #{CargoTrain.instances}" unless @trains.empty?
+    puts "Всего создано станций: #{Station.instances}"  unless @stations.empty?
+    puts "Всего создано маршрутов: #{Route.instances}"  unless @routes.empty?
+    press_but
   end
 
   def train_on_station
     system 'clear'
-    puts  'Информация о поездах на станциях (стандарт)'
+    puts 'Информация о поездах на станциях (стандарт)'
     show_station_info
     puts '-*-' * 20
-    press_key
+    press_but
     puts 'Информация о поездах на станции (yield)'
     show_station_info_yield
     puts '-*-' * 20
-    press_key
+    press_but
   end
 
-  def exist_train_by_number
-    if @trains.size == 0
+  def exist_train_number
+    if @trains.empty?
       puts 'Поезда отсутствуют...'
     else
       puts 'Для удобстав выводим список поездов:'
@@ -515,19 +509,20 @@ class Main
       print 'Для проверки наличия поезда введите его номер - '
       view_train = Train.find(gets.chomp)
       return nil if view_train.nil?
+
       puts "Данные по поезду с выбранным номером: #{view_train}"
       puts '-*-' * 20
       puts 'Информация о вагонах в поезде (yield)'
       show_train_wagon_yield(view_train)
-      puts '-*-' * 20 
-      press_key
-    end  
+      puts '-*-' * 20
+      press_but
+    end
   end
 end
 
 =begin
   def show(list)
-    list.each.with_index(1){ |item, index| puts "#{index}: #{item}" } 
+    list.each.with_index(1){ |item, index| puts "#{index}: #{item}" }
   end
 
   def select_from_list(list)
