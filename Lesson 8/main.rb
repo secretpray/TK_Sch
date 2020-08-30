@@ -14,9 +14,7 @@ require_relative 'lib/string'
 # require_relative 'lib/test'
 require 'io/console' # (для использования STDIN.getch вместо gets)
 
-
 class Main
-  
   UNKNOWN_COMMAND       = 'Неизвестная команда!'
   PRESS_KEY_BLINK       = "\nДля продолжения нажмите пробел или Enter.. \033[1;5m_\033[0;25m"
   RESET_COLOR           = system 'printf "\033[0m\033[2J\e[f"'
@@ -25,10 +23,10 @@ class Main
   attr_reader :stations, :trains, :routes, :interface
 
   def initialize
-    @interface = Interface.new(self)
-    @trains   = []
-    @routes   = []
-    @stations = []
+    @interface  = Interface.new(self)
+    @trains     = []
+    @routes     = []
+    @stations   = []
   end
 
   def start
@@ -37,7 +35,7 @@ class Main
       case input
       when 0
         color_reset
-        break 
+        break
       when 1
         create_object
       when 2
@@ -49,9 +47,9 @@ class Main
       end
     end
   end
-  
+
   def create_object
-	  loop do
+    loop do
       input = interface.help_create
       case input
       when 0
@@ -114,14 +112,14 @@ class Main
   end
 
   def color_reset
-    RESET_COLOR 
+    RESET_COLOR
   end
 
   def press_but
     printf PRESS_KEY_BLINK
-      loop do
-        break if [' ', "\r"].include?(STDIN.getch)
-      end
+    loop do
+      break if [' ', "\r"].include?(STDIN.getch)
+    end
   end
 
   def select_station
@@ -145,7 +143,8 @@ class Main
   end
 
   def show_stations_list_route
-    @stations.each { |station| puts "#{station}" }
+    # @stations.each { |station| puts "#{station}" }
+    @stations.each { |station| puts station.to_s }
   end
 
   def show_station_info_yield
@@ -198,7 +197,8 @@ class Main
     system 'clear'
     puts "Введите тип поезда:\n 1. Грузовой,\n 2. Пассажирский"
     type = gets.chomp.to_i
-    raise ArgumentError, 'Введен неверный тип вагона' unless type == 1 || type == 2
+    # raise ArgumentError, 'Введен неверный тип вагона' unless type == 1 || type == 2
+    raise ArgumentError, 'Введен неверный тип вагона' unless [1, 2].include?(type)
 
     puts 'Введите количество вагонов:'
     wagons_count = gets.chomp.to_i

@@ -1,12 +1,11 @@
 class CargoWagon < Wagon
-  
   include Validate
 
   TYPE_WAGON_ERROR = '-> yеверный тип вагона'
   SIZE_ERROR_DATE  = '-> вместимость выражается в числах'
   SIZE_ERROR       = '-> неверно указана вместимость вагона'
   NAME_WAGON       = 'Грузовой вагон'
-  MIN_SIZE         = 60 
+  MIN_SIZE         = 60
   MAX_SIZE         = 120
 
   attr_reader :type_wagon,
@@ -23,7 +22,7 @@ class CargoWagon < Wagon
     @volume_size  = size
     @volume       = 0
     validate!
-    @number       =rand(1..1000)
+    @number = rand(1..1000)
     super
   end
 
@@ -35,16 +34,16 @@ class CargoWagon < Wagon
     can_clear? ? self.volume -= 1 : (raise 'Вагон пуст')
   end
 
-  def free_size # free_volume
+  def free_size
     volume_size - volume
   end
 
   def to_s
-    NAME_WAGON + " номер #{self.number}, вместимостью #{volume_size} куб.м"
+    NAME_WAGON + " номер #{number}, вместимостью #{volume_size} куб.м"
   end
 
-  def name 
-    NAME_WAGON + " номер #{self.number}, вместимостью #{volume_size} куб.м"
+  def name
+    NAME_WAGON + " номер #{number}, вместимостью #{volume_size} куб.м"
   end
 
   protected
@@ -52,16 +51,16 @@ class CargoWagon < Wagon
   attr_writer :volume
 
   def can_fill?
-    free_size > 0
+    free_size.positive?
   end
 
   def can_clear?
     volume >= 1
   end
-  
+
   def validate!
     raise TYPE_WAGON_ERROR unless type_wagon == :cargo
     raise SIZE_ERROR_DATE unless Integer(volume_size)
-    raise SIZE_ERROR if volume_size > MAX_SIZE || volume_size < MIN_SIZE 
+    raise SIZE_ERROR if volume_size > MAX_SIZE || volume_size < MIN_SIZE
   end
 end

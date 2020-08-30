@@ -1,12 +1,11 @@
 class Route
-  
   include InstanceCounter
   include Validate
 
   ROUTE_POINT_ERROR     = '-> станции прибытия и отправления должны отличаться'
   ROUTE_SIZE_ERROR      = '-> в маршруте должно быть минимум 2 станций'
-
-  attr_reader   :stations
+  NOT_VALID_STATION     = 'Станция не является промежуточной'
+  attr_reader :stations
 
   def initialize(departure_station, destination_station)
     @stations = [departure_station, destination_station]
@@ -23,17 +22,19 @@ class Route
   # end
 
   def add_intermediate_station(station)
-    raise ArgumentError, 'Станция не является промежуточной' if [stations.first, stations.last].include?(station)
-    unless [stations.first, stations.last].include?(station)
-      @stations.insert(-2, station)
-    end
+    raise ArgumentError, NOT_VALID_STATION if [stations.first, stations.last].include?(station)
+
+    @stations.insert(-2, station) # unless [stations.first, stations.last].include?(station)
+  rescue StandardError => e
+    puts "Возникла ошибка #{e.message}. Станция не добавлена."
   end
 
   def remove_intermediate_station(station)
-    raise ArgumentError, 'Станция не является промежуточной' if [stations.first, stations.last].include?(station)
-    unless [stations.first, stations.last].include?(station)
-      @stations.delete(station)
-    end
+    raise ArgumentError, NOT_VALID_STATION if [stations.first, stations.last].include?(station)
+
+    @stations.delete(station) # unless [stations.first, stations.last].include?(station)
+  rescue StandardError => e
+    puts "Возникла ошибка #{e.message}. Станция не удалена."
   end
 
   protected

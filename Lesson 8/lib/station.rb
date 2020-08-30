@@ -1,6 +1,4 @@
 class Station
-  
-
   include InstanceCounter
   include Validate
 
@@ -8,7 +6,6 @@ class Station
   NIL_NAME_ERROR        = '-> название станции не может быть пустым или меньше 2 символов'
   NAME_TOO_LENGTH_ERROR = '-> слишком длинное название, не больше 30 символов'
   NAME_NOT_OBJECT       = '-> имя станции не является обьектом класса String'  # /[a-z]/i  - только латинница
-
 
   attr_reader   :trains,
                 :name
@@ -26,27 +23,27 @@ class Station
   def self.all
     @@list_all_station
   end
-  
+
   def to_s
     @name
   end
-  
+
   def handle(train)
     if @trains.include?(train)
       puts "Поезд номер #{train.name} уже находится на станции #{name}." # raise
-    else 
+    else
       @trains.push(train)
     end
   end
 
   def depart(train)
     if trains.delete(train).nil?
-      puts "Нет станции для удаления!"   # raise
+      puts 'Нет станции для удаления!' # raise
     else
       trains.delete(train)
     end
   end
- 
+
   def each_train
     trains.each { |train| yield(train) }
   end
@@ -57,21 +54,23 @@ class Station
 
   def list_all_trains
     puts "#{trains.length} поезда(ов) на станции."
-    trains.each { |train| puts "Поезд номер: #{train[0]}, тип: #{train[1]}, вагонов: #{train[2]}"  }
+    trains.each { |train| puts "Поезд номер: #{train[0]}, тип: #{train[1]}, вагонов: #{train[2]}" }
   end
 
-  def current_trains(type=:all)
+  def current_trains(type = :all)
     return trains if type == :all
+
     trains.select { |train| train.type == type }
   end
 
-  def total_trains(type=:all)
+  def total_trains(type = :all)
     current_trains(type).size
   end
 
   def list_trains_by_type(type = nil)
     return list_trains unless type
-    list_trains.each { |train| puts "Поезд типа #{train[1]} имеет номер #{train[0]}" if train[1] == type.to_sym} 
+
+    list_trains.each { |train| puts "Поезд типа #{train[1]} имеет номер #{train[0]}" if train[1] == type.to_sym }
     puts ALL_INFO
     c = 0
     p = 0

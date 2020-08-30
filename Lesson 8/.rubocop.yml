@@ -26,3 +26,7 @@ Metrics/PerceivedComplexity:
   Max: 12
 Metrics/CyclomaticComplexity:
   Max: 10
+Style/ClassVars:
+  Enabled: false
+Lint/DuplicateMethods:
+  Enabled: false

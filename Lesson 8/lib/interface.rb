@@ -58,7 +58,7 @@ class Interface
     puts 'Выберите действие. Некоторые функции доступны после создания обьектов!'
     puts 'Введите 1 => для вывода информации о поездах, станциях и маршрутах;'
     puts 'Введите 2 => для вывода информации о поездах на станции;' unless main.stations.size < 2
-    puts 'Введите 3 => для проверки наличия поезда по его номеру' unless  main.trains.size.zero?
+    puts 'Введите 3 => для проверки наличия поезда по его номеру' unless main.trains.size.zero?
     puts
     print RETURN
     gets.chomp.to_i

@@ -1,5 +1,4 @@
 class String
-  
   # font
   def black
     "\e[30m#{self}\e[0m"
@@ -32,8 +31,8 @@ class String
   def gray
     "\e[37m#{self}\e[0m"
   end
-  
-  #background
+
+  # background
   def bg_black
     "\e[40m#{self}\e[0m"
   end
@@ -65,7 +64,7 @@ class String
   def bg_gray
     "\e[47m#{self}\e[0m"
   end
-  
+
   # style
   def bold
     "\e[1m#{self}\e[22m"
@@ -86,18 +85,17 @@ class String
   def reverse_color
     "\e[7m#{self}\e[27m"
   end
-  
-  def no_colors
-    self.gsub /\e\[\d+m/, ""
-  end
 end
 
-#puts "I'm back green".bg_green
-#puts "I'm red and back cyan".red.bg_cyan
-#puts "I'm bold and green and backround red".bold.green.bg_red
-#puts "I'm back green".no_colors
+# puts "I'm back green".bg_green
+# puts "I'm red and back cyan".red.bg_cyan
+# puts "I'm bold and green and backround red".bold.green.bg_red
+# puts "I'm back green".no_colors
 
-=begin 
+=begin
+  def no_colors
+    self.gsub /\e\[\d+m/, ''
+  end
 Alternative method 1
 //foreground color
 public static final String BLACK_TEXT()   { return "\033[30m";}
