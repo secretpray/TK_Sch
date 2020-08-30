@@ -351,6 +351,7 @@ class Main
     show_train_wagon_yield(train)
     puts 'Укажите номер вагона'
     number_select = gets.chomp.to_i
+    raise ArgumentError, 'Вагон не выбран.' if number_select.zero?
     wagon_select = 0
     train.wagons.each { |wagon| wagon_select = wagon if wagon.number == number_select }
     puts "Выбран вагон #{wagon_select}: (свободно: #{wagon_select.free_size}, занято: #{wagon_select.filled_size})"
@@ -378,6 +379,7 @@ class Main
     show_trains_list_number
     puts '-*-' * 15
     train = select_train
+    raise ArgumentError, UNKNOWN_COMMAND unless train
     puts "Выбран поезд: #{train}"
     puts "1 -> чтобы добавить или отцепить вагоны в состав\n2 -> чтобы занять или освободить место в вагоне"
     operation = gets.chomp.to_i
