@@ -1,7 +1,11 @@
 class Interface
 
-  EXIT        = "Для выхода из программы нажмите Enter или 0 ... \033[5m _ \033[25m"   
-  RETURN      = "Для возврата в предыдущее меню нажмите Enter или 0 ... \033[5m _ \033[25m"   
+  EXIT                  = "Для выхода из программы нажмите Enter или 0 ... \033[5m _ \033[25m"   
+  RETURN                = "Для возврата в предыдущее меню нажмите Enter или 0 ... \033[5m _ \033[25m" 
+  CYAN_ON_BLACK_COLOR   = 'printf "\033[1;40;96m\033[2J\e[f"'  
+  YELLOW_ON_BLUE_COLOR  = 'printf "\033[1;44;93m\033[2J\e[f"'
+  CYAN_ON_BLUE_COLOR    = 'printf "\033[1;44;96m\033[2J\e[f"' 
+  GREEN_ON_GREY_COLOR   = 'printf "\033[1;100;92m\033[2J\e[f"'
   attr_reader :main
 
   def initialize(main)
@@ -9,6 +13,7 @@ class Interface
   end
 
   def help_main
+    system CYAN_ON_BLACK_COLOR 
     system 'clear'
     puts '*****' * 14
     puts '*            Главное меню "Управления железной дорогой.            *'
@@ -24,7 +29,7 @@ class Interface
   end
 
   def help_create
-    system 'printf "\033[1;44;93m\033[2J\e[f"'  # system 'printf "\033[1;44;96m\033[2J\e[f"'    
+    system YELLOW_ON_BLUE_COLOR  # alt. system 'printf "\033[1;44;96m\033[2J\e[f"'    
     system 'clear'
     puts 'Выберите действие. Некоторые функции доступны после создания обьектов!'
     puts 'Введите 1 => для создания поезда;'
@@ -36,7 +41,7 @@ class Interface
   end
 
   def help_edit
-    system 'printf "\033[1;44;96m\033[2J\e[f"'
+    system CYAN_ON_BLUE_COLOR 
     system 'clear'
     puts 'Выберите действие. Некоторые функции доступны после создания обьектов!'
     puts 'Введите 1 => для управления станциями;' unless main.stations.size < 2
@@ -49,7 +54,7 @@ class Interface
   end
 
   def help_info
-    system 'printf "\033[1;100;92m\033[2J\e[f"'  # system 'printf "\033[1;44;96m\033[2J\e[f"'
+    system GREEN_ON_GREY_COLOR  # alt. system 'printf "\033[1;44;96m\033[2J\e[f"'
     system 'clear'
     puts 'Выберите действие. Некоторые функции доступны после создания обьектов!'
     puts 'Введите 1 => для вывода информации о поездах, станциях и маршрутах;'

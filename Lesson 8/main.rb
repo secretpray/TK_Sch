@@ -10,13 +10,17 @@ require_relative "lib/train_cargo"
 require_relative "lib/wagon"
 require_relative "lib/wagon_passenger"
 require_relative "lib/wagon_cargo"
+require_relative "lib/string"
 # require_relative "lib/test"
 require 'io/console' # (для использования STDIN.getch вместо gets)
 
 
 class Main
   
-  UNKNOWN_COMMAND = 'Неизвестная команда!'
+  UNKNOWN_COMMAND       = 'Неизвестная команда!'
+  PRESS_KEY_BLINK       = "\nДля продолжения нажмите пробел или Enter.. \033[1;5m_\033[0;25m"
+  RESET_COLOR           = system 'printf "\033[0m\033[2J\e[f"'
+  CYAN_ON_BLACK_COLOR   = system 'printf "\033[1;40;96m\033[2J\e[f"'
 
   attr_reader :stations, :trains, :routes, :interface
 
@@ -28,7 +32,6 @@ class Main
   end
 
   def start
-    system "printf '\e[1;40;96m\033[u'" 
     loop do
       input = interface.help_main
       case input
@@ -36,11 +39,11 @@ class Main
         color_reset
         break 
       when 1
-      	create_object
+        create_object
       when 2
-      	change_object
+        change_object
       when 3
-      	info_object
+        info_object
       else
         puts UNKNOWN_COMMAND
       end
@@ -109,15 +112,15 @@ class Main
   end
 
   def color_main_menu
-    system "printf '\e[1;40;96m\033[u'"
+    CYAN_ON_BLACK_COLOR
   end
 
   def color_reset
-    system 'printf "\033[0m\033[2J\e[f"' 
+    RESET_COLOR 
   end
 
   def press_key
-    print "\nДля продолжения - нажмите пробел или Enter ... \033[1;5m _ \033[0;25m"
+    printf PRESS_KEY_BLINK
       loop do
         break if [' ', "\r"].include?(STDIN.getch)
       end
@@ -194,7 +197,7 @@ class Main
     system 'clear'
     puts "Введите тип поезда:\n 1. Грузовой,\n 2. Пассажирский"
     type = gets.chomp.to_i
-    raise 'Введен неверный тип вагона' unless type == 1 || type == 2
+    raise ArgumentError, 'Введен неверный тип вагона' unless type == 1 || type == 2
     puts "Введите количество вагонов:"
     wagons_count = gets.chomp.to_i
     wagons = []
@@ -207,7 +210,7 @@ class Main
       place_count = gets.chomp.to_i
       wagons_count.times { wagons << PassengerWagon.new(place_count) }
     else
-      raise "Введен неверный тип поезда."
+      raise ArgumentError, "Введен неверный тип поезда."
     end
     begin
       print "Введите номер поезда (формат -> xxx-xx): "
@@ -280,7 +283,7 @@ class Main
         puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}"
         press_key
       else
-        raise 'Ошибка, нет станций, которые можно было бы добавить в маршрут.'
+        raise ArgumentError, 'Ошибка, нет станций, которые можно было бы добавить в маршрут.'
         press_key
       end
       rescue Exception => e
@@ -299,7 +302,7 @@ class Main
       puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}"
       press_key
     else
-      raise 'Ошибка, в маршруте нет промежуточных станций.'
+      raise ArgumentError, 'Ошибка, в маршруте нет промежуточных станций.'
       press_key
     end
     rescue Exception => e
@@ -342,7 +345,7 @@ class Main
       # place_count = 54 if place_count > 64 || place_count < 18
       train.attach_wagon(PassengerWagon.new(place_count))
     else
-      raise "Вагон неверного типа не может быть добавлен в состав."
+      raise ArgumentError, "Вагон неверного типа не может быть добавлен в состав."
       press_key
     end
     rescue Exception => e
