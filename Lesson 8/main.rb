@@ -51,7 +51,6 @@ class Main
   end
   
   def create_object
-	  puts 'Создаем обьекты'
 	  loop do
       input = interface.help_create
       case input
@@ -71,7 +70,6 @@ class Main
   end
 
   def change_object
-    puts 'Изменяем обьекты'
     loop do
       input = interface.help_edit
       case input
