@@ -262,6 +262,8 @@ class Main
     dep_station = @stations[gets.chomp.to_i - 1]
     puts 'Выберите номер конечной станции...'
     dest_station = @stations[gets.chomp.to_i - 1]
+    raise 'номер не из списка' if [dep_station, dest_station].include?(nil)
+
     input_rt = "#{dep_station} - #{dest_station}"
     @routes.each { |route| raise 'такой маршрут сущствует' if route.to_s == input_rt } unless @stations.empty?
     @routes << Route.new(dep_station, dest_station)
@@ -271,7 +273,7 @@ class Main
     show_routes_list
     press_but
   rescue StandardError => e
-    puts "Возникла ошибка #{e.message}. Маршрут не создан.".red
+    puts "Возникла ошибка: #{e.message}! Маршрут не создан.".red
     press_but
   end
 
@@ -427,11 +429,15 @@ class Main
     puts '-*-' * 15
     puts 'Выберите поезд для назначения маршрута...'
     train = @trains[gets.chomp.to_i - 1]
+    raise 'номер не из списка' if train.nil?
+
     puts "Выбран - #{train}"
     puts
     show_routes_list
     puts 'Введите номер маршрута для его назначения.'
     route = @routes[gets.chomp.to_i - 1]
+    raise 'номер не из списка' if route.nil?
+
     train.assign_a_route(route)
     puts 'Маршрут успешно назначен'
     press_but
