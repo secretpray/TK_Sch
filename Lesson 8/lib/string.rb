@@ -85,6 +85,10 @@ class String
   def reverse_color
     "\e[7m#{self}\e[27m"
   end
+
+  def default_color
+    "\e[0m#{self}\e[2J\e[f"
+  end
 end
 
 # puts "I'm back green".bg_green

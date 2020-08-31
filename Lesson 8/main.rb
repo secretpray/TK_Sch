@@ -17,8 +17,8 @@ require 'io/console' # (для использования STDIN.getch вмест
 class Main
   UNKNOWN_COMMAND       = 'Неизвестная команда!'.freeze
   PRESS_KEY_BLINK       = "\nДля продолжения нажмите пробел или Enter.. \033[1;5m_\033[0;25m".freeze
-  RESET_COLOR           = system 'printf "\033[0m\033[2J\e[f"'
-  CYAN_ON_BLACK_COLOR   = system 'printf "\033[1;40;96m\033[2J\e[f"'
+  RESET_COLOR           = system 'printf "\033[0m\033[2J\e[f"'.freeze
+  CYAN_ON_BLACK_COLOR   = system 'printf "\033[1;40;96m\033[2J\e[f"'.freeze
 
   attr_reader :stations, :trains, :routes, :interface
 
@@ -112,7 +112,9 @@ class Main
   end
 
   def color_reset
-    RESET_COLOR
+    # RESET_COLOR
+    puts 'Всего хорошего!'.default_color
+    system 'clear'
   end
 
   def press_but
@@ -161,8 +163,8 @@ class Main
 
   def show_trains_list
     @trains.each do |train|
-      puts "Поезд номер: #{train.number}, тип #{train.type}".green
-      puts "В составе #{train.wagons.size} вагонов(а). Вместимость вагонов - #{train.wagons.last.size}.".green
+      puts "Поезд номер: #{train.number}, тип #{train.type}"
+      puts "В составе #{train.wagons.size} вагонов(а). Вместимость вагонов - #{train.wagons.last.size}."
     end
   end
 
@@ -244,7 +246,7 @@ class Main
     st_input = gets.chomp
     @stations.each { |station| raise 'такая станция сущствует' if station.name == st_input } unless @stations.empty?
     @stations << Station.new(st_input)
-    puts "\nСтанция #{@stations.last} создана.".green
+    puts "\nСтанция #{@stations.last} создана."
     puts "\nСписок всех станций:"
     show_stations_list
     puts "Общее количество созданных станций - #{Station.all.size}"
@@ -267,7 +269,7 @@ class Main
     input_rt = "#{dep_station} - #{dest_station}"
     @routes.each { |route| raise 'такой маршрут сущствует' if route.to_s == input_rt } unless @stations.empty?
     @routes << Route.new(dep_station, dest_station)
-    puts "Маршрут #{@routes.last} создан.".green
+    puts "Маршрут #{@routes.last} создан."
     # show(routes)
     puts 'Создан(ы):'
     show_routes_list
@@ -516,7 +518,6 @@ class Main
     puts 'Информация о поездах на станциях (стандарт)'
     show_station_info
     puts '-*-' * 20
-    press_but
     puts 'Информация о поездах на станции (yield)'
     show_station_info_yield
     puts '-*-' * 20
