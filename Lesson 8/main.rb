@@ -225,7 +225,7 @@ class Main
         raise ArgumentError, UNKNOWN_COMMAND
       end
     rescue RuntimeError => e
-      puts "Ошибка: #{e.message}. Попробуйте еще раз."
+      puts "Ошибка: #{e.message}. Попробуйте еще раз.".red
       retry
     end
     puts 'Создан(ы):'
@@ -233,7 +233,7 @@ class Main
     press_but
     puts "Производитель созданных вагонов: #{wagons.last.company_name}, поезда: #{@trains.last.company_name}"
   rescue StandardError => e
-    puts "Возникла ошибка #{e.message}. Поезд не создан."
+    puts "Возникла ошибка #{e.message}. Поезд не создан.".red
     press_but
   end
 
@@ -241,14 +241,16 @@ class Main
     system 'clear'
     puts 'Создаем станцию...'
     print 'Введите название для новой станции: '
-    @stations << Station.new(gets.chomp.to_s)
+    st_input = gets.chomp
+    @stations.each { |station| raise 'такая станция сущствует' if station.name == st_input } unless @stations.empty?
+    @stations << Station.new(st_input)
     puts "Станция #{@stations.last} создана."
     puts 'Список всех станций:'
     show_stations_list
     puts "Общее количество созданных станций - #{Station.all.size}"
     press_but
   rescue StandardError => e
-    puts "Возникла ошибка #{e.message}. Станция не создана."
+    puts "Возникла ошибка: #{e.message}! Станция не создана.".red
     press_but
   end
 
@@ -267,14 +269,14 @@ class Main
     show_routes_list
     press_but
   rescue StandardError => e
-    puts "Возникла ошибка #{e.message}. Маршрут не создан."
+    puts "Возникла ошибка #{e.message}. Маршрут не создан.".red
     press_but
   end
 
   def add_station_to_route(route)
     puts "Добавление новой, промежуточной станции в маршрут #{route}."
     stations_to_add = @stations - route.stations
-    raise ArgumentError, 'Ошибка, нет станций, для добавления в маршрут.' unless stations_to_add.any?
+    raise ArgumentError, 'нет станций, для добавления в маршрут' unless stations_to_add.any?
 
     stations_to_add.each.with_index(1) { |station, index| puts "#{index}. #{station}" }
     puts 'Введите номер новой промежуточной станции ...'
@@ -284,14 +286,14 @@ class Main
     puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}"
     press_but
   rescue StandardError => e
-    puts "Возникла ошибка #{e.message}."
+    puts "Возникла ошибка: #{e.message}!".red
     press_but
   end
 
   def del_station_to_route(route)
     puts 'Удаление промежуточной станции'
     stations_to_remove = route.stations[1...-1]
-    raise ArgumentError, 'Ошибка, в маршруте нет промежуточных станций.' unless stations_to_remove.any?
+    raise ArgumentError, 'в маршруте нет промежуточных станций' unless stations_to_remove.any?
 
     stations_to_remove.each.with_index(1) { |station, index| puts "#{index}. #{station}" }
     remove_station = stations_to_remove[gets.chomp.to_i - 1]
@@ -300,7 +302,7 @@ class Main
     puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}"
     press_but
   rescue StandardError => e
-    puts "Возникла ошибка #{e.message}."
+    puts "Возникла ошибка: #{e.message}!".red
     press_but
   end
 
@@ -343,7 +345,7 @@ class Main
       raise ArgumentError, 'Вагон неверного типа не может быть добавлен в состав.'
     end
   rescue StandardError => e
-    puts "Возникла ошибка #{e.message}."
+    puts "Возникла ошибка #{e.message}.".red
     press_but
   end
 
@@ -369,8 +371,7 @@ class Main
       raise ArgumentError, UNKNOWN_COMMAND
     end
   rescue StandardError => e
-    puts "Возникла ошибка #{e.message}."
-    press_but
+    puts "Возникла ошибка #{e.message}.".red
   end
 
   def edit_train
@@ -402,7 +403,7 @@ class Main
       raise ArgumentError, UNKNOWN_COMMAND
     end
   rescue StandardError => e
-    puts "Возникла ошибка #{e.message}."
+    puts "Возникла ошибка: #{e.message}!".red
     press_but
   end
 
