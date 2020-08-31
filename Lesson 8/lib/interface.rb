@@ -28,7 +28,7 @@ class Interface
   end
 
   def help_create
-    system YELLOW_ON_BLUE_COLOR  # alt. system 'printf "\033[1;44;96m\033[2J\e[f"'
+    system YELLOW_ON_BLUE_COLOR # alt. system 'printf "\033[1;44;96m\033[2J\e[f"'
     system 'clear'
     puts 'Выберите действие. Некоторые функции доступны после создания обьектов!'
     puts 'Введите 1 => для создания поезда;'
@@ -53,7 +53,7 @@ class Interface
   end
 
   def help_info
-    system GREEN_ON_GREY_COLOR  # alt. system 'printf "\033[1;44;96m\033[2J\e[f"'
+    system GREEN_ON_GREY_COLOR # alt. system 'printf "\033[1;44;96m\033[2J\e[f"'
     system 'clear'
     puts 'Выберите действие. Некоторые функции доступны после создания обьектов!'
     puts 'Введите 1 => для вывода информации о поездах, станциях и маршрутах;'

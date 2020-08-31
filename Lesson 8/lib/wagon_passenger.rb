@@ -51,7 +51,7 @@ class PassengerWagon < Wagon
   attr_writer :places_filled
 
   def can_fill?
-    free_size.positive?  # free_places > 0
+    free_size.positive? # free_places > 0
   end
 
   def can_clear?
