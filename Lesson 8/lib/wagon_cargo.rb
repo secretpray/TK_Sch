@@ -1,10 +1,10 @@
 class CargoWagon < Wagon
   include Validate
 
-  TYPE_WAGON_ERROR = '-> yеверный тип вагона'
-  SIZE_ERROR_DATE  = '-> вместимость выражается в числах'
-  SIZE_ERROR       = '-> неверно указана вместимость вагона'
-  NAME_WAGON       = 'Грузовой вагон'
+  TYPE_WAGON_ERROR = '-> yеверный тип вагона'.freeze
+  SIZE_ERROR_DATE  = '-> вместимость выражается в числах'.freeze
+  SIZE_ERROR       = '-> неверно указана вместимость вагона'.freeze
+  NAME_WAGON       = 'Грузовой вагон'.freeze
   MIN_SIZE         = 60
   MAX_SIZE         = 120
 

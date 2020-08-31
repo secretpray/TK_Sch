@@ -10,10 +10,6 @@ Style/EndOfLine:
   EnforcedStyle: lf
 Style/AsciiComments:
   Enabled: false
-Style/MutableConstant:
-  Enabled: false
-Style/BlockComments:
-  Enabled: false
 Metrics/MethodLength:
   Max: 60
 Metrics/AbcSize:

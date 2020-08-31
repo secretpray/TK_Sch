@@ -1,7 +1,7 @@
 class Wagon
   include Manufacture
 
-  COMPANY_NAME = 'Vega Inc.'
+  COMPANY_NAME = 'Vega Inc.'.freeze
 
   attr_reader :type_wagon,
               :size_wagon

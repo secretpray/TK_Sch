@@ -2,9 +2,9 @@ class Route
   include InstanceCounter
   include Validate
 
-  ROUTE_POINT_ERROR     = '-> станции прибытия и отправления должны отличаться'
-  ROUTE_SIZE_ERROR      = '-> в маршруте должно быть минимум 2 станций'
-  NOT_VALID_STATION     = 'Станция не является промежуточной'
+  ROUTE_POINT_ERROR     = '-> станции прибытия и отправления должны отличаться'.freeze
+  ROUTE_SIZE_ERROR      = '-> в маршруте должно быть минимум 2 станций'.freeze
+  NOT_VALID_STATION     = 'Станция не является промежуточной'.freeze
   attr_reader :stations
 
   def initialize(departure_station, destination_station)

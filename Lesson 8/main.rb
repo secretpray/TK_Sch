@@ -15,8 +15,8 @@ require_relative 'lib/string'
 require 'io/console' # (для использования STDIN.getch вместо gets)
 
 class Main
-  UNKNOWN_COMMAND       = 'Неизвестная команда!'
-  PRESS_KEY_BLINK       = "\nДля продолжения нажмите пробел или Enter.. \033[1;5m_\033[0;25m"
+  UNKNOWN_COMMAND       = 'Неизвестная команда!'.freeze
+  PRESS_KEY_BLINK       = "\nДля продолжения нажмите пробел или Enter.. \033[1;5m_\033[0;25m".freeze
   RESET_COLOR           = system 'printf "\033[0m\033[2J\e[f"'
   CYAN_ON_BLACK_COLOR   = system 'printf "\033[1;40;96m\033[2J\e[f"'
 
@@ -524,17 +524,16 @@ class Main
   end
 end
 
-=begin
-  def show(list)
-    list.each.with_index(1){ |item, index| puts "#{index}: #{item}" }
-  end
+# def show(list)
+#   list.each.with_index(1){ |item, index| puts "#{index}: #{item}" }
+#  end
 
-  def select_from_list(list)
-    choise = gets.to_i
-    return if choise <= 0
-    list[choise - 1]
-  end
-=end
+# def select_from_list(list)
+#   choise = gets.to_i
+#   return if choise <= 0
+#   list[choise - 1]
+#   end
+# end
 
 maim_menu = Main.new
 maim_menu.start

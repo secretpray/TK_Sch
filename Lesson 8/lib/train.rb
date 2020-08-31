@@ -3,11 +3,11 @@ class Train
   include InstanceCounter
   include Validate
 
-  TRAIN_STOPPED       = 'Поезд остановился'
-  COMPANY_NAME        = 'Ford Inc.'
-  NUMBER_FORMAT_ERROR = 'Неверный формат номера (3 знака (опционально дефис) 2 знака)'
-  NUMBER_WAGONS_ERROR = 'Некорректное количество вагонов'
-  NUMBER_FORMAT       = /^[a-zа-яё\d]{3}[-]*[a-zа-яё\d]{2}$/i
+  TRAIN_STOPPED       = 'Поезд остановился'.freeze
+  COMPANY_NAME        = 'Ford Inc.'.freeze
+  NUMBER_FORMAT_ERROR = 'Неверный формат номера (3 знака (опционально дефис) 2 знака)'.freeze
+  NUMBER_WAGONS_ERROR = 'Некорректное количество вагонов'.freeze
+  NUMBER_FORMAT       = /^[a-zа-яё\d]{3}[-]*[a-zа-яё\d]{2}$/i.freeze
 
   attr_reader   :number,
                 :speed,
@@ -31,26 +31,6 @@ class Train
     "поезд номер #{@number} (вагонов: #{@wagons.size})"
   end
 
-=begin
-  1. Class method
-  class << self
-    def self.find(number)
-      @@train_all[number]
-    end
-
-  2. Class method
-  def Train.find(number)
-    @@train_all[number]
-  end
-
-  3. Class method
-  class Train; end
-  def Train.find(number)
-    @@train_all[number
-  end
-=end
-
-  # 4. Class method (standard)
   def self.find(number)
     @@train_all[number]
   end

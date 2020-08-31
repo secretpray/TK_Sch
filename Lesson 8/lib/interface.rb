@@ -1,10 +1,10 @@
 class Interface
-  EXIT                  = "Для выхода из программы нажмите Enter или 0 \033[5m _ \033[25m"
-  RETURN                = "Для возврата в предыдущее меню нажмите Enter или 0 \033[5m _ \033[25m"
-  CYAN_ON_BLACK_COLOR   = 'printf "\033[1;40;96m\033[2J\e[f"'
-  YELLOW_ON_BLUE_COLOR  = 'printf "\033[1;44;93m\033[2J\e[f"'
-  CYAN_ON_BLUE_COLOR    = 'printf "\033[1;44;96m\033[2J\e[f"'
-  GREEN_ON_GREY_COLOR   = 'printf "\033[1;100;92m\033[2J\e[f"'
+  EXIT                  = "Для выхода из программы нажмите Enter или 0 \033[5m _ \033[25m".freeze
+  RETURN                = "Для возврата в предыдущее меню нажмите Enter или 0 \033[5m _ \033[25m".freeze
+  CYAN_ON_BLACK_COLOR   = 'printf "\033[1;40;96m\033[2J\e[f"'.freeze
+  YELLOW_ON_BLUE_COLOR  = 'printf "\033[1;44;93m\033[2J\e[f"'.freeze
+  CYAN_ON_BLUE_COLOR    = 'printf "\033[1;44;96m\033[2J\e[f"'.freeze
+  GREEN_ON_GREY_COLOR   = 'printf "\033[1;100;92m\033[2J\e[f"'.freeze
   attr_reader :main
 
   def initialize(main)

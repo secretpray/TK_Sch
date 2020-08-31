@@ -2,10 +2,10 @@ class Station
   include InstanceCounter
   include Validate
 
-  ALL_INFO              = 'Общая информация по количеству поездов по типам на станции...'
-  NIL_NAME_ERROR        = '-> название станции не может быть пустым или меньше 2 символов'
-  NAME_TOO_LENGTH_ERROR = '-> слишком длинное название, не больше 30 символов'
-  NAME_NOT_OBJECT       = '-> имя станции не является обьектом класса String' # /[a-z]/i  - только латинница
+  ALL_INFO              = 'Общая информация по количеству поездов по типам на станции...'.freeze
+  NIL_NAME_ERROR        = '-> название станции не может быть пустым или меньше 2 символов'.freeze
+  NAME_TOO_LENGTH_ERROR = '-> слишком длинное название, не больше 30 символов'.freeze
+  NAME_NOT_OBJECT       = '-> имя станции не является обьектом класса String'.freeze
 
   attr_reader   :trains,
                 :name
