@@ -319,6 +319,8 @@ class Main
     show_routes_list
     puts '-*-' * 15
     route = select_route
+    raise 'номер не из списка' if route.nil?
+
     puts "Выбран маршрут: #{route}"
     puts "Введите:\n 1 => для добавления станции\n 2 => для удаления станции\n 0 => для выхода из меню"
     selects = gets.chomp.to_i
@@ -329,9 +331,11 @@ class Main
     elsif selects == 2
       del_station_to_route(route)
     else
-      puts UNKNOWN_COMMAND
-      press_but
+      raise UNKNOWN_COMMAND
     end
+  rescue StandardError => e
+    puts "Возникла ошибка: #{e.message}!".red
+    press_but
   end
 
   def add_wagon_to_train(train)
@@ -416,24 +420,24 @@ class Main
   def assign_route
     system 'clear'
     puts 'Назначаем маршрут поезду...'
-    if @trains.empty? || @routes.empty?
-      puts 'Нужно сначала создать поезд/маршрут'
-    else
-      puts '-*-' * 15
-      show_trains_list_number
-      puts '-*-' * 15
-      puts 'Выберите поезд для назначения маршрута...'
-      train = @trains[gets.chomp.to_i - 1]
-      puts "Выбран - #{train}"
-      puts
-      show_routes_list
-      puts 'Введите номер маршрута для его назначения.'
-      route = @routes[gets.chomp.to_i - 1]
-      train.assign_a_route(route)
-      puts 'Маршрут успешно назначен'
-      press_but
-      # STDIN.getch
-    end
+    raise StandardError, 'сначала необходимо создать поезд/маршрут' if @trains.empty? || @routes.empty?
+
+    puts '-*-' * 15
+    show_trains_list_number
+    puts '-*-' * 15
+    puts 'Выберите поезд для назначения маршрута...'
+    train = @trains[gets.chomp.to_i - 1]
+    puts "Выбран - #{train}"
+    puts
+    show_routes_list
+    puts 'Введите номер маршрута для его назначения.'
+    route = @routes[gets.chomp.to_i - 1]
+    train.assign_a_route(route)
+    puts 'Маршрут успешно назначен'
+    press_but
+  rescue StandardError => e
+    puts "Возникла ошибка: #{e.message}!".red
+    press_but
   end
 
   def move_train
