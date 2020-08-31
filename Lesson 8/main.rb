@@ -259,10 +259,12 @@ class Main
     puts 'Создаем маршрут...'
     show_stations_list
     puts 'Ввберите номер начальной станции...'
-    departure_station = @stations[gets.chomp.to_i - 1]
+    dep_station = @stations[gets.chomp.to_i - 1]
     puts 'Выберите номер конечной станции...'
-    destination_station = @stations[gets.chomp.to_i - 1]
-    @routes << Route.new(departure_station, destination_station)
+    dest_station = @stations[gets.chomp.to_i - 1]
+    input_rt = "#{dep_station} - #{dest_station}"
+    @routes.each { |route| raise 'такой маршрут сущствует' if route.to_s == input_rt } unless @stations.empty?
+    @routes << Route.new(dep_station, dest_station)
     puts "Маршрут #{@routes.last} создан."
     # show(routes)
     puts 'Создан(ы):'
