@@ -281,6 +281,8 @@ class Main
     stations_to_add.each.with_index(1) { |station, index| puts "#{index}. #{station}" }
     puts 'Введите номер новой промежуточной станции ...'
     intermediate_station = stations_to_add[gets.chomp.to_i - 1]
+    raise ArgumentError, 'номер не из списка' if intermediate_station.nil?
+
     route.add_intermediate_station(intermediate_station)
     puts "Станция '#{intermediate_station}' добавлена в текущий маршрут" # or #{stations[-2]}
     puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}"
@@ -297,6 +299,8 @@ class Main
 
     stations_to_remove.each.with_index(1) { |station, index| puts "#{index}. #{station}" }
     remove_station = stations_to_remove[gets.chomp.to_i - 1]
+    raise ArgumentError, 'номер не из списка' if remove_station.nil?
+
     route.remove_intermediate_station(remove_station)
     puts "Станция #{remove_station} удалена из маршрута."
     puts "Сейчас выбранный маршрут содержит #{route.stations.size} cтанции(й): #{route.stations.join(' - ')}"
