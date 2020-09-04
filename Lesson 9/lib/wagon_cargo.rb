@@ -1,10 +1,8 @@
 # frozen_string_literal: true
-require_relative 'manufacture'
-require_relative 'validation'
-require_relative 'acсessors'
 
 class CargoWagon < Wagon
-  include InstanceCounter, Validation, Accessors
+  include InstanceCounter, Validation
+  extend Accessors
 
   TYPE_WAGON_ERROR = '-> yеверный тип вагона'.freeze
   SIZE_ERROR_DATE  = '-> вместимость выражается в числах'.freeze
@@ -18,7 +16,6 @@ class CargoWagon < Wagon
 
   alias size volume_size
   alias filled_size volume
-  alias to_s name
 
   validate  :size,        :presence
   validate  :type_wagon,  :presence
@@ -45,14 +42,14 @@ class CargoWagon < Wagon
   end
 
   def to_s
-    NAME_WAGON + " номер #{number}, вместимостью #{volume_size} м³" \
+    NAME_WAGON + " номер #{number}, вместимостью #{volume_size} м³ " \
     "свободно: #{free_size} м³."
   end
 
-  # def name
-  #   NAME_WAGON + " номер #{number}, вместимостью #{volume_size} м³" \
-  #   "свободно: #{free_size} м³."
-  # end
+  def name
+    NAME_WAGON + " номер #{number}, вместимостью #{volume_size} м³ " \
+    "свободно: #{free_size} м³."
+  end
 
   protected
 

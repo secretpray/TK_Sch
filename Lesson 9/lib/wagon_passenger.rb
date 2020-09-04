@@ -1,10 +1,8 @@
 # frozen_string_literal: true
-# require_relative 'manufacture'
-# require_relative 'validation'
-# require_relative 'acсessors'
 
 class PassengerWagon < Wagon
-  # include InstanceCounter, Validation, Accessors
+  include InstanceCounter, Validation
+  extend Accessors
 
   TYPE_WAGON_ERROR = '-> неверный тип вагона'.freeze
   SIZE_ERROR_DATE  = '-> вместимость выражается в числах'.freeze
@@ -18,7 +16,6 @@ class PassengerWagon < Wagon
 
   alias size place_count
   alias filled_size places_filled
-  alias to_s name
 
   validate  :size,        :presence
   validate  :type_wagon,  :presence
@@ -49,10 +46,10 @@ class PassengerWagon < Wagon
     "свободно мест: #{free_size}."
   end
 
-  # def name
-  #   NAME_WAGON + " номер #{number}, всего мест: #{place_count}", " \
-  #   "свободно мест: #{free_size}."
-  # end
+  def name
+    NAME_WAGON + " номер #{number}, всего мест: #{place_count}, " \
+    "свободно мест: #{free_size}."
+  end
 
   protected
 

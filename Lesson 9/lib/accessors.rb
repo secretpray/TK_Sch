@@ -1,19 +1,16 @@
 # frozen_string_literal: true
 
-module Acсessors
+module Accessors
   def attr_accessor_with_history(*names)
     names.each do |name|
       # raise 'Аргумент не является символом' unless name.is_a?(Symbol)
       var_name = "@#{name}".to_sym
       history_var_name = "#{var_name}_history".to_sym
       
-      # create getter for var_name
       define_method(name) { instance_variable_get(var_name) }
-      
-      # create getter for history_var_name
+
       define_method("#{name}_histoty".to_sym) { instance_variable_get(history_var_name) }
-      
-      # create setter history_var_name
+  
       define_method("#{name}=") do |value|
         history = instance_variable_get(history_var_name)
         history ||= []

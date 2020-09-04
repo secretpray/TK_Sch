@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 module Validation
   def self.included(base)
     base.extend ClassMethods
@@ -7,51 +6,53 @@ module Validation
   end
 
   module ClassMethods
-    attr_accessor :validation_list
+    attr_reader :validations
 
-    def validate(attr_name, type, *args)
-      @validation_list ||= []
-      @validation_list << [attr_name, "validate_#{type}", args]
+    def validate(attribute, type, params = nil)
+      @validations ||= {}
+      @validations[attribute] ||= []
+      @validations[attribute] << { type: type, params: params }
     end
   end
 
   module InstanceMethods
-    def validate!
-      @validation_errors ||= []
-      
-      self.class.validation_list.each do |validation|
-        attr_name, method_name, args = validation
-        attr = instance_variable_get("@#{attr_name}")
-
-        if validation_errors = send(method_name, attr, *args)
-          @validation_errors << "#{attr_name.capitalize} #{validation_errors}"
-        end 
-      end
-      
-      raise error_message if @validation_errors.any?
+    def validations
+      self.class.validations || {}
     end
 
     def valid?
       validate!
-      @validation_errors.none?
+      true
+    rescue RuntimeError
+      false
     end
 
     protected
 
-    def validate_presence(value, _)
-      raise 'Значение должно присутствовать' if value.nil? || value == ''
+    def presence_validation(value, *)
+      raise 'Значение должно быть определено' if (value.nil? || value == '')
     end
 
-    def validate_format(value, pattern)
-      raise 'Задан нверный формат значения' unless value =~ pattern # if value !~ format
+    def format_validation(value, format)
+      raise 'Неверный формат значения' if value !~ format
     end
 
-    def validate_type(value, class_name)
-      raise 'Не соотвествующий тип значения' unless value.is_a?(class_name)
+    def type_validation(value, type)
+      raise 'Неверный тип значения' unless value.is_a?(type)
     end
 
-    def error_message
-      @validation_errors.join(' ')
+    def validate!
+      validations.each do |attribute, validation|
+        value = instance_variable_get("@#{attribute}".to_sym)
+
+        validation.each do |details|
+          method_name = "#{details[:type]}_validation".to_sym
+
+          raise 'Неверный тип валидации' unless InstanceMethods::method_defined?(method_name)
+
+          send method_name, value, details[:params]
+        end
+      end
     end
   end
 end

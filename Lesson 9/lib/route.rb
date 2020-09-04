@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 require_relative 'validation'
-require_relative 'acсessors'
+require_relative 'accessors'
 
 class Route
-  include InstanceCounter, Validation, Acсessors
+  include InstanceCounter, Validation
+  extend Accessors
 
   ROUTE_POINT_ERROR     = '-> станции прибытия и отправления должны отличаться'.freeze
   ROUTE_SIZE_ERROR      = '-> в маршруте должно быть минимум 2 станций'.freeze

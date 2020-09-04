@@ -1,17 +1,16 @@
 # frozen_string_literal: true
-require_relative 'validation'
-require_relative 'acсessors'
 
 class Station
-  include InstanceCounter, Validation, Acсessors
+  include InstanceCounter, Validation 
+  extend Accessors
 
   class << self
     attr_accessor :all
   end
 
-  attr_reader   :name
-  attr_accessor :trains
-  # attr_accessor_with_history  :trains, :name
+  # attr_reader   :name
+  # attr_accessor :trains
+  attr_accessor_with_history :trains, :name
 
   ALL_INFO              = 'Общая информация по количеству поездов по типам на станции...'.freeze
   NIL_NAME_ERROR        = '-> название станции не может быть пустым или меньше 2 символов'.freeze
@@ -19,26 +18,26 @@ class Station
   NAME_NOT_OBJECT       = '-> имя станции не является обьектом класса String'.freeze
   REGEXP                = /^[a-zа-я\d ]{2,32}$/i.freeze # русский-латынь? от 2 до 32 букв
 
-  validate  :name,  :presence
-  validate  :name,  :format, REGEXP
-  validate  :name,  :type, String
+  validate :name, :presence
+  validate :name, :format, REGEXP
+  validate :name, :type, String
   
-  # @@list_all_station = []
-  @list_all_station = []
+  @@list_all_station = []
+  # @list_all_station = []
 
   def initialize(name)
     @name = name
     @trains = []
     register_instance
     validate!
-    # @@list_all_station << self
-    self.class.all << self
+    @@list_all_station << self
+    # self.class.all << self
     
   end
 
-  # def self.all
-  #   @@list_all_station
-  # end
+  def self.all
+    @@list_all_station
+  end
 
   def to_s
     @name

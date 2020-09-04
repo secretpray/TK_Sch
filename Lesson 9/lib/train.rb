@@ -1,11 +1,8 @@
 # frozen_string_literal: true
-require_relative 'validation'
-require_relative 'acсessors'
-require_relative 'instance_counter'
-require_relative 'manufacture'
 
 class Train
-  include Manufacture, InstanceCounter, Validation, Acсessors
+  include Manufacture, InstanceCounter, Validation 
+  extend Accessors
 
   TRAIN_STOPPED       = 'Поезд остановился'.freeze
   COMPANY_NAME        = 'Ford Inc.'.freeze

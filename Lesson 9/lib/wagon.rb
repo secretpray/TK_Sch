@@ -1,11 +1,11 @@
 # frozen_string_literal: true
-require_relative 'validation'
-require_relative 'acсessors'
-require_relative 'manufacture'
+# require_relative 'validation'
+# require_relative 'accessors'
+# require_relative 'manufacture'
 
 class Wagon
   include Manufacture, InstanceCounter, Validation
-  extend  Accessors
+  extend Accessors
 
   COMPANY_NAME = 'Vega Inc.'.freeze
 
