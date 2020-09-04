@@ -1,24 +1,30 @@
+# frozen_string_literal: true
+require_relative 'manufacture'
+require_relative 'validation'
+require_relative 'acсessors'
+
 class CargoWagon < Wagon
-  include Validate
+  include InstanceCounter, Validation, Accessors
 
   TYPE_WAGON_ERROR = '-> yеверный тип вагона'.freeze
   SIZE_ERROR_DATE  = '-> вместимость выражается в числах'.freeze
   SIZE_ERROR       = '-> неверно указана вместимость вагона'.freeze
   NAME_WAGON       = 'Грузовой вагон'.freeze
+  TYPE             = :cargo
   MIN_SIZE         = 60
   MAX_SIZE         = 120
 
-  attr_reader :type_wagon,
-              :number,
-              :volume,
-              :volume_size
+  attr_reader :type_wagon,  :number,  :volume,  :volume_size
 
   alias size volume_size
   alias filled_size volume
+  alias to_s name
 
+  validate  :size,        :presence
+  validate  :type_wagon,  :presence
+ 
   def initialize(size)
-    @type_wagon   = :cargo
-    # size > MAX_SIZE || size < MIN_SIZE ? @volume_size = 72 : @volume_size  = size
+    @type_wagon   = TYPE
     @volume_size  = size
     @volume       = 0
     validate!
@@ -39,12 +45,14 @@ class CargoWagon < Wagon
   end
 
   def to_s
-    NAME_WAGON + " номер #{number}, вместимостью #{volume_size} куб.м"
+    NAME_WAGON + " номер #{number}, вместимостью #{volume_size} м³" \
+    "свободно: #{free_size} м³."
   end
 
-  def name
-    NAME_WAGON + " номер #{number}, вместимостью #{volume_size} куб.м"
-  end
+  # def name
+  #   NAME_WAGON + " номер #{number}, вместимостью #{volume_size} м³" \
+  #   "свободно: #{free_size} м³."
+  # end
 
   protected
 
@@ -58,9 +66,10 @@ class CargoWagon < Wagon
     volume >= 1
   end
 
-  def validate!
-    raise TYPE_WAGON_ERROR unless type_wagon == :cargo
-    raise SIZE_ERROR_DATE unless Integer(volume_size)
-    raise SIZE_ERROR if volume_size > MAX_SIZE || volume_size < MIN_SIZE
-  end
+  # def validate!
+  #  raise TYPE_WAGON_ERROR unless type_wagon == :cargo
+  #  raise SIZE_ERROR if volume_size > MAX_SIZE || volume_size < MIN_SIZE
+  #  return if (60..120).cover?(@size)
+  #  raise 'Объем может составлять от 50 до 150 м³.'
+  # end
 end

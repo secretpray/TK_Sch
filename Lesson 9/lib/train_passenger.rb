@@ -1,6 +1,10 @@
 class PassengerTrain < Train
   attr_reader :type, :wagons
 
+  validate :number, :presence
+  validate :number, :format, REGEXP
+  validate :number, :type, String
+
   def initialize(number, wagons)
     @type = :passenger
     super

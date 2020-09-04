@@ -1,28 +1,44 @@
+# frozen_string_literal: true
+require_relative 'validation'
+require_relative 'acсessors'
+
 class Station
-  include InstanceCounter
-  include Validate
+  include InstanceCounter, Validation, Acсessors
+
+  class << self
+    attr_accessor :all
+  end
+
+  attr_reader   :name
+  attr_accessor :trains
+  # attr_accessor_with_history  :trains, :name
 
   ALL_INFO              = 'Общая информация по количеству поездов по типам на станции...'.freeze
   NIL_NAME_ERROR        = '-> название станции не может быть пустым или меньше 2 символов'.freeze
   NAME_TOO_LENGTH_ERROR = '-> слишком длинное название, не больше 30 символов'.freeze
   NAME_NOT_OBJECT       = '-> имя станции не является обьектом класса String'.freeze
+  REGEXP                = /^[a-zа-я\d ]{2,32}$/i.freeze # русский-латынь? от 2 до 32 букв
 
-  attr_reader   :trains,
-                :name
-
-  @@list_all_station = []
+  validate  :name,  :presence
+  validate  :name,  :format, REGEXP
+  validate  :name,  :type, String
+  
+  # @@list_all_station = []
+  @list_all_station = []
 
   def initialize(name)
     @name = name
-    validate!
     @trains = []
     register_instance
-    @@list_all_station << self
+    validate!
+    # @@list_all_station << self
+    self.class.all << self
+    
   end
 
-  def self.all
-    @@list_all_station
-  end
+  # def self.all
+  #   @@list_all_station
+  # end
 
   def to_s
     @name
@@ -45,12 +61,9 @@ class Station
   end
 
   def each_train
-    trains.each { |train| yield(train) }
+    # trains.each { |train| yield(train) }
+    current_trains.each { |train| yield(train) }
   end
-
-  # def each_train
-  #  yield.trains.map { |train| train } if block_given?
-  # end
 
   def list_all_trains
     puts "#{trains.length} поезда(ов) на станции."
@@ -76,16 +89,5 @@ class Station
     p = 0
     list_trains.each { |train| train[1] == type.to_sym ? c += 1 : p += 1 }
     puts "На станции пассажирских поездов: #{p}, грузовых поездов: #{c} "
-  end
-
-  protected
-
-  attr_writer :trains
-
-  def validate!
-    raise NIL_NAME_ERROR if name.empty? || name.nil?
-    raise NIL_NAME_ERROR if name.length < 2
-    raise NAME_TOO_LENGTH_ERROR if name.length > 30
-    raise NAME_NOT_OBJECT unless @name.is_a? String
   end
 end

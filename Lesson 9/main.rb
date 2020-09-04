@@ -1,6 +1,7 @@
+require_relative 'lib/validation'
+require_relative 'lib/acсessors'
 require_relative 'lib/instance_counter'
 require_relative 'lib/manufacture'
-require_relative 'lib/validate'
 require_relative 'lib/interface'
 require_relative 'lib/station'
 require_relative 'lib/route'

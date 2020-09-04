@@ -1,30 +1,39 @@
+# frozen_string_literal: true
+require_relative 'validation'
+require_relative 'acсessors'
+require_relative 'instance_counter'
+require_relative 'manufacture'
+
 class Train
-  include Manufacture
-  include InstanceCounter
-  include Validate
+  include Manufacture, InstanceCounter, Validation, Acсessors
 
   TRAIN_STOPPED       = 'Поезд остановился'.freeze
   COMPANY_NAME        = 'Ford Inc.'.freeze
   NUMBER_FORMAT_ERROR = 'Неверный формат номера (3 знака (опционально дефис) 2 знака)'.freeze
   NUMBER_WAGONS_ERROR = 'Некорректное количество вагонов'.freeze
-  NUMBER_FORMAT       = /^[a-zа-яё\d]{3}[-]*[a-zа-яё\d]{2}$/i.freeze
+  REGEXP              = /^[a-zа-яё\d]{3}[-]*[a-zа-яё\d]{2}$/i.freeze
 
-  attr_reader   :number,
-                :speed,
-                :route
-
+  attr_reader   :number, :speed, :route
   attr_accessor :wagons
 
+  validate :number, :presence
+  validate :number, :type, String
+  validate :number, :format, REGEXP 
+
   @@train_all = {}
+
+  class << self
+    attr_accessor :train_all
+  end
 
   def initialize(number, wagons)
     @number = number
     @wagons = wagons
-    validate!
     @speed = 0
     @company_name = COMPANY_NAME
     @@train_all[number] = self
     register_instance
+    validate!
   end
 
   def to_s
@@ -105,12 +114,5 @@ class Train
 
   def current_route?
     @current_route.nil?
-  end
-
-  protected
-
-  def validate!
-    raise NUMBER_FORMAT_ERROR if number !~ NUMBER_FORMAT
-    raise NUMBER_WAGONS_ERROR if @wagons.size.zero? || @wagons.size > 150
   end
 end

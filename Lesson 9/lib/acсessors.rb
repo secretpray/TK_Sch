@@ -18,23 +18,22 @@ module Acсessors
         history = instance_variable_get(history_var_name)
         history ||= []
         history << value
-        instance_variable_set(history_var_name, value)
+        instance_variable_set(history_var_name, history)
         instance_variable_set(var_name, value)
       end
     end
   end
 
-  def strong_attraccessor(attr_name, class_name)
+  def strong_attr_accessor(attr_name, class_name)
     # raise 'Аргумент не является символом' unless attr_name.is_a?(Symbol)
     # raise 'Аргумент не является классом' unless class_name.is_a?(Class)
     var_name = "@#{attr_name}".to_sym
     
     define_method(attr_name) { instance_variable_get(var_name) }
     
-    define_method("#{attr_name}=".to_sym) do |value|
-      unless valie.is_a?(class_name)
-        raise TypeError, "#{attr_name} должен быть экземпляром класса #{class_name}"
-      end
+    define_method("#{attr_name}=".to_sym) do |value|  
+      raise TypeError, "#{attr_name} не экземпляр класса #{class_name}" unless value.is_a?(class_name)
+      
       instance_variable_set(var_name, value)
     end
   end
