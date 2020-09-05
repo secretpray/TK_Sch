@@ -20,6 +20,8 @@ class Main
   PRESS_KEY_BLINK       = "\nДля продолжения нажмите пробел или Enter.. \033[1;5m_\033[0;25m".freeze
   RESET_COLOR           = system 'printf "\033[0m\033[2J\e[f"'.freeze
   CYAN_ON_BLACK_COLOR   = system 'printf "\033[1;40;96m\033[2J\e[f"'.freeze
+  CARGO_WAGON           = (60..120).freeze
+  PASS_WAGON            = (18..64).freeze
 
   attr_reader :stations, :trains, :routes, :interface
 
@@ -119,7 +121,7 @@ class Main
   end
 
   def press_but
-    printf PRESS_KEY_BLINK
+    printf PRESS_KEY_BLINK.italic
     loop do
       break if [' ', "\r"].include?(STDIN.getch)
     end
@@ -139,6 +141,20 @@ class Main
   def select_train
     puts 'Выберите поезд для управления его составом...'
     @trains[gets.chomp.to_i - 1]
+  end
+
+  def cargo_wagon_check
+    puts 'Введите грузоподьемность вагона в тоннах (от 60 до 120)'
+    input = gets.chomp.to_i
+    raise ArgumentError, 'Неверная вместимость вагона' unless CARGO_WAGON.include?(input) 
+    input
+  end
+
+  def pass_wagon_check
+    puts 'Введите количество мест в вагоне (от 18 до 64)'
+    input = gets.chomp.to_i
+    raise ArgumentError, 'Неверная вместимость вагона' unless PASS_WAGON.include?(input)
+    input
   end
 
   def show_stations_list
@@ -199,42 +215,34 @@ class Main
     system 'clear'
     puts "Введите тип поезда:\n 1. Грузовой,\n 2. Пассажирский"
     type = gets.chomp.to_i
-    # raise ArgumentError, 'Введен неверный тип вагона' unless type == 1 || type == 2
     raise ArgumentError, 'Введен неверный тип вагона' unless [1, 2].include?(type)
 
     puts 'Введите количество вагонов:'
     wagons_count = gets.chomp.to_i
     wagons = []
     if type == 1
-      puts 'Введите грузоподьемность вагона в тоннах (от 60 до 120)'
-      volume_size = gets.chomp.to_i
+      volume_size = cargo_wagon_check
       wagons_count.times { wagons << CargoWagon.new(volume_size) }
     elsif type == 2
-      puts 'Введите количество мест в вагоне (от 18 до 64)'
-      place_count = gets.chomp.to_i
+      place_count = pass_wagon_check
       wagons_count.times { wagons << PassengerWagon.new(place_count) }
     else
       raise ArgumentError, 'Введен неверный тип поезда.'
     end
-    begin
-      print 'Введите номер поезда (формат -> xxx-xx): '
-      number = gets.chomp
-      if type == 1
-        @trains << CargoTrain.new(number, wagons)
-      elsif type == 2
-        @trains << PassengerTrain.new(number, wagons)
-      else
-        raise ArgumentError, UNKNOWN_COMMAND
-      end
-    rescue RuntimeError => e
-      puts "Ошибка: #{e.message}. Попробуйте еще раз.".red
-      # retry
-      press_but
+
+    print 'Введите номер поезда (формат -> xxx-xx): '
+    number = gets.chomp
+    if type == 1
+      @trains << CargoTrain.new(number, wagons)
+    elsif type == 2
+      @trains << PassengerTrain.new(number, wagons)
+    else
+      raise ArgumentError, UNKNOWN_COMMAND
     end
+
     puts 'Создан(ы):'
     show_trains_list
     press_but
-    puts "Производитель созданных вагонов: #{wagons.last.company_name}, поезда: #{@trains.last.company_name}"
   rescue StandardError => e
     puts "Возникла ошибка #{e.message}. Поезд не создан.".red
     press_but
@@ -253,7 +261,7 @@ class Main
     puts "Общее количество созданных станций - #{Station.all.size}"
     press_but
   rescue StandardError => e
-    puts "Возникла ошибка: #{e.message}! Станция не создана.".red
+    puts "Возникла ошибка: #{e.message}! Станция не создана.".bold.red
     press_but
   end
 
@@ -347,14 +355,10 @@ class Main
     puts "Введеите:\n 1 - для добавления товарного (cargo) вагона\n 2 - для добавления пассажирского (passenger) вагона"
     wagon_type = gets.chomp.to_i
     if wagon_type == 1
-      puts 'Введите грузоподьемность вагона в тоннах (от 60 до 120)'
-      volume_size = gets.chomp.to_i
-      # volume_size = 60 if volume_size > 120 || volume_size < 60
+      volume_size = cargo_wagon_check
       train.attach_wagon(CargoWagon.new(volume_size))
     elsif wagon_type == 2
-      puts 'Введите количество мест в вагоне (от 18 до 64)'
-      place_count = gets.chomp.to_i
-      # place_count = 54 if place_count > 64 || place_count < 18
+      place_count = pass_wagon_check
       train.attach_wagon(PassengerWagon.new(place_count))
     else
       raise ArgumentError, 'Вагон неверного типа не может быть добавлен в состав.'

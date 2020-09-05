@@ -1,6 +1,4 @@
 # frozen_string_literal: true
-require_relative 'validation'
-require_relative 'accessors'
 
 class Route
   include InstanceCounter, Validation
@@ -11,15 +9,13 @@ class Route
   NOT_VALID_STATION     = 'Станция не является промежуточной'.freeze
   REGEXP                = /^[a-zа-я]$/i.freeze
 
-  attr_accessor :stations
-  # attr_accessor_with_history :stations
-  attr_reader   :departure_station, :destination_station
+  # attr_accessor :stations
+  # attr_reader   :departure_station, :destination_station
+  attr_accessor_with_history :stations, :departure_station, :destination_station
 
-  validate  :name,  :presence
-  validate  :name,  :type, String
-  validate  :name,  :format, REGEXP 
-  validate  :departure_station, :format, REGEXP
-  validate  :departure_station, :format, REGEXP
+  validate :stations, :presence
+  validate :stations, :type, Array
+  # add validate double name in route! 
 
   def initialize(departure_station, destination_station)
     @stations = [departure_station, destination_station]

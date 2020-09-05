@@ -12,12 +12,13 @@ class PassengerWagon < Wagon
   MIN_SIZE         = 18
   MAX_SIZE         = 64
 
-  attr_reader :type_wagon,  :number,  :place_count, :places_filled
+  # attr_reader :type_wagon, :number, :place_count, :places_filled
+  attr_accessor_with_history :type_wagon, :number, :place_count, :places_filled
 
   alias size place_count
   alias filled_size places_filled
 
-  validate  :size,        :presence
+  validate  :place_count, :presence
   validate  :type_wagon,  :presence
 
   def initialize(size)

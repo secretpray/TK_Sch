@@ -10,8 +10,9 @@ class Train
   NUMBER_WAGONS_ERROR = 'Некорректное количество вагонов'.freeze
   REGEXP              = /^[a-zа-яё\d]{3}[-]*[a-zа-яё\d]{2}$/i.freeze
 
-  attr_reader   :number, :speed, :route
-  attr_accessor :wagons
+  # attr_reader   :number, :speed, :route
+  # attr_accessor :wagons
+  attr_accessor_with_history :number, :speed, :route, :wagons 
 
   validate :number, :presence
   validate :number, :type, String

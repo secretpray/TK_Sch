@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module Validation
   def self.included(base)
     base.extend ClassMethods
@@ -29,16 +30,16 @@ module Validation
 
     protected
 
-    def presence_validation(value, *)
-      raise 'Значение должно быть определено' if (value.nil? || value == '')
+    def presence_validation(value, _)
+      raise 'имя не может быть пустым' if (value.nil? || value == '')
     end
 
     def format_validation(value, format)
-      raise 'Неверный формат значения' if value !~ format
+      raise 'неверный формат введенного значения' if value !~ format
     end
 
     def type_validation(value, type)
-      raise 'Неверный тип значения' unless value.is_a?(type)
+      raise 'неверный тип значения' unless value.is_a?(type)
     end
 
     def validate!
