@@ -42,6 +42,10 @@ module Validation
       raise 'неверный тип значения' unless value.is_a?(type)
     end
 
+    def length_validation(value, length)
+      raise "минимальная длина: #{value} должна быть больше #{length} символа" if length >= value.size
+    end
+
     def validate!
       validations.each do |attribute, validation|
         value = instance_variable_get("@#{attribute}".to_sym)

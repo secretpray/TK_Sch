@@ -17,11 +17,13 @@ class Station
   NIL_NAME_ERROR        = '-> название станции не может быть пустым или меньше 2 символов'
   NAME_TOO_LENGTH_ERROR = '-> слишком длинное название, не больше 30 символов'
   NAME_NOT_OBJECT       = '-> имя станции не является обьектом класса String'
-  REGEXP                = /^[a-zа-я\d ]{2,32}$/i.freeze # русский-латынь? от 2 до 32 букв
+  REGEXP                = /^[a-zа-я\d ]{3,24}$/i.freeze # русский-латынь? от 3 до 24 букв
 
   validate :name, :presence
+  validate :name, :length, 2 # при наличии REGEXP не нужен (в копилку)
   validate :name, :format, REGEXP
   validate :name, :type, String
+  validate :name, :length, 2
 
   @@list_all_station = []
   # @list_all_station = []
