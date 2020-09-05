@@ -20,6 +20,7 @@ class CargoWagon < Wagon
   alias filled_size volume
 
   validate  :volume_size, :presence
+  validate  :volume_size, :positive
   validate  :type_wagon,  :presence
 
   def initialize(size)

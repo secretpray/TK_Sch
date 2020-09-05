@@ -43,7 +43,11 @@ module Validation
     end
 
     def length_validation(value, length)
-      raise "минимальная длина: '#{value}'' должна быть больше #{length} символа" unless length < value.size
+      raise "минимальная длина не меньше #{length} символа(ов)" unless length < value.size
+    end
+
+    def positive_validation(value, _)
+      raise 'отрицательное значение не допустимо' unless value.positive?
     end
 
     def validate!

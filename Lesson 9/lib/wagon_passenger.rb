@@ -20,6 +20,7 @@ class PassengerWagon < Wagon
   alias filled_size places_filled
 
   validate  :place_count, :presence
+  validate  :place_count, :positive
   validate  :type_wagon,  :presence
 
   def initialize(size)
