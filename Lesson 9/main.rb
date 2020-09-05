@@ -1,3 +1,4 @@
+require_relative 'lib/validation_error'
 require_relative 'lib/validation'
 require_relative 'lib/accessors'
 require_relative 'lib/instance_counter'

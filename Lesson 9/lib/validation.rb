@@ -31,23 +31,23 @@ module Validation
     protected
 
     def presence_validation(value, _)
-      raise 'имя не может быть пустым' if value.nil? || value == ''
+      raise ValidationError, 'имя не может быть пустым' if value.nil? || value == ''
     end
 
     def format_validation(value, format)
-      raise 'неверный формат введенного значения' if value !~ format
+      raise ValidationError, 'неверный формат введенного значения' if value !~ format
     end
 
     def type_validation(value, type)
-      raise 'неверный тип значения' unless value.is_a?(type)
+      raise ValidationError, 'неверный тип значения' unless value.is_a?(type)
     end
 
     def length_validation(value, length)
-      raise "минимальная длина не меньше #{length} символа(ов)" unless length < value.size
+      raise ValidationError, "минимальная длина не меньше #{length} символа(ов)" unless length < value.size
     end
 
     def positive_validation(value, _)
-      raise 'отрицательное значение не допустимо' unless value.positive?
+      raise ValidationError, 'отрицательное значение не допустимо' unless value.positive?
     end
 
     def validate!
@@ -57,7 +57,7 @@ module Validation
         validation.each do |details|
           method_name = "#{details[:type]}_validation".to_sym
 
-          raise 'Неверный тип валидации' unless InstanceMethods.method_defined?(method_name)
+          raise ValidationError, 'Неверный тип валидации' unless InstanceMethods.method_defined?(method_name)
 
           send method_name, value, details[:params]
         end

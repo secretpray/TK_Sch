@@ -1,3 +1,4 @@
+require_relative 'validation_error'
 require_relative 'validation'
 require_relative 'accessors'
 require_relative 'instance_counter'
