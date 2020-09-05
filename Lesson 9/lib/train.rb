@@ -1,22 +1,24 @@
 # frozen_string_literal: true
 
 class Train
-  include Manufacture, InstanceCounter, Validation 
+  include Manufacture
+  include InstanceCounter
+  include Validation
   extend Accessors
 
   TRAIN_STOPPED       = 'Поезд остановился'
   COMPANY_NAME        = 'Ford Inc.'
   NUMBER_FORMAT_ERROR = 'Неверный формат номера (3 знака (опционально дефис) 2 знака)'
   NUMBER_WAGONS_ERROR = 'Некорректное количество вагонов'
-  REGEXP              = /^[a-zа-яё\d]{3}[-]*[a-zа-яё\d]{2}$/i
+  REGEXP              = /^[a-zа-яё\d]{3}[-]*[a-zа-яё\d]{2}$/i.freeze
 
   # attr_reader   :number, :speed, :route
   # attr_accessor :wagons
-  attr_accessor_with_history :number, :speed, :route, :wagons 
+  attr_accessor_with_history :number, :speed, :route, :wagons
 
   validate :number, :presence
   validate :number, :type, String
-  validate :number, :format, REGEXP 
+  validate :number, :format, REGEXP
 
   @@train_all = {}
 

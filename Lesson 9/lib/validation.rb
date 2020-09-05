@@ -31,7 +31,7 @@ module Validation
     protected
 
     def presence_validation(value, _)
-      raise 'имя не может быть пустым' if (value.nil? || value == '')
+      raise 'имя не может быть пустым' if value.nil? || value == ''
     end
 
     def format_validation(value, format)
@@ -49,7 +49,7 @@ module Validation
         validation.each do |details|
           method_name = "#{details[:type]}_validation".to_sym
 
-          raise 'Неверный тип валидации' unless InstanceMethods::method_defined?(method_name)
+          raise 'Неверный тип валидации' unless InstanceMethods.method_defined?(method_name)
 
           send method_name, value, details[:params]
         end

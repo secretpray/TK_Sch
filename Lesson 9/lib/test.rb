@@ -23,8 +23,6 @@ rand(7..30).times { cargo_pass2 << CargoWagon.new(rand(60...120)) }
 rand(7..30).times { cargo_pass3 << CargoWagon.new(rand(60...120)) }
 
 cargo1 = CargoTrain.new((rand(100...999).to_s + '-' + rand(10...99).to_s), cargo_pass1)
-cargo2 = CargoTrain.new((rand(100...999).to_s + '-' + rand(10...99).to_s), cargo_pass2)
-cargo3 = CargoTrain.new((rand(100...999).to_s + '-' + rand(10...99).to_s), cargo_pass3)
 
 wagon_pass1 = []
 wagon_pass2 = []
@@ -36,12 +34,10 @@ rand(5..24).times { wagon_pass3 << PassengerWagon.new(rand(18...64)) }
 
 passenger1 = PassengerTrain.new((rand(100...999).to_s + '-' + rand(10...99).to_s), wagon_pass1)
 passenger2 = PassengerTrain.new((rand(100...999).to_s + '-' + rand(10...99).to_s), wagon_pass2)
-passenger3 = PassengerTrain.new((rand(100...999).to_s + '-' + rand(10...99).to_s), wagon_pass3)
 
 station1 = Station.new('Киев')
 station2 = Station.new('Минск')
 station3 = Station.new('Москва')
-station4 = Station.new('Питер')
 
 puts "Исходное имя станции: #{station1}"
 station1.name = 'Львов'
@@ -50,7 +46,6 @@ station1.name = 'Днепр'
 puts 'История изменения имени этой станции:'
 puts station1.name_history
 puts
-
 
 station1.trains = [passenger1]
 puts station1.trains
@@ -76,7 +71,6 @@ puts 'Вагон заполнен на 1'
 add_size = rand(2..9).times { wagonpass1.fill }
 puts "Вагон заполнен на #{add_size}"
 # puts "Сейчас вагон: #{wagonpass1}\n"
-
 
 # wagonpass2 = PassengerWagon.new(42)
 # puts "Вагон: #{wagonpass2}\n"

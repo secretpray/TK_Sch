@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 class PassengerWagon < Wagon
-  
-  include InstanceCounter, Validation
+  include InstanceCounter
+  include Validation
   extend Accessors
 
   TYPE_WAGON_ERROR = '-> неверный тип вагона'

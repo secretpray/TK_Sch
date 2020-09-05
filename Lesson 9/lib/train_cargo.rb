@@ -1,6 +1,6 @@
 class CargoTrain < Train
   # attr_reader :type, :wagons
-  attr_accessor_with_history :type, :wagons 
+  attr_accessor_with_history :type, :wagons
 
   validate :number, :presence
   validate :number, :format, REGEXP

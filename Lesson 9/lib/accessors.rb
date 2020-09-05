@@ -13,10 +13,8 @@ module Accessors
       end
 
       define_method("#{name}=".to_sym) do |value|
-        temp = instance_variable_get(history_var_name) ||
-          [ instance_variable_get(var_name) ]
+        temp = instance_variable_get(history_var_name) || [] # [ instance_variable_get(var_name) ]
         temp << value
-
         instance_variable_set(history_var_name, temp)
         instance_variable_set(var_name, value)
       end
@@ -27,9 +25,7 @@ module Accessors
     var_name = "@#{attr_name}".to_sym
     define_method(attr_name) { instance_variable_get(var_name) }
     define_method("#{attr_name}=".to_sym) do |value|
-      unless value.is_a?(class_name)
-        raise TypeError, "#{attr_name} should be an instance of #{class_name}"
-      end
+      raise TypeError, "#{attr_name} should be an instance of #{class_name}" unless value.is_a?(class_name)
 
       instance_variable_set(var_name, value)
     end

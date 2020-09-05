@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class Station
-  include InstanceCounter, Validation 
+  include InstanceCounter
+  include Validation
   extend Accessors
 
   class << self
@@ -21,7 +22,7 @@ class Station
   validate :name, :presence
   validate :name, :format, REGEXP
   validate :name, :type, String
-  
+
   @@list_all_station = []
   # @list_all_station = []
 
@@ -32,7 +33,6 @@ class Station
     validate!
     @@list_all_station << self
     # self.class.all << self
-    
   end
 
   def self.all

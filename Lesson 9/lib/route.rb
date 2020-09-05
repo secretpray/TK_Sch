@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class Route
-  include InstanceCounter, Validation
+  include InstanceCounter
+  include Validation
   extend Accessors
 
   ROUTE_POINT_ERROR     = '-> станции прибытия и отправления должны отличаться'
@@ -15,7 +16,7 @@ class Route
 
   validate :stations, :presence
   validate :stations, :type, Array
-  # add validate double name in route! 
+  # add validate double name in route!
 
   def initialize(departure_station, destination_station)
     @stations = [departure_station, destination_station]

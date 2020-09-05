@@ -1,7 +1,9 @@
 # frozen_string_literal: true
 
 class Wagon
-  include Manufacture, InstanceCounter, Validation
+  include Manufacture
+  include InstanceCounter
+  include Validation
   extend Accessors
 
   COMPANY_NAME = 'Vega Inc.'
