@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
 class PassengerWagon < Wagon
+  
   include InstanceCounter, Validation
   extend Accessors
 
-  TYPE_WAGON_ERROR = '-> неверный тип вагона'.freeze
-  SIZE_ERROR_DATE  = '-> вместимость выражается в числах'.freeze
-  SIZE_ERROR       = '-> неверно указана вместимость вагона'.freeze
-  NAME_WAGON       = 'Пассажирский вагон'.freeze
+  TYPE_WAGON_ERROR = '-> неверный тип вагона'
+  SIZE_ERROR_DATE  = '-> вместимость выражается в числах'
+  SIZE_ERROR       = '-> неверно указана вместимость вагона'
+  NAME_WAGON       = 'Пассажирский вагон'
   TYPE             = :passenger
   MIN_SIZE         = 18
   MAX_SIZE         = 64

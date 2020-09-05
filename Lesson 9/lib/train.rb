@@ -4,11 +4,11 @@ class Train
   include Manufacture, InstanceCounter, Validation 
   extend Accessors
 
-  TRAIN_STOPPED       = 'Поезд остановился'.freeze
-  COMPANY_NAME        = 'Ford Inc.'.freeze
-  NUMBER_FORMAT_ERROR = 'Неверный формат номера (3 знака (опционально дефис) 2 знака)'.freeze
-  NUMBER_WAGONS_ERROR = 'Некорректное количество вагонов'.freeze
-  REGEXP              = /^[a-zа-яё\d]{3}[-]*[a-zа-яё\d]{2}$/i.freeze
+  TRAIN_STOPPED       = 'Поезд остановился'
+  COMPANY_NAME        = 'Ford Inc.'
+  NUMBER_FORMAT_ERROR = 'Неверный формат номера (3 знака (опционально дефис) 2 знака)'
+  NUMBER_WAGONS_ERROR = 'Некорректное количество вагонов'
+  REGEXP              = /^[a-zа-яё\d]{3}[-]*[a-zа-яё\d]{2}$/i
 
   # attr_reader   :number, :speed, :route
   # attr_accessor :wagons

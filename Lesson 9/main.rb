@@ -146,7 +146,8 @@ class Main
   def cargo_wagon_check
     puts 'Введите грузоподьемность вагона в тоннах (от 60 до 120)'
     input = gets.chomp.to_i
-    raise ArgumentError, 'Неверная вместимость вагона' unless CARGO_WAGON.include?(input) 
+    raise ArgumentError, 'Неверная вместимость вагона' unless CARGO_WAGON.include?(input)
+
     input
   end
 
@@ -154,6 +155,7 @@ class Main
     puts 'Введите количество мест в вагоне (от 18 до 64)'
     input = gets.chomp.to_i
     raise ArgumentError, 'Неверная вместимость вагона' unless PASS_WAGON.include?(input)
+
     input
   end
 

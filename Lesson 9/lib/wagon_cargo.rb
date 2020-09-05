@@ -4,23 +4,23 @@ class CargoWagon < Wagon
   include InstanceCounter, Validation
   extend Accessors
 
-  TYPE_WAGON_ERROR = '-> yеверный тип вагона'.freeze
-  SIZE_ERROR_DATE  = '-> вместимость выражается в числах'.freeze
-  SIZE_ERROR       = '-> неверно указана вместимость вагона'.freeze
-  NAME_WAGON       = 'Грузовой вагон'.freeze
+  TYPE_WAGON_ERROR = '-> yеверный тип вагона'
+  SIZE_ERROR_DATE  = '-> вместимость выражается в числах'
+  SIZE_ERROR       = '-> неверно указана вместимость вагона'
+  NAME_WAGON       = 'Грузовой вагон'
   TYPE             = :cargo
   MIN_SIZE         = 60
   MAX_SIZE         = 120
 
   # attr_reader :type_wagon,  :number,  :volume,  :volume_size
-  attr_accessor_with_history :type_wagon,  :number,  :volume,  :volume_size
+  attr_accessor_with_history :type_wagon, :number, :volume, :volume_size
 
   alias size volume_size
   alias filled_size volume
 
   validate  :volume_size, :presence
   validate  :type_wagon,  :presence
- 
+
   def initialize(size)
     @type_wagon   = TYPE
     @volume_size  = size

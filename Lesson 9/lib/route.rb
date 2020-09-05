@@ -4,9 +4,9 @@ class Route
   include InstanceCounter, Validation
   extend Accessors
 
-  ROUTE_POINT_ERROR     = '-> станции прибытия и отправления должны отличаться'.freeze
-  ROUTE_SIZE_ERROR      = '-> в маршруте должно быть минимум 2 станций'.freeze
-  NOT_VALID_STATION     = 'Станция не является промежуточной'.freeze
+  ROUTE_POINT_ERROR     = '-> станции прибытия и отправления должны отличаться'
+  ROUTE_SIZE_ERROR      = '-> в маршруте должно быть минимум 2 станций'
+  NOT_VALID_STATION     = 'Станция не является промежуточной'
   REGEXP                = /^[a-zа-я]$/i.freeze
 
   # attr_accessor :stations
