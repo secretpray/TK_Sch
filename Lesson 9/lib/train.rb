@@ -19,6 +19,7 @@ class Train
   validate :number, :presence
   validate :number, :type, String
   validate :number, :format, REGEXP
+  # validate :number, :format, REGEXP, message: 'Неверный формат номера для поезда'
 
   @@train_all = {}
 

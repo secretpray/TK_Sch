@@ -50,6 +50,11 @@ module Validation
       raise ValidationError, 'отрицательное значение не допустимо' unless value.positive?
     end
 
+    def uniq_validation(value, _)
+      raise ValidationError, 'первый и последний элементы идентичны' if value.first == value.last
+      # raise ValidationError, 'первый и последний элементы идентичны' unless value[0] != value[-1]
+    end
+
     def validate!
       validations.each do |attribute, validation|
         value = instance_variable_get("@#{attribute}".to_sym)

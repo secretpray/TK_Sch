@@ -17,7 +17,8 @@ class Route
 
   validate :stations, :presence
   validate :stations, :type, Array
-  # add validate double name in route!
+  validate :stations, :uniq
+  # validate :stations, :uniq, message: 'Первая и последняя станции должны быть разными'
 
   def initialize(departure_station, destination_station)
     @stations = [departure_station, destination_station]

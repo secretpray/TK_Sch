@@ -8,7 +8,7 @@ class PassengerWagon < Wagon
   TYPE_WAGON_ERROR = '-> неверный тип вагона'
   SIZE_ERROR_DATE  = '-> вместимость выражается в числах'
   SIZE_ERROR       = '-> неверно указана вместимость вагона'
-  NAME_WAGON       = 'Пассажирский вагон'
+  NAME_WAGON       = 'Пассажирский вагон' # тип "#{self.class}"
   TYPE             = :passenger
   MIN_SIZE         = 18
   MAX_SIZE         = 64
