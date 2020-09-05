@@ -13,6 +13,7 @@ class Route
   # attr_accessor :stations
   # attr_reader   :departure_station, :destination_station
   attr_accessor_with_history :stations, :departure_station, :destination_station
+  strong_attr_accessor :stations, Array
 
   validate :stations, :presence
   validate :stations, :type, Array
