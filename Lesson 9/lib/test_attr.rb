@@ -68,35 +68,17 @@ puts "Вагон: #{wagonpass1}\n"
 wagonpass1.fill
 puts 'Вагон заполнен на 1'
 # puts "Сейчас вагон: #{wagonpass1}\n"
-add_size = rand(2..9).times { wagonpass1.fill }
+add_size = rand(3..19).times { wagonpass1.fill }
 puts "Вагон заполнен на #{add_size}"
 # puts "Сейчас вагон: #{wagonpass1}\n"
 
-# wagonpass2 = PassengerWagon.new(42)
-# puts "Вагон: #{wagonpass2}\n"
-# rand(2..9).times { wagonpass2.fill }
-# wagonpass2.clear
-# puts 'Вагон освобожден (-1)'
-# puts "Сейчас вагон: #{wagonpass2}\n"
+wagonpass2 = PassengerWagon.new(25)
+puts wagonpass2.place_count
+wagonpass2.place_count = 0
+puts wagonpass2.place_count
 
-# puts "Вагоны поезда: #{passenger1}" # (количество вагонов: #{passenger1.wagons.size})
-# passenger1.each_wagons do |wagon|
-#   puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type_wagon}"
-#   puts "кол-во свободных мест: #{wagon.free_size}, количество занятых мест:#{wagon.filled_size}"
-# end
-
-# passenger1.attach_wagon(wagonpass1)
-# passenger1.attach_wagon(wagonpass2)
-
-# puts "Прицеплены 2 вагона к поезду: #{passenger1}" #  (количество вагонов: #{@passenger1.wagons.size})
-# passenger1.each_wagons do |wagon|
-#   puts "Номер вагона: #{wagon.number}, тип вагона: #{wagon.type_wagon}"
-#   puts "кол-во свободных мест: #{wagon.free_size}, количество занятых мест:#{wagon.filled_size}"
-# end
-
-# p '=' * 50
-
-# station1.each_train do |train|
-#   puts "Номер поезда: #{train.number}, тип поезда: #{train.type}"
-#   puts "Количество вагонов: #{train.wagons.size}"
-# end
+begin
+  wagonpass2.clear
+rescue RuntimeError => e
+  puts "Возникла ошибка валидации: #{e}"
+end
