@@ -23,7 +23,6 @@ class Station
   validate :name, :length, 2 # при наличии REGEXP не нужен (в копилку)
   validate :name, :format, REGEXP
   validate :name, :type, String
-  validate :name, :length, 2
 
   @@list_all_station = []
   # @list_all_station = []

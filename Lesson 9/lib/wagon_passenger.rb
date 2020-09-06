@@ -65,11 +65,4 @@ class PassengerWagon < Wagon
   def can_clear?
     places_filled >= 1
   end
-
-  # def validate!
-  #   raise TYPE_WAGON_ERROR unless type_wagon == :passenger
-  #   raise SIZE_ERROR if place_count > MAX_SIZE || place_count < MIN_SIZE
-  #   return if (18..64).cover?(@size)
-  #   raise 'В вагоне может быть от 18 до 64 мест'
-  # end
 end
