@@ -11,7 +11,8 @@ class Card
   end
 
   def to_s
-    ["","A",2,3,4,5,6,7,8,9,10,"J","Q","K"][face].to_s + 
+    # ["","A",2,3,4,5,6,7,8,9,10,"J","Q","K"][face].to_s + 
+    ["","A",*(2..10),"J","Q","K"][face].to_s + 
     {spades: "♠", hearts: "♥", diamonds: "♦", clubs: "♣"}[suit.to_sym]
   end
 end
