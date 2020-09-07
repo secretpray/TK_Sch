@@ -6,7 +6,7 @@ class Deck
   def initialize
     @cards = (1..13).to_a.product(["spades", "hearts", "diamonds", "clubs"]).collect{ |f,s| Card.new(f,s) }
     @cards_played = []
-    shuffle!
+    # shuffle!
   end
 
   def draw(n=1)
@@ -29,5 +29,5 @@ class Deck
 end
 
 deck_one = Deck.new
-deck_one.cards.each.with_index(1) { |card, index| puts "#{index} - #{card.to_s}" } 
+deck_one.cards.each.with_index(1) { |card, index| puts "#{index} - #{card.to_s} (#{card.value})" } 
 puts "cards remaining (@cards.length) - #{deck_one.remaining}" # 52
