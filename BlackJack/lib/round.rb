@@ -20,19 +20,39 @@ class Round
     @interface  = Interface.new
     @bank = 0
     @players = []
-    prepare
+    prepare_round
   end
 
-  def prepare
+  def prepare_round
+    # start_menu
     inputs_name
     create_users(name)
+  end
+
+  def game_run
+    start_round
+    end_round
+  end
+
+  def start_round
     make_deck 
+    puts 'Играем...'
+    # loop 
+    # login_user + bet
+    # interface_menu_statistic (players, bank, show cards - hide/unhide)
+    # game_menu for player (add cards, skip, show cards)
+    # обработка ходов (стоит ли добавлять class with logic_game) и выход по 3 картам, перебору, открытию карт
+    # loop end
+    puts 'Получаем результат...'
   end
 
-  def start_round(name)
-    # login_user
+  def end_round
+    # result_round
+    # статистика (при наличии времени)
+    print "У #{players.last.name} на счету осталось: #{players.last.bank} $. Хотите начать новую игру? (y/n)  "
+    game_run if gets.chomp.downcase == 'y'
   end
-
+  
   def inputs_name
     print 'Пожалуйста, введите свое имя ... ' # blink
     @name = gets.chomp
@@ -49,11 +69,11 @@ class Round
 
   def make_deck
     @deck = Deck.new
-    info_deck(deck)
+    # info_deck(deck)
   end 
 
-  def info_deck(info_deck)
-    info_deck.cards.each.with_index(1) { |card, index| puts "#{index}. #{card.to_s} = (#{card.value})" } 
-    puts "Карт в наличии: - #{info_deck.remaining}" # 52
-  end
+  # def info_deck(info_deck)
+  #   info_deck.cards.each.with_index(1) { |card, index| puts "#{index}. #{card.to_s} = (#{card.value})" } 
+  #   puts "Карт в наличии: - #{info_deck.remaining}" # 52
+  # end
 end
