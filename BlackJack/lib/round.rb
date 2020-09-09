@@ -11,8 +11,9 @@ require_relative 'validation'
 class Round
   include Validation #(проверка 3 карты, перебор, очередность и правильность выбора)
 
-  attr_reader :name, :deck
+  BETS = 10
 
+  attr_reader :name, :deck
   attr_accessor :bank, :players
 
 
@@ -35,11 +36,14 @@ class Round
   end
 
   def start_round
+    players.each(&:clear_hands)
     make_deck 
     puts 'Играем...'
+    login_user
     # loop 
     # login_user + bet
     # interface_menu_statistic (players, bank, show cards - hide/unhide)
+    
     # game_menu for player (add cards, skip, show cards)
     # обработка ходов (стоит ли добавлять class with logic_game) и выход по 3 картам, перебору, открытию карт
     # loop end
@@ -55,9 +59,8 @@ class Round
   
   def inputs_name
     print 'Пожалуйста, введите свое имя ... ' # blink
-    @name = gets.chomp
+    @name = gets.chomp # puts "Создан игрок - #{name}" 
     # validate name (w and d only; 1 - 20 letters)
-    puts "Создан игрок - #{name}" 
   end
 
   def create_users(name)
@@ -67,13 +70,15 @@ class Round
     players.each.with_index(1) { |player, i| puts "#{i}. #{player}" }
   end
 
+  def login_user
+    players.each do |player|
+      2.times { player.get_card(deck.remove_card!) }
+      bank += player.give_money BETS
+    end
+    players.each(&:puts)
+  end
+
   def make_deck
     @deck = Deck.new
-    # info_deck(deck)
-  end 
-
-  # def info_deck(info_deck)
-  #   info_deck.cards.each.with_index(1) { |card, index| puts "#{index}. #{card.to_s} = (#{card.value})" } 
-  #   puts "Карт в наличии: - #{info_deck.remaining}" # 52
-  # end
+  end
 end
