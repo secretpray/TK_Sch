@@ -73,9 +73,9 @@ class Round
   def login_user
     players.each do |player|
       2.times { player.get_card(deck.remove_card!) }
-      bank += player.give_money BETS
+      # bank += player.give_money(10)
     end
-    players.each(&:puts)
+     players.each.with_index(1) { |player, i| puts "#{i}. #{player}" }
   end
 
   def make_deck

@@ -21,10 +21,10 @@ class Player
     @hand << card
   end
 
-  def give_money(value)
+  def give_money(value = 0)
     raise NoMoneyError unless value bank.negative?
 
-    @bank -= value
+    bank -= value
     value
   end
 
