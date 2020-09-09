@@ -7,7 +7,7 @@ class Hand
   end
   
   def <<(card)
-    if card.face == 'A'
+    if card.value == 'A'
       @cards << card
     else
       @cards.unshift(card)
@@ -16,17 +16,17 @@ class Hand
   end
 
   def show
-    @cards.map(&:show_card)
+    @cards.map(&:show)
   end
   
   def score
-    @hands.inject(0) do |sum, card|
-      t = if %w[J Q K].include?(card.face)
+    @cards.inject(0) do |sum, card|
+      t = if %w[J Q K].include?(card.value)
             10
-          elsif card.face == 'A'
+          elsif card.value == 'A'
             sum + 11 >= 21 ? 1 : 11
           else
-            card.face
+            card.value
           end
       sum + t
     end

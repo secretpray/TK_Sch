@@ -8,10 +8,6 @@ class Player
     @hand = Hand.new
     @bank = 100
   end
-
-  def to_s
-    "Name - #{name}, bank: #{bank} $"
-  end
   
   def clear_hands
     @hand = Hand.new
@@ -22,11 +18,10 @@ class Player
   end
 
   def give_money(value = 0)
-    bank = 5
-    raise "недостаточно денег! Ставка #{value}$ (остаток #{bank}$)" if (bank - value).negative?
+  raise "недостаточно денег! Ставка #{value}$ (остаток #{bank}$)" if (bank - value).negative?
+    @bank -= value
   rescue StandardError => e
     puts "Возникла ошибка: #{e.message}"
-    @bank -= value
   end
 
   def take_money(value = 0)

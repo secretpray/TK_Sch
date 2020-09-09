@@ -1,15 +1,18 @@
-require_relative 'card'
+# frozen_string_literal: true
 
 class Deck
-  attr_accessor :cards, :cards_played
-  
+  attr_accessor :decs
+
   def initialize
-    @cards = generate_cards.shuffle!
-    @cards_played = []
+    @decs = set_generate.shuffle!
   end
 
-  def remove_card!
-    cards.pop
+  def shuffle!
+    decs.shuffle!
+  end
+
+  def pop! # (draw or pop!)
+    @decs.pop
   end
 
   def remaining
@@ -18,7 +21,12 @@ class Deck
 
   private
 
-  def generate_cards
-    (1..13).to_a.product(["spades", "hearts", "diamonds", "clubs"]).collect{ |f,s| Card.new(f,s) }
+  def set_generate
+    decs = []
+    Card::SUITS.each do |suit|
+      decs.concat(Card::RANKS.map { |value| Card.new(suit, value) })
+    end
+    decs
   end
 end
+

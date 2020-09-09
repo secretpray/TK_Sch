@@ -1,36 +1,23 @@
+# frozen_string_literal: true
+
 class Card
-  attr_reader :face, :suit
+  attr_reader :suit, :value
 
   SUITS = %w[♣ ♦ ♥ ♠].freeze
   RANKS = ['A', *(2..10), 'J', 'Q', 'K'].freeze
 
-	def initialize(face, suit)
-    raise "Invalid card" unless (1..13).include? face
+  def initialize(suit, value)
+    raise "Invalid card value" unless RANKS.include? value
 
-    @face = face
-    raise "Invalid suit" unless ["spades", "hearts", "diamonds", "clubs"].include? suit
+    @value = value
+    raise "Invalid suit" unless SUITS.include? suit
 
     @suit = suit
-  rescue
-    puts "Error!"
+  rescue StandardError => e
+    puts "Возникла ошибка: #{e.message}"
   end
 
-  # def value
-  #   if face == 1
-  #     value = 11
-  #   else
-  #     (2..10).include?(face) ? value = face : value = 10
-  #   end
-  # end
-
-  #  def to_s
-  #    "#{["","Ace",*(2..10),"Jack","Queen","King"][face].to_s }\
-  # #{{spades: "♠", hearts: "♥", diamonds: "♦", clubs: "♣"}[suit.to_sym]}"
-  #  end
-
-  def show_card
-    [@face, @suit]
+  def show
+    [@suit, @value]
   end
-  
-
 end
