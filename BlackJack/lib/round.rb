@@ -11,7 +11,7 @@ require_relative 'validation'
 class Round
   include Validation #(проверка 3 карты, перебор, очередность и правильность выбора)
 
-  attr_reader :name
+  attr_reader :name, :deck
 
   attr_accessor :bank, :players
 
@@ -26,7 +26,7 @@ class Round
   def prepare
     inputs_name
     create_users(name)
-    # make/shuffle deck 
+    make_deck 
   end
 
   def start_round(name)
@@ -45,7 +45,16 @@ class Round
     diler = Player.new # можно сгенерировать имя... чтобы не был просто diler
     players << diler 
     players << player
-    # players.each.with_index(1) { |p, i| puts "#{i}. Name - #{p.name}, bank: #{p.bank} $" }
     players.each.with_index(1) { |player, i| puts "#{i}. #{player}" }
+  end
+
+  def make_deck
+    @deck = Deck.new
+    info_deck(deck)
+  end 
+
+  def info_deck(info_deck)
+    info_deck.cards.each.with_index(1) { |card, index| puts "#{index}. #{card.to_s} = (#{card.value})" } 
+    puts "Карт в наличии: - #{info_deck.remaining}" # 52
   end
 end
