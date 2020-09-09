@@ -42,9 +42,8 @@ class Round
 
   def create_users(name)
     player = Player.new(name)
-    diler = Player.new # можно сгенерировать имя... чтобы не был просто diler
-    players << diler 
-    players << player
+    diler = Player.new # можно сгенерировать имя... 
+    players << diler << player
     players.each.with_index(1) { |player, i| puts "#{i}. #{player}" }
   end
 
