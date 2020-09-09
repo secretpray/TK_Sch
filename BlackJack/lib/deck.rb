@@ -29,5 +29,5 @@ class Deck
 end
 
 deck_one = Deck.new
-deck_one.cards.each.with_index(1) { |card, index| puts "#{index} - #{card.to_s} (#{card.value})" } 
+deck_one.cards.each.with_index(1) { |card, index| puts "#{index}. #{card.to_s} = (#{card.value})" } 
 puts "cards remaining (@cards.length) - #{deck_one.remaining}" # 52
