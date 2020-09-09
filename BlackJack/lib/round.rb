@@ -1,8 +1,9 @@
 # frozen_string_literal: true
-
+require_relative 'interface'
+require_relative 'player'
+require_relative 'hand'
 require_relative 'card'
 require_relative 'deck'
-require_relative 'interface'
 require_relative 'validation'
 
 
@@ -12,7 +13,7 @@ class Round
 
   attr_reader :name
 
-  attr_accessor :bank
+  attr_accessor :bank, :players
 
 
   def initialize
@@ -24,7 +25,7 @@ class Round
 
   def prepare
     inputs_name
-    # create_users
+    create_users(name)
     # make/shuffle deck 
   end
 
@@ -36,9 +37,15 @@ class Round
     print 'Пожалуйста, введите свое имя ... ' # blink
     @name = gets.chomp
     # validate name (w and d only; 1 - 20 letters)
-    puts "Создан игрок - #{@name} (#{name})" 
+    puts "Создан игрок - #{name}" 
   end
 
   def create_users(name)
+    player = Player.new(name)
+    diler = Player.new # можно сгенерировать имя... чтобы не был просто diler
+    players << diler 
+    players << player
+    # players.each.with_index(1) { |p, i| puts "#{i}. Name - #{p.name}, bank: #{p.bank} $" }
+    players.each.with_index(1) { |player, i| puts "#{i}. #{player}" }
   end
 end
