@@ -7,16 +7,22 @@ class Interface
     @round = round
   end
   
-  def next_round?
-    print('Играть еще один раунд? (y/n) ')
-    true if gets.chomp.to_s.downcase == 'y'
+  def play_menu
+    puts "\n"
+    puts('1 - Пропустить ход')
+    puts('2 - Добавить карту') unless round.three_cards?
+    puts('3 - Открыть карты')
+    puts '-' *15
+    puts ('0 - Покинуть игру')
+    print 'Ваш ход   '
+    gets.chomp.to_i
   end
 
-  def actions_list(player)
-    puts('p - пропустить ход')
-    puts('a - добавить карту') if player.cards_count < 3
-    puts('o - открыть карты')
-  end
+  # def actions_list(player)
+  #   puts('p - пропустить ход')
+  #   puts('a - добавить карту') if player.cards_count < 3
+  #   puts('o - открыть карты')
+  # end
 
   def show_winner(player)
     puts('Ничья') if player.nil?
@@ -30,8 +36,8 @@ class Interface
 
   def select_decision(player)
     if player.name != :diler
-      actions_list(player)
-      decision = gets.chomp.to_s
+      play_menu # actions_list(player)
+      decision = gets.chomp.to_i
     end
     decision
   end

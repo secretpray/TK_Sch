@@ -4,7 +4,7 @@ class Round
 
   BETS = 10
 
-  attr_reader :name, :deck, :open
+  attr_reader :name, :deck, :open, :interface
   attr_accessor :bank_game, :players
 
   def initialize
@@ -31,37 +31,41 @@ class Round
     players.each(&:clear_hands)
     make_deck 
     login_user
-    @interface.table_summary(@players, :close)
+    interface.table_summary(players, :close)
     play_game
   end
 
   def play_game
     loop do
-      input = gets.chomp
+      break if break_conditions
+
+      interface.table_summary(players, :close)
+      input = interface.play_menu
       case input
       when 0
         break
-      else  
-        @interface.table_summary(@players, :close)
+      when 1
+        skip_step
+      when 2
+        add_card
+      when 3
+        open_card  
+      else
+        puts 'Неизвестная команда'  
       end
-      # break if break_conditions
     end
   end
-    
-    # loop 
-    # interface_menu_statistic (players, bank, show cards - hide/unhide)
-    
-    # game_menu for player (add cards, skip, show cards)
-    # обработка ходов (стоит ли добавлять class with logic_game) и выход по 3 картам, перебору, открытию карт
-    # loop end
  
   def break_conditions
     false
       # player_step(@player)
       # player_step(@diller)
-      # three_cards? || @open
+      three_cards? || @open
   end
 
+  def three_cards?
+    players.select { |p| p.cards_count == 3 }.size == 2
+  end
 
   def end_round
     # result_round
