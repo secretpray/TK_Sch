@@ -12,7 +12,7 @@ class Interface
     puts('1 - Пропустить ход')
     puts('2 - Добавить карту') unless round.three_cards?
     puts('3 - Открыть карты')
-    puts '-' *15
+    puts '-' *17
     puts ('0 - Покинуть игру')
     print 'Ваш ход   '
     gets.chomp.to_i
@@ -39,7 +39,17 @@ class Interface
       play_menu # actions_list(player)
       decision = gets.chomp.to_i
     end
-    decision
+      decision
+  end
+
+  def show_winner(player)
+    puts('Ничья') if player.nil?
+    puts("Победил #{player.name}")
+  end
+
+  def show_game_winner(player)
+    puts('Ничья.') if player.nil?
+    puts("Игра окончена. Победил #{player.name} $#{player.bank}")
   end
 
   def table_summary(players, results = :close)
@@ -56,7 +66,7 @@ class Interface
   end
 
   def player_cards(player, mode = :close)
-    "#{player.show_score(mode).to_s.rjust(2)} #{show_cards(player, mode)}"
+    "#{player.show_score(player, mode).to_s.rjust(2)} #{show_cards(player, mode)}"
   end
 
   def resume(players)
@@ -65,6 +75,6 @@ class Interface
   end
   
   def show_cards(player, mode)
-    player.show_cards(mode).map { |card| "|#{card[0]} #{card[1]}|" }.join
+    player.show_cards(player, mode).map { |card| "|#{card[0]} #{card[1]}|" }.join
   end
 end

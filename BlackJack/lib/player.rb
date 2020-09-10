@@ -19,6 +19,7 @@ class Player
 
   def give_money(value = 0)
   raise "недостаточно денег! Ставка #{value}$ (остаток #{bank}$)" if (bank - value).negative?
+
     @bank -= value
   rescue StandardError => e
     puts "Возникла ошибка: #{e.message}"
@@ -32,31 +33,41 @@ class Player
     @hand.score
   end
 
-  def show_score(mode = :close)
+  def show_score(player, mode = :close)
     case mode
     when :close
-      shadow_score
+      player.name == :diler ? shadow_score : score 
     when :open
       score
     end
   end
 
-  def show_cards(mode = :close)
+  def show_cards(player, mode = :close)
     case mode
     when :close
-      shadow_cards
+      player.name == :diler ? shadow_cards : @hand.show  
     when :open
       @hand.show
     end
   end
   
-  def shadow_cards
-    @hand.show
+  def shadow_score
+    'xx'
   end
 
-  def cards_count
-    @hand.cards.count
+  def shadow_cards
+    cards = []
+    @hand.cards.size.times { cards << ['*', '*'] }
+    cards
   end
+
+  # def shadow_cards
+  #   @hand.show
+  # end
+
+  # def cards_count
+  #   @hand.cards.count
+  # end
 
   # private
   

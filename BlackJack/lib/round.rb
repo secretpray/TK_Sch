@@ -1,15 +1,19 @@
 # frozen_string_literal: true
+require 'io/console' # (для использования STDIN.getch вместо gets)
 
 class Round
 
   BETS = 10
+  PRESS_KEY_BLINK       = "\nДля продолжения нажмите пробел или Enter.. \033[1;5m_\033[0;25m".freeze
 
-  attr_reader :name, :deck, :open, :interface
+
+  attr_reader :name, :deck, :open, :interface, :logic
   attr_accessor :bank_game, :players
 
   def initialize
     @interface  = Interface.new(self)
-    @bank = 0
+    @logic  = Logic.new(self)
+    @bank = 0 # user
     @bank_game = 0
     @players = []
     @open = false
@@ -31,15 +35,14 @@ class Round
     players.each(&:clear_hands)
     make_deck 
     login_user
-    interface.table_summary(players, :close)
+    # interface.table_summary(players, :close)
     play_game
   end
 
   def play_game
     loop do
-      break if break_conditions
-
       interface.table_summary(players, :close)
+      
       input = interface.play_menu
       case input
       when 0
@@ -49,26 +52,24 @@ class Round
       when 2
         add_card
       when 3
-        open_card  
+        @open = true
+        break
       else
         puts 'Неизвестная команда'  
       end
     end
+    puts 'Игра окончена...'
+    end_round
   end
  
-  def break_conditions
-    false
-      # player_step(@player)
-      # player_step(@diller)
-      three_cards? || @open
-  end
-
   def three_cards?
-    players.select { |p| p.cards_count == 3 }.size == 2
+    players[0].hand.cards.size >= 3 || players[1].hand.cards.size >= 3
   end
 
   def end_round
-    # result_round
+    interface.table_summary(players, :open)
+    logic.choose_winner(players)
+    interface.resume(players)
     # статистика (при наличии времени)
     print "У #{players.last.name} на счету осталось: #{players.last.bank} $. Хотите начать новую игру? (y/*)  "
     game_run if gets.chomp.downcase == 'y'
@@ -78,9 +79,14 @@ class Round
     system 'clear'
     print 'Пожалуйста, введите свое имя ... ' # blink
     @name = gets.chomp # puts "Создан игрок - #{name}" 
+    system 'clear'
     # validate name (w and d only; 1 - 20 letters)
   end
 
+  def show_winner(player)
+    interface.show_winner(player)
+  end
+    
   def create_users(name)
     player = Player.new(name)
     diler = Player.new # можно сгенерировать имя... 
@@ -88,7 +94,8 @@ class Round
   end
 
   def login_user
-    @players.each do |player|
+    @open = false
+    players.each do |player|
       2.times { player.get_card(@deck.pop!) }
       @bank += player.give_money(BETS)
       @bank_game += BETS
@@ -96,12 +103,36 @@ class Round
   end
   
   def show_bank
-    system 'clear'
-    puts "Банк: $#{@bank_game}"
-    puts '-'*9
+    # system 'clear'
+    puts "Банк casino: $#{@bank_game}"
+    puts '-'*16
+    puts
   end
 
   def make_deck
     @deck = Deck.new
+  end
+
+  def add_card
+    raise "на руках уже 3 карты!" if three_cards?
+   
+    players.last.get_card(@deck.pop!)
+  rescue StandardError => e
+    puts "Возникла ошибка: #{e.message}"
+    press_key
+  end
+
+  def press_key
+    printf PRESS_KEY_BLINK
+    loop do
+      break if [' ', "\r"].include?(STDIN.getch)
+    end
+  end
+
+  def open_card
+    interface.table_summary(players, :open)
+    @bank_game = 0
+    show_bank
+    players.each { |player| puts("#{player.name} $#{player.bank}") }
   end
 end
