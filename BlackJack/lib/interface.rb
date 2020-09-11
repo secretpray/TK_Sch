@@ -34,10 +34,10 @@ class Interface
   end
 
   def summary(player, mode = :close)
-  	  puts("#{player_resume(player)} #{player_cards(player, mode)}")
+  	  puts("#{player_data(player)} #{player_cards(player, mode)}")
   end
 
-  def player_resume(player)
+  def player_data(player)
     "#{player.name.capitalize.to_s.ljust(10)} $#{player.bank.to_s.ljust(5)}"
   end
 
