@@ -1,20 +1,20 @@
 # frozen_string_literal: true
 
 class Round
-  UNKNOWN_COMMAND       = 'Неизвестная команда!'.freeze
+  UNKNOWN_COMMAND       = 'Неизвестная команда!'
   BETS                  = 10
-  PRESS_KEY_BLINK       = "\nДля продолжения нажмите пробел или Enter.. \033[1;5m_\033[0;25m\n".freeze
-  NEXT_STEP             = 'Противник принял решение! Ход за Вами...'.freeze
+  PRESS_KEY_BLINK       = "\nДля продолжения нажмите пробел или Enter.. \033[1;5m_\033[0;25m\n"
+  NEXT_STEP             = 'Противник принял решение! Ход за Вами...'
 
   attr_reader :name, :deck, :open, :interface, :logic, :skip_player
   attr_accessor :bank_game, :players
 
   def initialize
-    @logic  = Logic.new(self)
-    @interface  = Interface.new(self)
+    @logic = Logic.new(self)
+    @interface = Interface.new(self)
     @bank = 0 # @bank -> user
-    @bank_game = 0 
-    @skip_player = 0 
+    @bank_game = 0
+    @skip_player = 0
     @players = []
     @open = false
     prepare_round
@@ -27,20 +27,20 @@ class Round
 
   def inputs_name
     system 'clear'
-    print 'Пожалуйста, введите свое имя ... ' # blink
-    @name = gets.chomp # puts "Создан игрок - #{name}" 
+    print 'Пожалуйста, введите свое имя ... '.blink
+    @name = gets.chomp
     system 'clear'
   end
 
   def create_users(name)
     player = Player.new(name)
-    diler = Player.new # генерировать имя? 
+    diler = Player.new
     players << diler << player
   end
 
   def start_round
     players.each(&:clear_hands)
-    @deck = Deck.new 
+    @deck = Deck.new
     login_user
     play_game
   end
@@ -74,9 +74,9 @@ class Round
     end
     end_round
   end
- 
+
   def skip_step
-    raise "пропуск хода возможен только один раз!" unless skip_player.zero?         
+    raise 'пропуск хода возможен только один раз!' unless skip_player.zero?
 
     @skip_player += 1
     system 'clear'
@@ -88,8 +88,8 @@ class Round
   end
 
   def add_card(player)
-    raise "на руках уже 3 карты!" if players_three_cards?
-   
+    raise 'на руках уже 3 карты!' if players_three_cards?
+
     player == :diler ? players[0].get_card(@deck.pop!) : players[1].get_card(@deck.pop!)
     system 'clear'
   rescue StandardError => e
@@ -100,7 +100,7 @@ class Round
 
   def players_three_cards?
     players[1].hand.cards.size >= 3
-  end  
+  end
 
   def three_cards?
     players[0].hand.cards.size >= 3 && players[1].hand.cards.size >= 3
@@ -108,18 +108,18 @@ class Round
 
   def show_bank
     puts 'Ставки игры: ' + "$#{@bank_game}".green.bold
-    puts '-'*16
+    puts '-' * 16
     puts
   end
 
   def end_round
-    @bank_game = 0 
+    @bank_game = 0
     @skip_player = 0
     logic.choose_winner(players)
     interface.view(players, :open)
     puts "\nУ #{players.last.name} на счету:" + " $#{players.last.bank}".bold
-    puts 
-    print "Хотите начать новую игру? (y/*)  ".cyan.blink
+    puts
+    print 'Хотите начать новую игру? (y/*)  '.cyan.blink
     if gets.chomp.strip.downcase == 'y'
       start_round
       system 'clear'
@@ -128,14 +128,14 @@ class Round
       exit
     end
   end
-  
+
   # proxy method
   def show_winner(player)
     system 'clear'
-    puts "Игра окончена..."
+    puts 'Игра окончена...'
     interface.show_winner(player)
   end
-  
+
   def press_key
     printf PRESS_KEY_BLINK
     loop do

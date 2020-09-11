@@ -6,20 +6,19 @@ class Hand
   def initialize
     @cards = []
   end
-  
+
   def <<(card)
     if card.value == 'A'
       @cards << card
     else
       @cards.unshift(card)
     end
-      @cards
   end
 
   def show
     @cards.map(&:show)
   end
-  
+
   def score
     @cards.inject(0) do |sum, card|
       t = if %w[J Q K].include?(card.value)

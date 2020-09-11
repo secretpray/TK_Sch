@@ -7,10 +7,10 @@ class Card
   RANKS = ['A', *(2..10), 'J', 'Q', 'K'].freeze
 
   def initialize(suit, value)
-    raise "Invalid card value" unless RANKS.include? value
+    raise 'Invalid card value' unless RANKS.include? value
 
     @value = value
-    raise "Invalid suit" unless SUITS.include? suit
+    raise 'Invalid suit' unless SUITS.include? suit
 
     @suit = suit
   rescue StandardError => e

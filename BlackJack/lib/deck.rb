@@ -11,7 +11,7 @@ class Deck
     decs.shuffle!
   end
 
-  def pop! # (draw or pop!)
+  def pop!
     @decs.pop
   end
 
@@ -29,4 +29,3 @@ class Deck
     decs
   end
 end
-

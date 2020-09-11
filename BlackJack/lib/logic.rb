@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 class Logic
-	attr_reader :round
+  attr_reader :round
 
-	def initialize(round)
+  def initialize(round)
     @round = round
   end
 
@@ -21,17 +21,17 @@ class Logic
 
   def winner(player)
     player.take_money(20)
-    view_ruslt(player)
+    view_result(player)
   end
 
   def standoff(players)
     players[0].take_money(10)
     players[1].take_money(10)
-    view_ruslt(player = nil)
+    view_result(player = nil)
   end
 
-  def view_ruslt(player)
-  	@bank_game = 0
+  def view_result(player)
+    @bank_game = 0
     round.show_winner(player)
   end
 

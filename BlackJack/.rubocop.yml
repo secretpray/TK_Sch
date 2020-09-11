@@ -26,3 +26,5 @@ Style/ClassVars:
   Enabled: false
 Lint/DuplicateMethods:
   Enabled: false
+Lint/UselessAssignment:
+  Enabled: false

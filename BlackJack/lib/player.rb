@@ -9,7 +9,7 @@ class Player
     @hand = Hand.new
     @bank = 100
   end
-  
+
   def clear_hands
     @hand = Hand.new
   end
@@ -19,7 +19,7 @@ class Player
   end
 
   def give_money(value = 0)
-  raise "недостаточно денег! Ставка #{value}$ (остаток #{bank}$)" if (bank - value).negative?
+    raise "недостаточно денег! Ставка #{value}$ (остаток #{bank}$)" if (bank - value).negative?
 
     @bank -= value
   rescue StandardError => e
@@ -37,7 +37,7 @@ class Player
   def show_score(player, mode = :close)
     case mode
     when :close
-      player.name == :diler ? shadow_score : score 
+      player.name == :diler ? shadow_score : score
     when :open
       score
     end
@@ -46,12 +46,12 @@ class Player
   def show_cards(player, mode = :close)
     case mode
     when :close
-      player.name == :diler ? shadow_cards : @hand.show  
+      player.name == :diler ? shadow_cards : @hand.show
     when :open
       @hand.show
     end
   end
-  
+
   def shadow_score
     'xx'
   end
@@ -71,7 +71,7 @@ class Player
   # end
 
   # private
-  
+
   def score
     @hand.score
   end

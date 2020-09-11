@@ -12,8 +12,6 @@ require_relative 'lib/string'
 require 'io/console'
 
 class Main
-  # include Validation #(проверка 3 карты, перебор, очередность и правильность выбора) 
-  
   round = Round.new
   round.start_round
   system 'clear'
