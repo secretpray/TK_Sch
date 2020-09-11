@@ -2,10 +2,9 @@
 require 'io/console' # (для использования STDIN.getch вместо gets)
 
 class Round
-
-  BETS = 10
+  UNKNOWN_COMMAND       = 'Неизвестная команда!'.freeze
+  BETS                  = 10
   PRESS_KEY_BLINK       = "\nДля продолжения нажмите пробел или Enter.. \033[1;5m_\033[0;25m".freeze
-
 
   attr_reader :name, :deck, :open, :interface, :logic
   attr_accessor :bank_game, :players
@@ -21,21 +20,14 @@ class Round
   end
 
   def prepare_round
-    # interface.start_menu
     inputs_name
     create_users(name)
-  end
-
-  def game_run
-    start_round
-    end_round
   end
 
   def start_round
     players.each(&:clear_hands)
     make_deck 
     login_user
-    # interface.table_summary(players, :close)
     play_game
   end
 
@@ -55,10 +47,9 @@ class Round
         @open = true
         break
       else
-        puts 'Неизвестная команда'  
+        puts UNKNOWN_COMMAND
       end
     end
-    puts 'Игра окончена...'
     end_round
   end
  
@@ -67,12 +58,13 @@ class Round
   end
 
   def end_round
-    interface.table_summary(players, :open)
+    @bank_game = 0
     logic.choose_winner(players)
-    interface.resume(players)
-    # статистика (при наличии времени)
-    print "У #{players.last.name} на счету осталось: #{players.last.bank} $. Хотите начать новую игру? (y/*)  "
-    game_run if gets.chomp.downcase == 'y'
+    interface.table_summary(players, :open)
+    puts "\nУ #{players.last.name} на счету осталось: $#{players.last.bank}"
+    puts 
+    print "Хотите начать новую игру? (y/*)  "
+    start_round if gets.chomp.downcase == 'y'
   end
   
   def inputs_name
@@ -80,16 +72,17 @@ class Round
     print 'Пожалуйста, введите свое имя ... ' # blink
     @name = gets.chomp # puts "Создан игрок - #{name}" 
     system 'clear'
-    # validate name (w and d only; 1 - 20 letters)
   end
 
   def show_winner(player)
+    system 'clear'
+    puts "Игра окончена..."
     interface.show_winner(player)
   end
     
   def create_users(name)
     player = Player.new(name)
-    diler = Player.new # можно сгенерировать имя... 
+    diler = Player.new # генерировать имя? 
     players << diler << player
   end
 
@@ -103,7 +96,6 @@ class Round
   end
   
   def show_bank
-    # system 'clear'
     puts "Банк casino: $#{@bank_game}"
     puts '-'*16
     puts
@@ -127,12 +119,5 @@ class Round
     loop do
       break if [' ', "\r"].include?(STDIN.getch)
     end
-  end
-
-  def open_card
-    interface.table_summary(players, :open)
-    @bank_game = 0
-    show_bank
-    players.each { |player| puts("#{player.name} $#{player.bank}") }
   end
 end

@@ -18,38 +18,13 @@ class Interface
     gets.chomp.to_i
   end
 
-  # def actions_list(player)
-  #   puts('p - пропустить ход')
-  #   puts('a - добавить карту') if player.cards_count < 3
-  #   puts('o - открыть карты')
-  # end
-
   def show_winner(player)
-    puts('Ничья') if player.nil?
-    puts("Победил #{player.name}")
-  end
-
-  def show_game_winner(player)
-    puts('Ничья.') if player.nil?
-    puts("Игра окончена. Победил #{player.name} $#{player.bank}")
-  end
-
-  def select_decision(player)
-    if player.name != :diler
-      play_menu # actions_list(player)
-      decision = gets.chomp.to_i
+    if player.nil? 
+      puts "\nНичья"
+    else
+      puts "\nПобедил #{player.name}!"
     end
-      decision
-  end
-
-  def show_winner(player)
-    puts('Ничья') if player.nil?
-    puts("Победил #{player.name}")
-  end
-
-  def show_game_winner(player)
-    puts('Ничья.') if player.nil?
-    puts("Игра окончена. Победил #{player.name} $#{player.bank}")
+    puts "\nСтатистика:"
   end
 
   def table_summary(players, results = :close)
@@ -69,10 +44,9 @@ class Interface
     "#{player.show_score(player, mode).to_s.rjust(2)} #{show_cards(player, mode)}"
   end
 
-  def resume(players)
-    round.show_bank
-    players.each { |player| puts("#{player.name.capitalize} $#{player.bank}") }
-  end
+  # def resume(players)
+  #   players.each { |player| puts("#{player.name.capitalize} $#{player.bank}") }
+  # end
   
   def show_cards(player, mode)
     player.show_cards(player, mode).map { |card| "|#{card[0]} #{card[1]}|" }.join

@@ -13,6 +13,6 @@ class Main
   # include Validation #(проверка 3 карты, перебор, очередность и правильность выбора) 
   
   round = Round.new
-  round.game_run
+  round.start_round
   system 'clear'
 end
