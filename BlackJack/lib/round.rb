@@ -27,7 +27,7 @@ class Round
 
   def inputs_name
     system 'clear'
-    print 'Пожалуйста, введите свое имя ... '.blink
+    print 'Пожалуйста, введите свое имя ... '.cyan
     @name = gets.chomp
     system 'clear'
   end
@@ -121,8 +121,8 @@ class Round
     puts
     print 'Хотите начать новую игру? (y/*)  '.cyan.blink
     if gets.chomp.strip.downcase == 'y'
-      start_round
       system 'clear'
+      start_round
     else
       system 'clear'
       exit
