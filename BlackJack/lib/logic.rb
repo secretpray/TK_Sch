@@ -34,4 +34,13 @@ class Logic
   	@bank_game = 0
     round.show_winner(player)
   end
+
+  def diler_step(players)
+    if players.first.score < 17 && players.first.hand.cards.size < 3
+      rand(0..51).odd? ? round.add_card(:diler) : round.play_game
+      # round.add_card(:diler)
+    else
+      round.play_game
+    end
+  end
 end
