@@ -1,10 +1,10 @@
 # frozen_string_literal: true
-require 'io/console' # (для использования STDIN.getch вместо gets)
 
 class Round
   UNKNOWN_COMMAND       = 'Неизвестная команда!'.freeze
   BETS                  = 10
   PRESS_KEY_BLINK       = "\nДля продолжения нажмите пробел или Enter.. \033[1;5m_\033[0;25m\n".freeze
+  NEXT_STEP             = 'Противник принял решение! Ход за Вами...'.freeze
 
   attr_reader :name, :deck, :open, :interface, :logic, :skip_player
   attr_accessor :bank_game, :players
@@ -58,11 +58,9 @@ class Round
     loop do
       break if three_cards?
 
-      interface.table_summary(players, :close)
+      interface.view(players, :close)
       input = interface.play_menu
       case input
-      # when 0
-      #   break
       when 1
         skip_step
       when 2
@@ -78,11 +76,11 @@ class Round
   end
  
   def skip_step
-    raise "Пропустить ход можете только один раз!" unless skip_player.zero?         
+    raise "пропуск хода возможен только один раз!" unless skip_player.zero?         
 
     @skip_player += 1
     system 'clear'
-    puts 'Противник принял решение! Ход за Вами...'
+    puts NEXT_STEP
     logic.diler_step(players)
   rescue StandardError => e
     puts "Возникла ошибка: #{e.message}"
@@ -118,7 +116,7 @@ class Round
     @bank_game = 0 
     @skip_player = 0
     logic.choose_winner(players)
-    interface.table_summary(players, :open)
+    interface.view(players, :open)
     puts "\nУ #{players.last.name} на счету: $#{players.last.bank}"
     puts 
     print "Хотите начать новую игру? (y/*)  "

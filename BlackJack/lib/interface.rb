@@ -13,7 +13,6 @@ class Interface
     puts('2 - Добавить карту') unless round.players_three_cards?
     puts('3 - Открыть карты')
     puts '-' *17
-    # puts ('0 - Покинуть игру')
     print 'Ваш ход   '
     gets.chomp.to_i
   end
@@ -28,7 +27,7 @@ class Interface
     puts "\nСтатистика:"
   end
 
-  def table_summary(players, results = :close)
+  def view(players, results = :close)
     round.show_bank
     players.each { |player| results == :open ? summary(player, :open) : summary(player) }
   end

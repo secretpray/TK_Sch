@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 class Player
   # include Validation #(проверка наличия имени, формата, проверка положительного баланса?)
   attr_accessor :name, :bank, :hand

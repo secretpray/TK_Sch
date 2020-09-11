@@ -8,6 +8,7 @@ require_relative 'lib/card'
 require_relative 'lib/deck'
 require_relative 'lib/logic'
 require_relative 'lib/validation'
+require 'io/console'
 
 class Main
   # include Validation #(проверка 3 карты, перебор, очередность и правильность выбора) 
