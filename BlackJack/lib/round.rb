@@ -117,7 +117,7 @@ class Round
     @skip_player = 0
     logic.choose_winner(players)
     interface.view(players, :open)
-    puts "\nУ #{players.last.name} на счету:" + " $#{players.last.bank}".bold
+    puts "\nУ #{players.last.name} на счету:" + " $#{players.last.bank}".green.bold
     puts
     print 'Хотите начать новую игру? (y/*)  '.cyan.blink
     if gets.chomp.strip.downcase == 'y'
