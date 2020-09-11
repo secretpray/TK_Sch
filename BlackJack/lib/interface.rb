@@ -9,20 +9,20 @@ class Interface
   
   def play_menu
     puts "\n"
-    puts('1 - Пропустить ход')
-    puts('2 - Добавить карту') unless round.players_three_cards?
-    puts('3 - Открыть карты')
+    puts '1 - Пропустить ход'.green
+    puts '2 - Добавить карту'.green unless round.players_three_cards?
+    puts '3 - Открыть карты'.green
     puts '-' *17
-    print 'Ваш ход   '
+    print 'Ваш ход   '.cyan.blink
     gets.chomp.to_i
   end
 
   def show_winner(player)
     system 'clear'
     if player.nil? 
-      puts "Ничья"
+      puts "Ничья".bg_green
     else
-      puts "Победил #{player.name.capitalize}!"
+      puts "Победил #{player.name.capitalize}!".bg_green
     end
     puts "\nСтатистика:"
   end

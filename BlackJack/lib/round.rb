@@ -83,7 +83,7 @@ class Round
     puts NEXT_STEP
     logic.diler_step(players)
   rescue StandardError => e
-    puts "Возникла ошибка: #{e.message}"
+    puts "Возникла ошибка: #{e.message}".red
     press_key
   end
 
@@ -93,7 +93,7 @@ class Round
     player == :diler ? players[0].get_card(@deck.pop!) : players[1].get_card(@deck.pop!)
     system 'clear'
   rescue StandardError => e
-    puts "Возникла ошибка: #{e.message}"
+    puts "Возникла ошибка: #{e.message}".red
     press_key
     system 'clear'
   end
@@ -107,7 +107,7 @@ class Round
   end
 
   def show_bank
-    puts "Ставки игры: $#{@bank_game}"
+    puts 'Ставки игры: ' + "$#{@bank_game}".green.bold
     puts '-'*16
     puts
   end
@@ -117,11 +117,16 @@ class Round
     @skip_player = 0
     logic.choose_winner(players)
     interface.view(players, :open)
-    puts "\nУ #{players.last.name} на счету: $#{players.last.bank}"
+    puts "\nУ #{players.last.name} на счету:" + " $#{players.last.bank}".bold
     puts 
-    print "Хотите начать новую игру? (y/*)  "
-    start_round if gets.chomp.strip.downcase == 'y'
-    system 'clear'
+    print "Хотите начать новую игру? (y/*)  ".cyan.blink
+    if gets.chomp.strip.downcase == 'y'
+      start_round
+      system 'clear'
+    else
+      system 'clear'
+      exit
+    end
   end
   
   # proxy method

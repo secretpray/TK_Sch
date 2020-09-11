@@ -8,6 +8,7 @@ require_relative 'lib/card'
 require_relative 'lib/deck'
 require_relative 'lib/logic'
 require_relative 'lib/validation'
+require_relative 'lib/string'
 require 'io/console'
 
 class Main
