@@ -62,4 +62,31 @@ class Interface
   def game_result(players)
     puts "\nУ #{players.last.name} на счету:" + " $#{players.last.bank}\n".green.bold
   end
+
+  def show_game_bank(bank_game)
+    puts BET_GAME + "$#{bank_game}".green.bold
+    puts LINE * 17
+    puts
+  end
+
+  def next_step
+    puts NEXT_STEP
+  end
+
+  def show_error_command
+    puts UNKNOWN_COMMAND.red
+  end
+
+  def show_error_message(e)
+    puts HAVE_ERRORS.gray + e.message.to_s.red
+  end
+
+  def pres_key_blink
+    printf PRESS_KEY_BLINK
+  end
+
+  def clear_console
+    system 'clear'
+  end
 end
+

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative 'interface'
 class Player
   BANK_USER = 100
 
@@ -9,6 +10,7 @@ class Player
     @name = name.to_sym
     @hand = Hand.new
     @bank = BANK_USER
+    @interface = Interface.new(self)
   end
 
   def clear_hands

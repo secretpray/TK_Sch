@@ -68,7 +68,7 @@ class Round
         @open = true
         break
       else
-        puts Interface::UNKNOWN_COMMAND.red
+        interface.show_error_command
         press_key
       end
     end
@@ -80,10 +80,10 @@ class Round
 
     @skip_player += 1
     clear
-    puts Interface::NEXT_STEP
+    interface.next_step
     logic.diler_step(players)
   rescue StandardError => e
-    puts Interface::HAVE_ERRORS.gray + e.message.to_s.red
+    interface.show_error_message(e)
     press_key
   end
 
@@ -93,7 +93,7 @@ class Round
     player == :diler ? players[0].get_card(@deck.deal) : players[1].get_card(@deck.deal)
     clear
   rescue StandardError => e
-    puts Interface::HAVE_ERRORS.gray + e.message.to_s.red
+    interface.show_error_message(e)
     press_key
     clear
   end
@@ -107,9 +107,7 @@ class Round
   end
 
   def show_bank
-    puts Interface::BET_GAME + "$#{@bank_game}".green.bold
-    puts Interface::LINE * 17
-    puts
+    interface.show_game_bank(@bank_game)
   end
 
   def end_round
@@ -137,7 +135,7 @@ class Round
   end
 
   def press_key
-    printf Interface::PRESS_KEY_BLINK
+    interface.pres_key_blink
     loop do
       break if [' ', "\r"].include?(STDIN.getch)
     end
@@ -145,6 +143,6 @@ class Round
   end
 
   def clear
-    system 'clear'
+    interface.clear_console
   end
 end
