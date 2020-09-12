@@ -51,6 +51,9 @@ class Round
       @bank += player.give_money(BETS)
       @bank_game += BETS
     end
+  rescue StandardError => e
+    Interface.show_error_message(e)
+    press_key
   end
 
   def play_game
@@ -83,7 +86,7 @@ class Round
     interface.next_step
     logic.diler_step(players)
   rescue StandardError => e
-    interface.show_error_message(e)
+    Interface.show_error_message(e)
     press_key
   end
 
@@ -93,7 +96,7 @@ class Round
     player == :diler ? players[0].get_card(@deck.deal) : players[1].get_card(@deck.deal)
     clear
   rescue StandardError => e
-    interface.show_error_message(e)
+    Interface.show_error_message(e)
     press_key
     clear
   end

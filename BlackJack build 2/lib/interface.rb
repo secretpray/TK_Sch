@@ -77,8 +77,8 @@ class Interface
     puts UNKNOWN_COMMAND.red
   end
 
-  def show_error_message(e)
-    puts HAVE_ERRORS.gray + e.message.to_s.red
+  def self.show_error_message(error)
+    puts HAVE_ERRORS.gray + error.message.to_s.red
   end
 
   def pres_key_blink
@@ -89,4 +89,3 @@ class Interface
     system 'clear'
   end
 end
-

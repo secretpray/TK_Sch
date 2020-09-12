@@ -26,7 +26,7 @@ class Player
 
     @bank -= value
   rescue StandardError => e
-    puts Interface::HAVE_ERRORS.gray + e.message.to_s.red
+    Interface.show_error_message(e)
   end
 
   def take_money(value = 0)
