@@ -9,18 +9,18 @@ class Hand
 
   def <<(card)
     if card.value == 'A'
-      @cards << card
+      cards << card
     else
-      @cards.unshift(card)
+      cards.unshift(card)
     end
   end
 
   def show
-    @cards.map(&:show)
+    cards.map(&:show)
   end
 
   def score
-    @cards.inject(0) do |sum, card| # cards.reduce(0) do |sun, card|
+    cards.inject(0) do |sum, card| # cards.reduce(0) do |sun, card|
       t = if %w[J Q K].include?(card.value)
             10
           elsif card.value == 'A'
