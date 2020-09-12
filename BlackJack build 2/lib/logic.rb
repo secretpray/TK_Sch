@@ -2,6 +2,7 @@
 
 class Logic
   STOP_DEALER_SCORE = 17
+  RANDON_NUMBER     = 51
 
   attr_reader :round
 
@@ -22,13 +23,13 @@ class Logic
   end
 
   def winner(player)
-    player.take_money(20)
+    player.take_money(Round::BETS * 2)
     view_result(player)
   end
 
   def standoff(players)
-    players[0].take_money(10)
-    players[1].take_money(10)
+    players[0].take_money(Round::BETS)
+    players[1].take_money(Round::BETS)
     view_result(player = nil)
   end
 
@@ -39,7 +40,7 @@ class Logic
 
   def diler_step(players)
     if players.first.score < STOP_DEALER_SCORE && players.first.hand.cards.size < Round::MAX_CARDS
-      rand(0..51).odd? ? round.add_card(:diler) : round.play_game # пусть подумает))
+      rand(0..RANDON_NUMBER).odd? ? round.add_card(:diler) : round.play_game # пусть подумает))
     else
       round.play_game
     end
