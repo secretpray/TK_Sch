@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 class Player
+  BANK_USER = 100
+
   attr_accessor :name, :bank, :hand
 
   def initialize(name = :diler)
     @name = name.to_sym
     @hand = Hand.new
-    @bank = 100
+    @bank = BANK_USER
   end
 
   def clear_hands
@@ -14,7 +16,7 @@ class Player
   end
 
   def get_card(card)
-    @hand << card
+    hand << card
   end
 
   def give_money(value = 0)
@@ -30,7 +32,7 @@ class Player
   end
 
   def shadow_score
-    @hand.score
+    hand.score
   end
 
   def show_score(player, mode = :close)
@@ -47,7 +49,7 @@ class Player
     when :close
       player.name == :diler ? shadow_cards : @hand.show
     when :open
-      @hand.show
+      hand.show
     end
   end
 
@@ -57,11 +59,11 @@ class Player
 
   def shadow_cards
     cards = []
-    @hand.cards.size.times { cards << ['*', '*'] }
+    hand.cards.size.times { cards << ['*', '*'] }
     cards
   end
 
   def score
-    @hand.score
+    hand.score
   end
 end
