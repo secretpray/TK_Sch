@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require_relative 'lib/view'
 require_relative 'lib/round'
 require_relative 'lib/interface'
 require_relative 'lib/player'

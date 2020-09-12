@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class Round
+  include View
+
   BETS      = 10
   MAX_CARDS = 3
 
@@ -10,8 +12,8 @@ class Round
   def initialize
     @logic = Logic.new(self)
     @interface = Interface.new(self)
-    @bank = 0 # @bank -> user
-    @bank_game = 0
+    @bank = 0 # bank User
+    @bank_game = 0 # bank Bets
     @skip_player = 0
     @players = []
     @open = false
@@ -55,7 +57,7 @@ class Round
     loop do
       break if three_cards?
 
-      interface.view(players, :close)
+      view(players, :close)
       input = interface.play_menu
       case input
       when 1
@@ -114,7 +116,7 @@ class Round
     @bank_game = 0
     @skip_player = 0
     logic.choose_winner(players)
-    interface.view(players, :open)
+    view(players, :open)
     interface.game_result(players)
     if interface.new_game?
       clear
