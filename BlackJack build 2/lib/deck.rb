@@ -7,10 +7,6 @@ class Deck
     @decs = build_deck.shuffle!
   end
 
-  def shuffle!
-    decs.shuffle!
-  end
-
   def deal(num = 1)
     num == 1 ? decs.pop : decs.pop(num)
   end
