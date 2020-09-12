@@ -28,7 +28,7 @@ class Interface
 
   def play_menu
     puts "\n"
-    puts ONE_MENU.green
+    puts ONE_MENU.green unless round.skip_player.nonzero?
     puts TWO_MENU.green unless round.players_three_cards?
     puts THREE_MENU.green
     puts LINE * 17

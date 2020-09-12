@@ -137,6 +137,10 @@ class Round
     end
   end
 
+  def skip_player_zero?
+    skip_player.nonzero?
+  end
+
   def press_key
     interface.pres_key_blink
     loop do
