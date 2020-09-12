@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 class Round
-  BETS = 10
+  BETS      = 10
+  MAX_CARDS = 3
 
   attr_reader :name, :deck, :open, :interface, :logic, :skip_player
   attr_accessor :bank_game, :players

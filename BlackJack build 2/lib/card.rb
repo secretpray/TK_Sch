@@ -3,7 +3,6 @@
 class Card
   attr_reader :suit, :value
   SUITS = %w[♦️ ♣️ ♠️ ♥️].freeze
-  # SUITS = %w[♣ ♦ ♥ ♠].freeze
   RANKS = ['A', *(2..10), 'J', 'Q', 'K'].freeze
 
   def initialize(suit, value)

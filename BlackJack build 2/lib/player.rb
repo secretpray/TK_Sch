@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class Player
-  # include Validation #(проверка наличия имени, формата, проверка положительного баланса?)
   attr_accessor :name, :bank, :hand
 
   def initialize(name = :diler)
@@ -19,11 +18,11 @@ class Player
   end
 
   def give_money(value = 0)
-    raise "недостаточно денег! Ставка #{value}$ (остаток #{bank}$)" if (bank - value).negative?
+    raise Interface::NO_MONEY if (bank - value).negative?
 
     @bank -= value
   rescue StandardError => e
-    puts "Возникла ошибка: #{e.message}"
+    puts Interface::HAVE_ERRORS.gray + e.message.to_s.red
   end
 
   def take_money(value = 0)

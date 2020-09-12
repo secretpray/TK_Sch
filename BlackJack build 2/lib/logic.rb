@@ -2,7 +2,6 @@
 
 class Logic
   STOP_DEALER_SCORE = 17
-  MAX_CARDS = 3
 
   attr_reader :round
 
@@ -39,8 +38,8 @@ class Logic
   end
 
   def diler_step(players)
-    if players.first.score < STOP_DEALER_SCORE && players.first.hand.cards.size < MAX_CARDS
-      rand(0..51).odd? ? round.add_card(:diler) : round.play_game
+    if players.first.score < STOP_DEALER_SCORE && players.first.hand.cards.size < Round::MAX_CARDS
+      rand(0..51).odd? ? round.add_card(:diler) : round.play_game # пусть подумает))
     else
       round.play_game
     end

@@ -18,6 +18,7 @@ class Interface
   NEW_GAMES         = 'Хотите начать новую игру? (y/*)  '
   BET_GAME          = 'Ставки игры: '
   HAVE_ERRORS       = 'Возникла ошибка: '
+  NO_MONEY          = 'недостаточно денег!'
 
   attr_reader :round
 
