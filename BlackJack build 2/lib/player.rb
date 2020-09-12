@@ -31,10 +31,6 @@ class Player
     @bank += value
   end
 
-  def shadow_score
-    hand.score
-  end
-
   def show_score(player, mode = :close)
     case mode
     when :close
@@ -47,7 +43,7 @@ class Player
   def show_cards(player, mode = :close)
     case mode
     when :close
-      player.name == :diler ? shadow_cards : @hand.show
+      player.name == :diler ? shadow_cards : hand.show
     when :open
       hand.show
     end
